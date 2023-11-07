@@ -5,8 +5,12 @@ namespace Fitschool
         public Form1()
         {
             InitializeComponent();
-            MessageBox.Show("Hello world");
+            MessageBox.Show("Coole shit, man");
         }
-        
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
