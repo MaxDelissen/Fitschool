@@ -17,7 +17,7 @@ namespace Fitschool
         {
             loggedInId = Convert.ToInt32(IDValue.Value);
             loggedInName = Data.IdToName(loggedInId);
-            loggedInPoints = Convert.ToInt32(Data.RetrieveFromDB(loggedInId, "points"));
+            loggedInPoints = Data.IdToPoints(loggedInId);
         }
     }
 }

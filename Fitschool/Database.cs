@@ -14,6 +14,18 @@ public class DataManagement
         return name;
     }
 
+    public int IdToPoints(int id)
+    {
+        int points;
+        if (!(Int32.TryParse(RetrieveFromDB(id, "points"), out points)))
+        {
+            MessageBox.Show("Failed to convert points to an integer, points has been set to 0", "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return 0;
+        }
+        
+        return points;
+    }
+
     public string RetrieveFromDB(int id, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
     {
         using (MySqlConnection connection = new MySqlConnection(connectionAdress))
