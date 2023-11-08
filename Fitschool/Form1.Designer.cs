@@ -31,6 +31,8 @@
             RequestDataButton = new Button();
             IDValue = new NumericUpDown();
             label1 = new Label();
+            mySqlCommandBuilder1 = new MySqlConnector.MySqlCommandBuilder();
+            buttonFormswitch = new Button();
             ((System.ComponentModel.ISupportInitialize)IDValue).BeginInit();
             SuspendLayout();
             // 
@@ -60,11 +62,28 @@
             label1.TabIndex = 3;
             label1.Text = "Tijdelijke input voor ID:";
             // 
+            // mySqlCommandBuilder1
+            // 
+            mySqlCommandBuilder1.DataAdapter = null;
+            mySqlCommandBuilder1.QuotePrefix = "`";
+            mySqlCommandBuilder1.QuoteSuffix = "`";
+            // 
+            // buttonFormswitch
+            // 
+            buttonFormswitch.Location = new Point(474, 72);
+            buttonFormswitch.Name = "buttonFormswitch";
+            buttonFormswitch.Size = new Size(94, 29);
+            buttonFormswitch.TabIndex = 4;
+            buttonFormswitch.Text = "button1";
+            buttonFormswitch.UseVisualStyleBackColor = true;
+            buttonFormswitch.Click += buttonFormswitch_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(652, 445);
+            Controls.Add(buttonFormswitch);
             Controls.Add(label1);
             Controls.Add(IDValue);
             Controls.Add(RequestDataButton);
@@ -81,5 +100,7 @@
         private Button RequestDataButton;
         private NumericUpDown IDValue;
         private Label label1;
+        private MySqlConnector.MySqlCommandBuilder mySqlCommandBuilder1;
+        private Button buttonFormswitch;
     }
 }
