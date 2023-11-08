@@ -19,5 +19,11 @@ namespace Fitschool
             loggedInName = Data.IdToName(loggedInId);
             loggedInPoints = Data.IdToPoints(loggedInId);
         }
+
+        private void buttonFormswitch_Click(object sender, EventArgs e)
+        {
+            FormShop formShop = new FormShop();
+            formShop.ShowDialog();
+        }
     }
 }
