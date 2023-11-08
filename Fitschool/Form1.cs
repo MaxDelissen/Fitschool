@@ -12,19 +12,21 @@ namespace Fitschool
 
         string connectionAdress = "Server=myServerAddress;Database=myDatabase;User=myUsername;Password=myPassword;";
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void RequestDataButton_Click(object sender, EventArgs e)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionAdress))
             {
                 try
                 {
+                    //verbinding maken met SQL database, wanneer dit niet werkt error vangen, zie onderaan.
                     connection.Open();
 
+                    //SQL query, Kan misschien nog beter?
                     string query = "SELECT * FROM YourTableName WHERE ID = @id";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@id", 12); // ID 12 als voorbeeld, dit moet dadelijk van het pasje komen.
+                        command.Parameters.AddWithValue("@id", IDValue.Value); //haalt ID nummer op uit form, moet worden vervangen door scanner.
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
@@ -42,11 +44,11 @@ namespace Fitschool
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception) //Fout wanneer de opgegeven MySQL database niet kan worden gevonden.
                 {
                     MessageBox.Show("Fout bij verbinden met MySQL database");
                 }
-                
+
             }
         }
     }
