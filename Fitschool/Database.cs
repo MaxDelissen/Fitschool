@@ -4,7 +4,7 @@ public class DataManagement
 {
     string connectionAdress = "Server=myServerAddress;Database=myDatabase;User=myUsername;Password=myPassword;";
 
-    public string IdToName(int id)
+    public string IdToName(int id) //functie om naam op te halen.
     {
         string name = RetrieveFromDB(id, "naam");
         if (name.Contains("Error"))
@@ -14,7 +14,7 @@ public class DataManagement
         return name;
     }
 
-    public int IdToPoints(int id)
+    public int IdToPoints(int id) //functie om punten te op te halen
     {
         int points;
         if (!(Int32.TryParse(RetrieveFromDB(id, "points"), out points)))
