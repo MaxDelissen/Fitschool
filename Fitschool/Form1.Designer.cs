@@ -36,7 +36,7 @@
             // 
             // RequestDataButton
             // 
-            RequestDataButton.Location = new Point(772, 393);
+            RequestDataButton.Location = new Point(12, 72);
             RequestDataButton.Name = "RequestDataButton";
             RequestDataButton.Size = new Size(376, 176);
             RequestDataButton.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // IDValue
             // 
-            IDValue.Location = new Point(772, 360);
+            IDValue.Location = new Point(12, 39);
             IDValue.Name = "IDValue";
             IDValue.Size = new Size(376, 27);
             IDValue.TabIndex = 2;
@@ -54,7 +54,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(773, 335);
+            label1.Location = new Point(13, 14);
             label1.Name = "label1";
             label1.Size = new Size(163, 20);
             label1.TabIndex = 3;
@@ -64,11 +64,10 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1920, 1080);
+            ClientSize = new Size(652, 445);
             Controls.Add(label1);
             Controls.Add(IDValue);
             Controls.Add(RequestDataButton);
-            FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             Text = "Form1";
             WindowState = FormWindowState.Maximized;

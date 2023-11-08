@@ -63,7 +63,7 @@ namespace Fitschool
                             }
                             else //== geen data gevonden voor het opgevraagde id, mogelijk geen id.
                             {
-                                MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor "+id, MessageBoxButtons.OK, MessageBoxIcon.Question);
+                                MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor " + id, MessageBoxButtons.OK, MessageBoxIcon.Question);
                                 connection.Close();
                                 return ("No data found");
                             }
