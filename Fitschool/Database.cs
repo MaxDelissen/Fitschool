@@ -1,9 +1,8 @@
 ﻿using MySqlConnector;
-using System;
 
 public class DataManagement
 {
-	string connectionAdress = "Server=myServerAddress;Database=myDatabase;User=myUsername;Password=myPassword;";
+    string connectionAdress = "Server=myServerAddress;Database=myDatabase;User=myUsername;Password=myPassword;";
 
     public string IdToName(int id)
     {
