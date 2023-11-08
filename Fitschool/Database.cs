@@ -5,13 +5,17 @@ public class DataManagement
 {
 	string connectionAdress = "Server=myServerAddress;Database=myDatabase;User=myUsername;Password=myPassword;";
 
-    public string IdToName(decimal id)
+    public string IdToName(int id)
     {
-        string name = RetrieveFromDB(Convert.ToInt32(id), "naam");
+        string name = RetrieveFromDB(id, "naam");
+        if (name.Contains("Error"))
+        {
+            return "Error Requesting Name";
+        }
         return name;
     }
 
-    string RetrieveFromDB(int id, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
+    public string RetrieveFromDB(int id, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
     {
         using (MySqlConnection connection = new MySqlConnection(connectionAdress))
         {
@@ -35,7 +39,7 @@ public class DataManagement
                             {
                                 MessageBox.Show("Invalid column name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 connection.Close();
-                                return "Invalid column name.";
+                                return "Error: Invalid column name.";
                             }
 
                             string value = reader[columm].ToString();
@@ -46,14 +50,14 @@ public class DataManagement
                             }
                             else
                             {
-                                return "Column was empty.";
+                                return "Error: Column was empty.";
                             }
                         }
                         else //== geen data gevonden voor het opgevraagde id, mogelijk geen id.
                         {
                             MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor " + id, MessageBoxButtons.OK, MessageBoxIcon.Question);
                             connection.Close();
-                            return ("No data found");
+                            return ("Error: No data found");
                         }
                     }
                 }
@@ -61,7 +65,7 @@ public class DataManagement
             catch (Exception) //Fout wanneer de opgegeven MySQL database niet kan worden gevonden.
             {
                 MessageBox.Show("Fout bij verbinden met MySQL database", "Verbindingsfout", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                return ("Database connection failed");
+                return ("Error: Database connection failed");
             }
 
         }
