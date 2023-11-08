@@ -14,6 +14,17 @@ namespace Fitschool
 
         private void RequestDataButton_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(IdToName(IDValue.Value));
+        }
+
+        private string IdToName(decimal id)
+        {
+            string name = RetrieveFromDB(Convert.ToInt32(id), "naam");
+            return name;
+        }
+
+        private string RetrieveFromDB(int id, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
+        {
             using (MySqlConnection connection = new MySqlConnection(connectionAdress))
             {
                 try
@@ -26,27 +37,43 @@ namespace Fitschool
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@id", IDValue.Value); //haalt ID nummer op uit form, moet worden vervangen door scanner.
+                        command.Parameters.AddWithValue("@id", id);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            if (reader.Read())
+                            if (reader.Read())//controleerd of data is gevonden voor ID;
                             {
-                                //voorbeeld: naam is de huidige collom die word opgevraagd.
-                                string value = reader["naam"].ToString();
+                                if (string.IsNullOrEmpty(columm))
+                                {
+                                    MessageBox.Show("Invalid column name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    connection.Close();
+                                    return "Invalid column name.";
+                                }
 
-                                MessageBox.Show("Data voor ID 12: " + value);
+                                string value = reader[columm].ToString();
+                                connection.Close();
+                                if (value != null)
+                                {
+                                    return value;
+                                }
+                                else
+                                {
+                                    return "Column was empty.";
+                                }
                             }
-                            else
+                            else //== geen data gevonden voor het opgevraagde id, mogelijk geen id.
                             {
-                                MessageBox.Show("Geen naam gevonden voor ID 12");
+                                MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor "+id, MessageBoxButtons.OK, MessageBoxIcon.Question);
+                                connection.Close();
+                                return ("No data found");
                             }
                         }
                     }
                 }
                 catch (Exception) //Fout wanneer de opgegeven MySQL database niet kan worden gevonden.
                 {
-                    MessageBox.Show("Fout bij verbinden met MySQL database");
+                    MessageBox.Show("Fout bij verbinden met MySQL database", "Verbindingsfout", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    return ("Database connection failed");
                 }
 
             }
