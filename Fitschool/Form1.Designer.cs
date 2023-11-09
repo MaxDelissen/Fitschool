@@ -51,9 +51,11 @@ namespace Fitschool
             // 
             IDValue.Location = new Point(12, 39);
             IDValue.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            IDValue.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             IDValue.Name = "IDValue";
             IDValue.Size = new Size(376, 27);
             IDValue.TabIndex = 2;
+            IDValue.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label1
             // 

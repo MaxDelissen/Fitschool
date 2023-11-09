@@ -64,12 +64,11 @@ namespace Fitschool
             }
 
             //SQL query, Kan misschien nog beter?
-            string query = "SELECT * FROM @table WHERE idUsers = @id";
+            string query = $"SELECT * FROM {table} WHERE idUsers = @id";
 
             MySqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@id", id);
-            command.Parameters.AddWithValue("@table", table);
-
+ 
             using MySqlDataReader reader = command.ExecuteReader();
             if (!reader.Read())//controleerd of data is gevonden voor ID;
             {
