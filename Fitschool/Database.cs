@@ -1,96 +1,116 @@
 ﻿using MySql.Data.MySqlClient;
 
-
-//sql workbench
-
-
-public class DataManagement
+namespace Fitschool
 {
-    string connectionAddress = "server=192.168.154.75;database=test;uid=Max;password=Password01;";
-
-    public string IdToName(int id) //functie om naam op te halen.
+    public class DataManagement
     {
-        string name = RetrieveFromDB(id, "naam");
-        if (name.Contains("Error"))
+        string connectionAddress = "server=192.168.154.75;database=test;uid=Max;password=Password01;";
+
+        public string IdToName(int id) //functie om naam op te halen.
         {
-            return "Error Requesting Name";
+            string name = RetrieveFromDB(id, "users", "voornaam");
+            if (name.Contains("Error"))
+            {
+                MessageBox.Show("Er is een fout opgetreden bij het ophalen van de voornaam. " +
+                                "Probeer het later opnieuw. De gebruiker wordt gelogd als 'Unknown'.",
+                                "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "Unknown";
+            }
+            return name;
         }
-        return name;
-    }
 
-    public int IdToPoints(int id) //functie om punten te op te halen
-    {
-        int points;
-        if (!(Int32.TryParse(RetrieveFromDB(id, "points"), out points)))
+        public string IdToSurName(int id) //functie om naam op te halen.
         {
-            MessageBox.Show("Failed to convert points to an integer, points has been set to 0", "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return 0;
+            string name = RetrieveFromDB(id, "users", "achternaam");
+            if (name.Contains("Error"))
+            {
+                MessageBox.Show("Er is een fout opgetreden bij het ophalen van de achternaam. " +
+                                "Probeer het later opnieuw. De gebruiker wordt gelogd als 'Unknown'.",
+                                "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "Unknown";
+            }
+            return name;
         }
-        
-        return points;
-    }
 
-    public string RetrieveFromDB(int id, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
-    {
-        MySqlConnection connection = new MySqlConnection();
-        connection.ConnectionString = connectionAddress;
-
-        try
+        public int IdToPoints(int id) //functie om punten te op te halen
         {
-            //verbinding maken met SQL database, wanneer dit niet werkt error vangen, zie onderaan.
-            connection.Open();
+            int points;
+            if (!int.TryParse(RetrieveFromDB(id, "punten", "punten_waarde"), out points))
+            {
+                MessageBox.Show("Failed to convert points to an integer, points has been set to 0", "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+
+            return points;
+        }
+
+        //2 tables, users & punten
+        public string RetrieveFromDB(int id, string table, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
+        {
+            MySqlConnection connection = new MySqlConnection();
+            connection.ConnectionString = connectionAddress;
+
+            try
+            {
+                //verbinding maken met SQL database, wanneer dit niet werkt error vangen, zie onderaan.
+                connection.Open();
+            }
+
+            catch (Exception ex) //Fout wanneer de opgegeven MySQL database niet kan worden gevonden.
+            {
+                MessageBox.Show("Fout bij verbinden met MySQL database", "Verbindingsfout", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                return "Error: Database connection failed" + ex.Message;
+            }
 
             //SQL query, Kan misschien nog beter?
-            string query = "SELECT * FROM YourTableName WHERE ID = @id";
+            string query = "SELECT * FROM @table WHERE idUsers = @id";
 
             MySqlCommand command = new MySqlCommand(query, connection);
             command.Parameters.AddWithValue("@id", id);
+            command.Parameters.AddWithValue("@table", table);
 
-                using (MySqlDataReader reader = command.ExecuteReader())
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                if (!reader.Read())//controleerd of data is gevonden voor ID;
                 {
-                    if (reader.Read())//controleerd of data is gevonden voor ID;
-                    {
-                        if (string.IsNullOrEmpty(columm))
-                        {
-                            MessageBox.Show("Invalid column name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            connection.Close();
-                            return "Error: Invalid column name.";
-                        }
-
-                        string value = reader[columm].ToString();
-                        connection.Close();
-                        if (value != null)
-                        {
-                            return value;
-                        }
-                        else
-                        {
-                            return "Error: Column was empty.";
-                        }
-                    }
-                    else //== geen data gevonden voor het opgevraagde id, mogelijk geen id.
-                    {
-                        MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor " + id, MessageBoxButtons.OK, MessageBoxIcon.Question);
-                        connection.Close();
-                        return ("Error: No data found");
-                    }
+                    MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor " + id, MessageBoxButtons.OK, MessageBoxIcon.Question);
+                    connection.Close();
+                    return "Error: No data found";
                 }
+
+                if (string.IsNullOrEmpty(columm))
+                {
+                    MessageBox.Show("Invalid column name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    connection.Close();
+                    return "Error: Invalid column name.";
+                }
+
+                try
+                {
+                    string value = reader[columm]?.ToString() ?? string.Empty;
+                    connection.Close();
+
+                    return string.IsNullOrEmpty(value) ? "Error: Column was empty." : value;
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception, log it, or display an error message
+                    // You can also rethrow the exception if you want to propagate it further
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    return $"Error: The opgevraagde data was niet gevonden in de database: {ex.Message}";
+                }
+
+
+            }
         }
-        catch (Exception ex) //Fout wanneer de opgegeven MySQL database niet kan worden gevonden.
+
+        public void WritePointsToDB(int id, int pointsToAdd)
         {
-            MessageBox.Show("Fout bij verbinden met MySQL database", "Verbindingsfout", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-            return ("Error: Database connection failed" +ex.Message);
+            int currentPoints = IdToPoints(id);
+            int newPoints = currentPoints + pointsToAdd;
+
+            //todo: finish method
         }
 
-        
     }
-
-    public void WritePointsToDB(int id, int pointsToAdd)
-    {
-        int currentPoints = IdToPoints(id);
-        int newPoints = currentPoints + pointsToAdd;
-
-        //todo: finish method
-    }
-
 }
