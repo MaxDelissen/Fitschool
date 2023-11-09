@@ -33,7 +33,6 @@ namespace Fitschool
             RequestDataButton = new Button();
             IDValue = new NumericUpDown();
             label1 = new Label();
-            //mySqlCommandBuilder1 = new MySqlConnector.MySqlCommandBuilder();
             buttonFormswitch = new Button();
             ((System.ComponentModel.ISupportInitialize)IDValue).BeginInit();
             SuspendLayout();
@@ -51,6 +50,7 @@ namespace Fitschool
             // IDValue
             // 
             IDValue.Location = new Point(12, 39);
+            IDValue.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             IDValue.Name = "IDValue";
             IDValue.Size = new Size(376, 27);
             IDValue.TabIndex = 2;
@@ -63,12 +63,6 @@ namespace Fitschool
             label1.Size = new Size(163, 20);
             label1.TabIndex = 3;
             label1.Text = "Tijdelijke input voor ID:";
-            // 
-            // mySqlCommandBuilder1
-            // 
-            /*mySqlCommandBuilder1.DataAdapter = null;
-            mySqlCommandBuilder1.QuotePrefix = "`";
-            mySqlCommandBuilder1.QuoteSuffix = "`";*/
             // 
             // buttonFormswitch
             // 
