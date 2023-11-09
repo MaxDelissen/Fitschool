@@ -1,9 +1,12 @@
-﻿using MySql;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
+
+
+//sql workbench
+
 
 public class DataManagement
 {
-    string connectionAdress = "server=192.168.154.75;database=test;uid=Max;password=Password01;";
+    string connectionAddress = "server=192.168.154.75;database=test;uid=Max;password=Password01;";
 
     public string IdToName(int id) //functie om naam op te halen.
     {
@@ -30,7 +33,7 @@ public class DataManagement
     public string RetrieveFromDB(int id, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
     {
         MySqlConnection connection = new MySqlConnection();
-        connection.ConnectionString = connectionAdress;
+        connection.ConnectionString = connectionAddress;
 
         try
         {
@@ -73,10 +76,10 @@ public class DataManagement
                     }
                 }
         }
-        catch (Exception expetion) //Fout wanneer de opgegeven MySQL database niet kan worden gevonden.
+        catch (Exception ex) //Fout wanneer de opgegeven MySQL database niet kan worden gevonden.
         {
             MessageBox.Show("Fout bij verbinden met MySQL database", "Verbindingsfout", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-            return ("Error: Database connection failed" + expetion);
+            return ("Error: Database connection failed" +ex.Message);
         }
 
         

@@ -1,4 +1,6 @@
-﻿namespace Fitschool
+﻿using MySql.Data.MySqlClient;
+
+namespace Fitschool
 {
     partial class Form1
     {
@@ -31,7 +33,7 @@
             RequestDataButton = new Button();
             IDValue = new NumericUpDown();
             label1 = new Label();
-            mySqlCommandBuilder1 = new MySqlConnector.MySqlCommandBuilder();
+            //mySqlCommandBuilder1 = new MySqlConnector.MySqlCommandBuilder();
             buttonFormswitch = new Button();
             ((System.ComponentModel.ISupportInitialize)IDValue).BeginInit();
             SuspendLayout();
@@ -64,9 +66,9 @@
             // 
             // mySqlCommandBuilder1
             // 
-            mySqlCommandBuilder1.DataAdapter = null;
+            /*mySqlCommandBuilder1.DataAdapter = null;
             mySqlCommandBuilder1.QuotePrefix = "`";
-            mySqlCommandBuilder1.QuoteSuffix = "`";
+            mySqlCommandBuilder1.QuoteSuffix = "`";*/
             // 
             // buttonFormswitch
             // 
@@ -100,7 +102,7 @@
         private Button RequestDataButton;
         private NumericUpDown IDValue;
         private Label label1;
-        private MySqlConnector.MySqlCommandBuilder mySqlCommandBuilder1;
+        //private MySqlConnector.MySqlCommandBuilder mySqlCommandBuilder1;
         private Button buttonFormswitch;
     }
 }
