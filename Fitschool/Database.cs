@@ -4,7 +4,7 @@ namespace Fitschool
 {
     public class DataManagement
     {
-        string connectionAddress = "server=192.168.154.75;database=test;uid=Max;password=Password01;";
+        readonly string connectionAddress = "server=192.168.154.75;database=test;uid=Max;password=Password01;";
 
         public string IdToName(int id) //functie om naam op te halen.
         {
@@ -34,8 +34,7 @@ namespace Fitschool
 
         public int IdToPoints(int id) //functie om punten te op te halen
         {
-            int points;
-            if (!int.TryParse(RetrieveFromDB(id, "punten", "punten_waarde"), out points))
+            if (!int.TryParse(RetrieveFromDB(id, "punten", "punten_waarde"), out int points))
             {
                 MessageBox.Show("Failed to convert points to an integer, points has been set to 0", "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
@@ -47,8 +46,10 @@ namespace Fitschool
         //2 tables, users & punten
         public string RetrieveFromDB(int id, string table, string columm) //functie om data uit de database te vragen, Neemt een student id, en de colom om de data uit te halen.
         {
-            MySqlConnection connection = new MySqlConnection();
-            connection.ConnectionString = connectionAddress;
+            MySqlConnection connection = new()
+            {
+                ConnectionString = connectionAddress
+            };
 
             try
             {
@@ -65,42 +66,38 @@ namespace Fitschool
             //SQL query, Kan misschien nog beter?
             string query = "SELECT * FROM @table WHERE idUsers = @id";
 
-            MySqlCommand command = new MySqlCommand(query, connection);
+            MySqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@id", id);
             command.Parameters.AddWithValue("@table", table);
 
-            using (MySqlDataReader reader = command.ExecuteReader())
+            using MySqlDataReader reader = command.ExecuteReader();
+            if (!reader.Read())//controleerd of data is gevonden voor ID;
             {
-                if (!reader.Read())//controleerd of data is gevonden voor ID;
-                {
-                    MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor " + id, MessageBoxButtons.OK, MessageBoxIcon.Question);
-                    connection.Close();
-                    return "Error: No data found";
-                }
+                MessageBox.Show("Geen gegevens gevonden voor ID " + id, "Geen gegevens voor " + id, MessageBoxButtons.OK, MessageBoxIcon.Question);
+                connection.Close();
+                return "Error: No data found";
+            }
 
-                if (string.IsNullOrEmpty(columm))
-                {
-                    MessageBox.Show("Invalid column name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    connection.Close();
-                    return "Error: Invalid column name.";
-                }
+            if (string.IsNullOrEmpty(columm))
+            {
+                MessageBox.Show("Invalid column name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return "Error: Invalid column name.";
+            }
 
-                try
-                {
-                    string value = reader[columm]?.ToString() ?? string.Empty;
-                    connection.Close();
+            try
+            {
+                string value = reader[columm]?.ToString() ?? string.Empty;
+                connection.Close();
 
-                    return string.IsNullOrEmpty(value) ? "Error: Column was empty." : value;
-                }
-                catch (Exception ex)
-                {
-                    // Handle the exception, log it, or display an error message
-                    // You can also rethrow the exception if you want to propagate it further
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    return $"Error: The opgevraagde data was niet gevonden in de database: {ex.Message}";
-                }
-
-
+                return string.IsNullOrEmpty(value) ? "Error: Column was empty." : value;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception, log it, or display an error message
+                // You can also rethrow the exception if you want to propagate it further
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return $"Error: The opgevraagde data was niet gevonden in de database: {ex.Message}";
             }
         }
 
