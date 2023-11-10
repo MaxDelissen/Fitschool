@@ -1,15 +1,34 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Relational;
 
 namespace Fitschool
 {
     public class DataManagement
     {
-        readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
+        static readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
+
+        // Aanmaken connectie naar Database.
+        readonly MySqlConnection connection = new()
+        {
+            ConnectionString = connectionAddress
+        };
+
+        public void StartConnection() //opend de connectie wanneer de applicatie start, 
+                                      //dit zorgt ervoor dat het programma al een keer verbinding heeft gemaakt, 
+                                      //waardoor de laadtijd voor inloggen lager wordt.
+        {
+            try   { connection.Open(); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+            finally { connection.Close(); }
+        }
 
         public string IdToName(int id) // Ingevoerd ID naar naam
         {
             // Naam word opgevraagd.
-            string name = RetrieveFromDB(id, "users", "name");
+            string name = RetrieveFromDB(id, "name");
 
             // Error met opvragen naam
             if (name.Contains("Error"))
@@ -26,31 +45,10 @@ namespace Fitschool
             return name;
         }
         
-        /// !! Niet meer gebruikt, Voor & Achternaam zitten nu in één kolom. !!
-        /*public string IdToSurName(int id) // ID naar achternaam
-        {
-            // Opvragen achternaam uit DB
-            string surName = RetrieveFromDB(id, "users", "achternaam");
-
-            // Error met opvragen
-            if (surName.Contains("Error"))
-            {
-                MessageBox.Show("Er is een fout opgetreden bij het ophalen van de achternaam. " +
-                                "Probeer het later opnieuw. De gebruiker wordt gelogd als 'Onbekend'.",
-                                "Drama in de Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // De naam wordt gelogd als 'Onbekend'.
-                return "Onbekend";
-            }
-
-            // Achternaam terugsturen
-            return surName;
-        }*/
-
         public int IdToPoints(int id) // ID naar aantal verzamelde punten.
         {
             // Het aantal punten uit de database halen.
-            if (!int.TryParse(RetrieveFromDB(id, "users", "points"), out int points))
+            if (!int.TryParse(RetrieveFromDB(id, "points"), out int points))
             {
                 // Output van database kan niet worden omgezet naar een integer.
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van punten naar een geheel getal. De punten zijn ingesteld op 0.",
@@ -66,14 +64,8 @@ namespace Fitschool
 
 
         //2 tables, users & punten in de DB
-        public string RetrieveFromDB(int id, string table, string columm) // Een epische functie die data uit de diepten van de database opvraagt. Neemt een student-ID en de kolom om de gegevens uit te halen.
+        public string RetrieveFromDB(int id, string columm) // Een epische functie die data uit de diepten van de database opvraagt. Neemt een student-ID en de kolom om de gegevens uit te halen.
         {
-            // Aanmaken connectie naar Database.
-            MySqlConnection connection = new()
-            {
-                ConnectionString = connectionAddress
-            };
-
             try
             {
                 // Verbinding maken met de Database
@@ -87,7 +79,7 @@ namespace Fitschool
             }
 
             // SQL Query om de opgegeven gegevens uit de DB te halen.
-            string query = $"SELECT * FROM {table} WHERE id = @id";
+            string query = $"SELECT * FROM users WHERE id = @id";
 
             //Stuur SQL query naar DB
             MySqlCommand command = new(query, connection);
@@ -133,6 +125,49 @@ namespace Fitschool
             }
         }
 
+        public void AddUser(string naam, int leeftijd)
+        {
+            try
+            {
+                // Verbinding maken met de Database
+                connection.Open();
+            }
+            catch (Exception ex) // Verbindingsfout, mogelijk staat de VPN of het Netlab uit.
+            {
+                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+
+            try
+            {
+                // SQL-query voor het toevoegen van een gebruiker
+                string query = $"INSERT INTO users (name, age) VALUES ('{naam}', {leeftijd})";
+
+                // MySqlCommand object aanmaken
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                // Query uitvoeren om de gebruiker toe te voegen
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show("Gebruiker succesvol toegevoegd.", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Fout bij het uitvoeren van de query: {ex.Message}", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // Verbinding sluiten, ongeacht het resultaat
+                connection.Close();
+            }
+
+        }
 
         public void WritePointsToDB(int id, int pointsToAdd)
         {

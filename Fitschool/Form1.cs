@@ -28,5 +28,12 @@ namespace Fitschool
             startForm.Visible = false;
             formShop.ShowDialog();
         }
+
+        private void AddUserButton_Click(object sender, EventArgs e)
+        {
+            string naam = NameBox.Text;
+            int leeftijd = Convert.ToInt32(LeeftijdSelector.Value);
+            Data.AddUser(naam, leeftijd);
+        }
     }
 }
