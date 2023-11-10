@@ -9,7 +9,7 @@ namespace Fitschool
         public string IdToName(int id) // Ingevoerd ID naar naam
         {
             // Naam word opgevraagd.
-            string name = RetrieveFromDB(id, "users", "voornaam");
+            string name = RetrieveFromDB(id, "users", "name");
 
             // Error met opvragen naam
             if (name.Contains("Error"))
@@ -26,7 +26,8 @@ namespace Fitschool
             return name;
         }
         
-        public string IdToSurName(int id) // ID naar achternaam
+        /// !! Niet meer gebruikt, Voor & Achternaam zitten nu in één kolom. !!
+        /*public string IdToSurName(int id) // ID naar achternaam
         {
             // Opvragen achternaam uit DB
             string surName = RetrieveFromDB(id, "users", "achternaam");
@@ -44,12 +45,12 @@ namespace Fitschool
 
             // Achternaam terugsturen
             return surName;
-        }
+        }*/
 
         public int IdToPoints(int id) // ID naar aantal verzamelde punten.
         {
             // Het aantal punten uit de database halen.
-            if (!int.TryParse(RetrieveFromDB(id, "punten", "punten_waarde"), out int points))
+            if (!int.TryParse(RetrieveFromDB(id, "users", "points"), out int points))
             {
                 // Output van database kan niet worden omgezet naar een integer.
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van punten naar een geheel getal. De punten zijn ingesteld op 0.",
@@ -86,7 +87,7 @@ namespace Fitschool
             }
 
             // SQL Query om de opgegeven gegevens uit de DB te halen.
-            string query = $"SELECT * FROM {table} WHERE idUsers = @id";
+            string query = $"SELECT * FROM {table} WHERE id = @id";
 
             //Stuur SQL query naar DB
             MySqlCommand command = new(query, connection);

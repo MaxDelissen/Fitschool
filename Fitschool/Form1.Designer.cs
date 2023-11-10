@@ -33,7 +33,7 @@ namespace Fitschool
             RequestDataButton = new Button();
             IDValue = new NumericUpDown();
             label1 = new Label();
-            buttonFormswitch = new Button();
+            ShopKnop = new Button();
             ((System.ComponentModel.ISupportInitialize)IDValue).BeginInit();
             SuspendLayout();
             // 
@@ -66,22 +66,22 @@ namespace Fitschool
             label1.TabIndex = 3;
             label1.Text = "Tijdelijke input voor ID:";
             // 
-            // buttonFormswitch
+            // ShopKnop
             // 
-            buttonFormswitch.Location = new Point(474, 72);
-            buttonFormswitch.Name = "buttonFormswitch";
-            buttonFormswitch.Size = new Size(94, 29);
-            buttonFormswitch.TabIndex = 4;
-            buttonFormswitch.Text = "button1";
-            buttonFormswitch.UseVisualStyleBackColor = true;
-            buttonFormswitch.Click += buttonFormswitch_Click;
+            ShopKnop.Location = new Point(468, 68);
+            ShopKnop.Name = "ShopKnop";
+            ShopKnop.Size = new Size(94, 29);
+            ShopKnop.TabIndex = 4;
+            ShopKnop.Text = "Shop";
+            ShopKnop.UseVisualStyleBackColor = true;
+            ShopKnop.Click += ShopKnop_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(652, 445);
-            Controls.Add(buttonFormswitch);
+            Controls.Add(ShopKnop);
             Controls.Add(label1);
             Controls.Add(IDValue);
             Controls.Add(RequestDataButton);
@@ -98,7 +98,6 @@ namespace Fitschool
         private Button RequestDataButton;
         private NumericUpDown IDValue;
         private Label label1;
-        //private MySqlConnector.MySqlCommandBuilder mySqlCommandBuilder1;
-        private Button buttonFormswitch;
+        private Button ShopKnop;
     }
 }

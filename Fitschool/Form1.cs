@@ -10,7 +10,6 @@ namespace Fitschool
 
         int loggedInId = -1;
         string loggedInName = string.Empty;
-        string loggedInSurname = string.Empty;
         int loggedInPoints = 0;
 
 
@@ -18,12 +17,11 @@ namespace Fitschool
         {
             loggedInId = Convert.ToInt32(IDValue.Value);
             loggedInName = Data.IdToName(loggedInId);
-            loggedInSurname = Data.IdToSurName(loggedInId);
             loggedInPoints = Data.IdToPoints(loggedInId);
-            MessageBox.Show($"{loggedInName} {loggedInSurname}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
+            MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
         }
 
-        private void buttonFormswitch_Click(object sender, EventArgs e)
+        private void ShopKnop_Click(object sender, EventArgs e)
         {
             FormShop formShop = new();
             Form1 startForm = new();
