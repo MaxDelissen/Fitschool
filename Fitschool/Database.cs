@@ -64,7 +64,7 @@ namespace Fitschool
 
 
         //2 tables, users & punten in de DB
-        public string RetrieveFromDB(int id, string columm) // Een epische functie die data uit de diepten van de database opvraagt. Neemt een student-ID en de kolom om de gegevens uit te halen.
+        public string RetrieveFromDB(int id, string columm) // Haalt gegevens uit database, neemt een string voor de kolom.
         {
             try
             {
@@ -99,7 +99,7 @@ namespace Fitschool
             if (string.IsNullOrEmpty(columm))
             {
                 // De ingevoerde kolom bestaat niet.
-                MessageBox.Show("Ongeldige kolomnaam.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine("Ongeldige kolomnaam.");
                 connection.Close();
 
                 // Kolom bestaat niet, fout terugsturen en connectie sluiten.
@@ -143,7 +143,7 @@ namespace Fitschool
                 string query = $"INSERT INTO users (name, age) VALUES ('{naam}', {leeftijd})";
 
                 // MySqlCommand object aanmaken
-                MySqlCommand command = new MySqlCommand(query, connection);
+                MySqlCommand command = new(query, connection);
 
                 // Query uitvoeren om de gebruiker toe te voegen
                 int rowsAffected = command.ExecuteNonQuery();
@@ -159,23 +159,59 @@ namespace Fitschool
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Fout bij het uitvoeren van de query: {ex.Message}", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine($"Fout bij het uitvoeren van de query: {ex.Message}");
             }
             finally
             {
                 // Verbinding sluiten, ongeacht het resultaat
                 connection.Close();
             }
-
         }
 
-        public void WritePointsToDB(int id, int pointsToAdd)
+        public void WritePointsToDB(int id, int pointsToChange)
         {
             int currentPoints = IdToPoints(id);
-            int newPoints = currentPoints + pointsToAdd;
+            int newPoints = currentPoints + pointsToChange;
 
-            //todo: finish method
+            try
+            {
+                // Verbinding maken met de Database
+                connection.Open();
+            }
+            catch (Exception ex) // Verbindingsfout, mogelijk staat de VPN of het Netlab uit.
+            {
+                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+
+            try
+            {
+                // SQL-query voor het toevoegen van een gebruiker
+                string query = $"UPDATE users SET points = {newPoints} WHERE id = {id}";
+
+                // MySqlCommand object aanmaken
+                MySqlCommand command = new(query, connection);
+
+                // Query uitvoeren om de gebruiker toe te voegen
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    Console.WriteLine("Punten succesvol toegevoegd.");
+                }
+                else
+                {
+                    Console.WriteLine("Punten toevoegen is mislukt.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fout bij het uitvoeren van de query: {ex.Message}");
+            }
+            finally
+            {
+                // Verbinding sluiten, ongeacht het resultaat
+                connection.Close();
+            }
         }
-
     }
 }

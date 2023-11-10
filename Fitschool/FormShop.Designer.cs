@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShop));
             labelTotalPoints = new Label();
             pictureBox1 = new PictureBox();
             button1 = new Button();
@@ -37,7 +38,7 @@
             // labelTotalPoints
             // 
             labelTotalPoints.AutoSize = true;
-            labelTotalPoints.Location = new Point(685, 9);
+            labelTotalPoints.Location = new Point(348, 9);
             labelTotalPoints.Name = "labelTotalPoints";
             labelTotalPoints.Size = new Size(102, 20);
             labelTotalPoints.TabIndex = 0;
@@ -59,20 +60,21 @@
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 2;
-            button1.Text = "button1";
+            button1.Text = "-10 points";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button1.Click += Button1_Click;
             // 
             // FormShop
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(568, 450);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
             Controls.Add(labelTotalPoints);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormShop";
-            Text = "FormShop";
+            Text = "Shop - Fitschool";
             Load += FormShop_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

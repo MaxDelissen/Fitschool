@@ -30,6 +30,7 @@ namespace Fitschool
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             RequestDataButton = new Button();
             IDValue = new NumericUpDown();
             label1 = new Label();
@@ -39,6 +40,7 @@ namespace Fitschool
             LeeftijdSelector = new NumericUpDown();
             NameBox = new TextBox();
             AddUserButton = new Button();
+            AddPointsButton = new Button();
             ((System.ComponentModel.ISupportInitialize)IDValue).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LeeftijdSelector).BeginInit();
@@ -77,7 +79,7 @@ namespace Fitschool
             // 
             ShopKnop.Location = new Point(278, 39);
             ShopKnop.Name = "ShopKnop";
-            ShopKnop.Size = new Size(94, 29);
+            ShopKnop.Size = new Size(133, 29);
             ShopKnop.TabIndex = 4;
             ShopKnop.Text = "Shop";
             ShopKnop.UseVisualStyleBackColor = true;
@@ -132,18 +134,30 @@ namespace Fitschool
             AddUserButton.UseVisualStyleBackColor = true;
             AddUserButton.Click += AddUserButton_Click;
             // 
+            // AddPointsButton
+            // 
+            AddPointsButton.Location = new Point(278, 100);
+            AddPointsButton.Name = "AddPointsButton";
+            AddPointsButton.Size = new Size(133, 78);
+            AddPointsButton.TabIndex = 6;
+            AddPointsButton.Text = "Add 10 points to current user (temp)";
+            AddPointsButton.UseVisualStyleBackColor = true;
+            AddPointsButton.Click += AddPointsButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(460, 445);
+            Controls.Add(AddPointsButton);
             Controls.Add(panel1);
             Controls.Add(ShopKnop);
             Controls.Add(label1);
             Controls.Add(IDValue);
             Controls.Add(RequestDataButton);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
-            Text = "Form1";
+            Text = "Inloggen - Fitschool";
             WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)IDValue).EndInit();
             panel1.ResumeLayout(false);
@@ -164,5 +178,6 @@ namespace Fitschool
         private NumericUpDown LeeftijdSelector;
         private TextBox NameBox;
         private Button AddUserButton;
+        private Button AddPointsButton;
     }
 }

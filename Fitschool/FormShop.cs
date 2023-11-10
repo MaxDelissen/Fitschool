@@ -1,35 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Fitschool
+﻿namespace Fitschool
 {
     public partial class FormShop : Form
     {
-        public FormShop()
-        {
+
+        private readonly UserData UserData;
+        public FormShop(UserData userData)
+        {   
             InitializeComponent();
+            UserData = userData;
         }
-        
-        int TotalPoints = 1000;
+
+        int TotalPoints = 69;
 
         private void FormShop_Load(object sender, EventArgs e)
         {
+            TotalPoints = UserData.loggedInPoints;
+            MessageBox.Show(TotalPoints.ToString());
             labelTotalPoints.Text = TotalPoints.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
-            
-
-
-            TotalPoints = TotalPoints - 10;
+            TotalPoints -= 10;
             labelTotalPoints.Text = TotalPoints.ToString();
         }
     }

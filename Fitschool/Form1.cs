@@ -6,26 +6,17 @@ namespace Fitschool
         {
             InitializeComponent();
         }
-        readonly DataManagement Data = new();
-
-        int loggedInId = -1;
-        string loggedInName = string.Empty;
-        int loggedInPoints = 0;
-
+        readonly DataManagement DataManagement = new();
+        readonly UserData UserData = new();
 
         private void RequestDataButton_Click(object sender, EventArgs e)
         {
-            loggedInId = Convert.ToInt32(IDValue.Value);
-            loggedInName = Data.IdToName(loggedInId);
-            loggedInPoints = Data.IdToPoints(loggedInId);
-            MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
+            UserData.LoginUser(Convert.ToInt32(IDValue.Value));
         }
 
         private void ShopKnop_Click(object sender, EventArgs e)
         {
-            FormShop formShop = new();
-            Form1 startForm = new();
-            startForm.Visible = false;
+            FormShop formShop = new FormShop(UserData);
             formShop.ShowDialog();
         }
 
@@ -33,7 +24,12 @@ namespace Fitschool
         {
             string naam = NameBox.Text;
             int leeftijd = Convert.ToInt32(LeeftijdSelector.Value);
-            Data.AddUser(naam, leeftijd);
+            DataManagement.AddUser(naam, leeftijd);
+        }
+
+        private void AddPointsButton_Click(object sender, EventArgs e)
+        {
+            DataManagement.WritePointsToDB(UserData.loggedInId, 10);
         }
     }
 }
