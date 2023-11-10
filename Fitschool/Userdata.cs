@@ -6,7 +6,7 @@
 
         public int loggedInId = -1;
         public string loggedInName = string.Empty;
-        public int loggedInPoints = 5;
+        public int loggedInPoints = 0;
 
         public void LoginUser(int id)
         {
@@ -14,11 +14,6 @@
             loggedInName = DataManagement.IdToName(id);
             loggedInPoints = DataManagement.IdToPoints(id);
             MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
-        }
-
-        public void WritePointsToDB(int id, int pointsToChange)
-        {
-            DataManagement.WritePointsToDB(id, pointsToChange);
         }
     }
 }

@@ -79,7 +79,7 @@ namespace Fitschool
             }
 
             // SQL Query om de opgegeven gegevens uit de DB te halen.
-            string query = $"SELECT * FROM users WHERE id = @id";
+            string query = $"SELECT * FROM users WHERE userID = @id";
 
             //Stuur SQL query naar DB
             MySqlCommand command = new(query, connection);
@@ -186,7 +186,7 @@ namespace Fitschool
             try
             {
                 // SQL-query voor het toevoegen van een gebruiker
-                string query = $"UPDATE users SET points = {newPoints} WHERE id = {id}";
+                string query = $"UPDATE users SET points = {newPoints} WHERE userID = {id}";
 
                 // MySqlCommand object aanmaken
                 MySqlCommand command = new(query, connection);
