@@ -15,5 +15,12 @@
             loggedInPoints = DataManagement.IdToPoints(id);
             MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
         }
+
+        public void LogoutUser()
+        {
+            loggedInId = -1;
+            loggedInName = string.Empty;
+            loggedInPoints = 0;
+        }
     }
 }

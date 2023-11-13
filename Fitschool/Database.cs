@@ -35,7 +35,7 @@ namespace Fitschool
             {
                 MessageBox.Show("Er is een fout opgetreden bij het ophalen van de voornaam. " +
                                 "Probeer het later opnieuw. De gebruiker wordt gelogd als 'Onbekend'.",
-                                "Drama in de Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                "fault in de Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // De naam wordt gelogd als 'Onbekend'.
                 return "Onbekend";
@@ -43,6 +43,33 @@ namespace Fitschool
 
             // Naam wordt teruggestuurd.
             return name;
+        }
+
+        public int IdToAge(int id) // Ingevoerd ID naar leeftijd
+        {
+            // Leeftijd wordt opgevraagd.
+            string age = RetrieveFromDB(id, "age");
+
+            // Error met opvragen leeftijd
+            if (age.Contains("Error"))
+            {
+                MessageBox.Show("Er is een fout opgetreden bij het ophalen van de leeftijd.", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+
+            // Leeftijd wordt omgezet naar een integer.
+            if (!int.TryParse(age, out int ageInt))
+            {
+                // Leeftijd kan niet worden omgezet naar een integer.
+                MessageBox.Show("Er is een fout opgetreden bij het omzetten van de leeftijd naar een geheel getal. De leeftijd is ingesteld op 0.",
+                                                   "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Na deze fout leeftijd op 0 zetten.
+                return 0;
+            }
+
+            // Leeftijd wordt teruggestuurd.
+            return ageInt;
         }
         
         public int IdToPoints(int id) // ID naar aantal verzamelde punten.
@@ -155,6 +182,49 @@ namespace Fitschool
                 else
                 {
                     MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fout bij het uitvoeren van de query: {ex.Message}");
+            }
+            finally
+            {
+                // Verbinding sluiten, ongeacht het resultaat
+                connection.Close();
+            }
+        }
+
+        public void RemoveUser(int id)
+        {
+            try
+            {
+                // Verbinding maken met de Database
+                connection.Open();
+            }
+            catch (Exception ex) // Verbindingsfout, mogelijk staat de VPN of het Netlab uit.
+            {
+                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+
+            try
+            {
+                // SQL-query voor het verwijderen van een gebruiker
+                string query = $"DELETE FROM users WHERE userID = {id}";
+
+                // MySqlCommand object aanmaken
+                MySqlCommand command = new(query, connection);
+
+                // Query uitvoeren om de gebruiker te verwijderen
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show("Gebruiker succesvol verwijderd.", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Er is een fout opgetreden bij het verwijderen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
