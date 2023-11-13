@@ -87,15 +87,26 @@ namespace Fitschool
         public static void AddUser(string naam, int leeftijd)
         {
             // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
-            int lastInsertedId = Convert.ToInt32(ExecuteQuery($"INSERT INTO users (name, age) VALUES (@naam, @leeftijd); SELECT SCOPE_IDENTITY();", new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd)));
+            string query =
+                @"
+                    INSERT INTO users (userID, name, age)
+                    SELECT COALESCE(MIN(userID) + 1, 1), @naam, @leeftijd
+                    FROM users
+                    WHERE NOT EXISTS (SELECT 1 FROM users t2 WHERE t2.userID = users.userID + 1);
+                    SELECT LAST_INSERT_ID() AS LastInsertID;
+                ";
 
-            if (lastInsertedId > 0)
+
+            object result = Convert.ToInt32(ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd)));
+            int lastInsertID = Convert.ToInt32(result);
+
+            if (lastInsertID > 0)
             {
-                MessageBox.Show($"Gebruiker succesvol toegevoegd. ID: {lastInsertedId}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Gebruiker succesvol toegevoegd. ID: {lastInsertID}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout " + lastInsertID , MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -120,7 +131,8 @@ namespace Fitschool
             int newPoints = currentPoints + pointsToChange;
 
             // Query uitvoeren om de gebruiker toe te voegen
-            int rowsAffected = Convert.ToInt32(ExecuteQuery("UPDATE users SET points = @newPoints WHERE userID = @id", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id)));
+            string stringRowsAffected = ExecuteQuery("UPDATE users SET points = @newPoints WHERE userID = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
+            int rowsAffected = Convert.ToInt32(stringRowsAffected);
 
             if (rowsAffected > 0)
             {

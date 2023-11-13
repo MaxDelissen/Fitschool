@@ -23,5 +23,11 @@ namespace Fitschool
         {
             DataManagement.WritePointsToDB(UserData.loggedInId, 10);
         }
+
+        private void OpenUserManagementButton_Click(object sender, EventArgs e)
+        {
+            FormUserManagement formUserManagement = new();
+            formUserManagement.ShowDialog();
+        }
     }
 }

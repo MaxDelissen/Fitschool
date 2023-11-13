@@ -36,6 +36,7 @@ namespace Fitschool
             label1 = new Label();
             ShopKnop = new Button();
             AddPointsButton = new Button();
+            OpenUserManagementButton = new Button();
             ((System.ComponentModel.ISupportInitialize)IDValue).BeginInit();
             SuspendLayout();
             // 
@@ -80,7 +81,7 @@ namespace Fitschool
             // 
             // AddPointsButton
             // 
-            AddPointsButton.Location = new Point(124, 315);
+            AddPointsButton.Location = new Point(124, 301);
             AddPointsButton.Name = "AddPointsButton";
             AddPointsButton.Size = new Size(205, 81);
             AddPointsButton.TabIndex = 6;
@@ -88,11 +89,22 @@ namespace Fitschool
             AddPointsButton.UseVisualStyleBackColor = true;
             AddPointsButton.Click += AddPointsButton_Click;
             // 
+            // OpenUserManagementButton
+            // 
+            OpenUserManagementButton.Location = new Point(124, 224);
+            OpenUserManagementButton.Name = "OpenUserManagementButton";
+            OpenUserManagementButton.Size = new Size(205, 71);
+            OpenUserManagementButton.TabIndex = 7;
+            OpenUserManagementButton.Text = "User Management";
+            OpenUserManagementButton.UseVisualStyleBackColor = true;
+            OpenUserManagementButton.Click += OpenUserManagementButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(460, 445);
+            Controls.Add(OpenUserManagementButton);
             Controls.Add(AddPointsButton);
             Controls.Add(ShopKnop);
             Controls.Add(label1);
@@ -114,5 +126,6 @@ namespace Fitschool
         private Label label1;
         private Button ShopKnop;
         private Button AddPointsButton;
+        private Button OpenUserManagementButton;
     }
 }
