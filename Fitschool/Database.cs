@@ -1,61 +1,56 @@
 ﻿using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Relational;
 
 namespace Fitschool
 {
     public class DataManagement
     {
-        static readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
+        private static readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
 
-        // Aanmaken connectie naar Database.
-        readonly MySqlConnection connection = new()
+        public static string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
-            ConnectionString = connectionAddress
-        };
+            string result = "";
 
-        public void StartConnection() //opend de connectie wanneer de applicatie start, 
-                                      //dit zorgt ervoor dat het programma al een keer verbinding heeft gemaakt, 
-                                      //waardoor de laadtijd voor inloggen lager wordt.
-        {
-            try   { connection.Open(); }
+            try
+            {
+                using MySqlConnection connection = new MySqlConnection(connectionAddress);
+                connection.Open();
+
+                using MySqlCommand command = new MySqlCommand(query, connection);
+
+                // Add parameters if provided
+                command.Parameters.AddRange(parameters);
+
+                // Execute the query
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result += reader[0].ToString();
+                    }
+                }
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                // Handle exceptions as needed
+                Console.WriteLine($"Error executing query: {ex.Message}");
             }
-            finally { connection.Close(); }
+
+            return result;
         }
 
-        public string IdToName(int id) // Ingevoerd ID naar naam
+        public static string IdToName(int id) // Ingevoerd ID naar naam
         {
             // Naam word opgevraagd.
-            string name = RetrieveFromDB(id, "name");
-
-            // Error met opvragen naam
-            if (name.Contains("Error"))
-            {
-                MessageBox.Show("Er is een fout opgetreden bij het ophalen van de voornaam. " +
-                                "Probeer het later opnieuw. De gebruiker wordt gelogd als 'Onbekend'.",
-                                "fault in de Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // De naam wordt gelogd als 'Onbekend'.
-                return "Onbekend";
-            }
+            string name = ExecuteQuery("SELECT name FROM users WHERE userID = @id", new MySqlParameter("@id", id));
 
             // Naam wordt teruggestuurd.
             return name;
         }
 
-        public int IdToAge(int id) // Ingevoerd ID naar leeftijd
+        public static int IdToAge(int id) // Ingevoerd ID naar leeftijd
         {
             // Leeftijd wordt opgevraagd.
-            string age = RetrieveFromDB(id, "age");
-
-            // Error met opvragen leeftijd
-            if (age.Contains("Error"))
-            {
-                MessageBox.Show("Er is een fout opgetreden bij het ophalen van de leeftijd.", "Problem", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return 0;
-            }
+            string age = ExecuteQuery("SELECT age FROM users WHERE userID = @id", new MySqlParameter("@id", id));
 
             // Leeftijd wordt omgezet naar een integer.
             if (!int.TryParse(age, out int ageInt))
@@ -71,15 +66,15 @@ namespace Fitschool
             // Leeftijd wordt teruggestuurd.
             return ageInt;
         }
-        
-        public int IdToPoints(int id) // ID naar aantal verzamelde punten.
+
+        public static int IdToPoints(int id) // ID naar aantal verzamelde punten.
         {
             // Het aantal punten uit de database halen.
-            if (!int.TryParse(RetrieveFromDB(id, "points"), out int points))
+            if (!int.TryParse(ExecuteQuery("SELECT points FROM users WHERE userID = @id", new MySqlParameter("@id", id)), out int points))
             {
                 // Output van database kan niet worden omgezet naar een integer.
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van punten naar een geheel getal. De punten zijn ingesteld op 0.",
-                                "Parsing Drama", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                "Error parsing output", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 // Na deze fout punten op 0 zetten.
                 return 0;
@@ -89,7 +84,58 @@ namespace Fitschool
             return points;
         }
 
+        public static void AddUser(string naam, int leeftijd)
+        {
+            // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
+            int lastInsertedId = Convert.ToInt32(ExecuteQuery($"INSERT INTO users (name, age) VALUES (@naam, @leeftijd); SELECT SCOPE_IDENTITY();", new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd)));
 
+            if (lastInsertedId > 0)
+            {
+                MessageBox.Show($"Gebruiker succesvol toegevoegd. ID: {lastInsertedId}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void RemoveUser(int id)
+        {
+            // Query uitvoeren om de gebruiker te verwijderen
+            int rowsAffected = Convert.ToInt32(ExecuteQuery($"DELETE FROM users WHERE userID = @id", new MySqlParameter("@id", id)));
+
+            if (rowsAffected > 0)
+            {
+                MessageBox.Show($"Gebruiker succesvol verwijderd. ID: {id}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Er is een fout opgetreden bij het verwijderen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void WritePointsToDB(int id, int pointsToChange)
+        {
+            int currentPoints = IdToPoints(id);
+            int newPoints = currentPoints + pointsToChange;
+
+            // Query uitvoeren om de gebruiker toe te voegen
+            int rowsAffected = Convert.ToInt32(ExecuteQuery("UPDATE users SET points = @newPoints WHERE userID = @id", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id)));
+
+            if (rowsAffected > 0)
+            {
+                Console.WriteLine("Punten succesvol toegevoegd.");
+            }
+            else
+            {
+                Console.WriteLine("Punten toevoegen is mislukt.");
+            }
+        }
+    }
+}
+
+/* Deprecated
+ * 
         //2 tables, users & punten in de DB
         public string RetrieveFromDB(int id, string columm) // Haalt gegevens uit database, neemt een string voor de kolom.
         {
@@ -150,138 +196,4 @@ namespace Fitschool
                 // Stuurt een error terug.
                 return $"Error: De opgevraagde data was niet gevonden in de database: {ex.Message}";
             }
-        }
-
-        public void AddUser(string naam, int leeftijd)
-        {
-            try
-            {
-                // Verbinding maken met de Database
-                connection.Open();
-            }
-            catch (Exception ex) // Verbindingsfout, mogelijk staat de VPN of het Netlab uit.
-            {
-                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Hand);
-            }
-
-            try
-            {
-                // SQL-query voor het toevoegen van een gebruiker
-                string query = $"INSERT INTO users (name, age) VALUES ('{naam}', {leeftijd})";
-
-                // MySqlCommand object aanmaken
-                MySqlCommand command = new(query, connection);
-
-                // Query uitvoeren om de gebruiker toe te voegen
-                int rowsAffected = command.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                {
-                    MessageBox.Show("Gebruiker succesvol toegevoegd.", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fout bij het uitvoeren van de query: {ex.Message}");
-            }
-            finally
-            {
-                // Verbinding sluiten, ongeacht het resultaat
-                connection.Close();
-            }
-        }
-
-        public void RemoveUser(int id)
-        {
-            try
-            {
-                // Verbinding maken met de Database
-                connection.Open();
-            }
-            catch (Exception ex) // Verbindingsfout, mogelijk staat de VPN of het Netlab uit.
-            {
-                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Hand);
-            }
-
-            try
-            {
-                // SQL-query voor het verwijderen van een gebruiker
-                string query = $"DELETE FROM users WHERE userID = {id}";
-
-                // MySqlCommand object aanmaken
-                MySqlCommand command = new(query, connection);
-
-                // Query uitvoeren om de gebruiker te verwijderen
-                int rowsAffected = command.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                {
-                    MessageBox.Show("Gebruiker succesvol verwijderd.", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Er is een fout opgetreden bij het verwijderen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fout bij het uitvoeren van de query: {ex.Message}");
-            }
-            finally
-            {
-                // Verbinding sluiten, ongeacht het resultaat
-                connection.Close();
-            }
-        }
-
-        public void WritePointsToDB(int id, int pointsToChange)
-        {
-            int currentPoints = IdToPoints(id);
-            int newPoints = currentPoints + pointsToChange;
-
-            try
-            {
-                // Verbinding maken met de Database
-                connection.Open();
-            }
-            catch (Exception ex) // Verbindingsfout, mogelijk staat de VPN of het Netlab uit.
-            {
-                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Hand);
-            }
-
-            try
-            {
-                // SQL-query voor het toevoegen van een gebruiker
-                string query = $"UPDATE users SET points = {newPoints} WHERE userID = {id}";
-
-                // MySqlCommand object aanmaken
-                MySqlCommand command = new(query, connection);
-
-                // Query uitvoeren om de gebruiker toe te voegen
-                int rowsAffected = command.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                {
-                    Console.WriteLine("Punten succesvol toegevoegd.");
-                }
-                else
-                {
-                    Console.WriteLine("Punten toevoegen is mislukt.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fout bij het uitvoeren van de query: {ex.Message}");
-            }
-            finally
-            {
-                // Verbinding sluiten, ongeacht het resultaat
-                connection.Close();
-            }
-        }
-    }
-}
+        } */

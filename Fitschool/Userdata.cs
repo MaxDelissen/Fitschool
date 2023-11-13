@@ -2,8 +2,6 @@
 {
     public class UserData
     {
-        DataManagement DataManagement = new();
-
         public int loggedInId = -1;
         public string loggedInName = string.Empty;
         public int loggedInPoints = 0;

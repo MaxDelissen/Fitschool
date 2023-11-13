@@ -6,7 +6,6 @@ namespace Fitschool
         {
             InitializeComponent();
         }
-        readonly DataManagement DataManagement = new();
         readonly UserData UserData = new();
 
         private void RequestDataButton_Click(object sender, EventArgs e)
@@ -18,13 +17,6 @@ namespace Fitschool
         {
             FormShop formShop = new FormShop(UserData);
             formShop.ShowDialog();
-        }
-
-        private void AddUserButton_Click(object sender, EventArgs e)
-        {
-            string naam = NameBox.Text;
-            int leeftijd = Convert.ToInt32(LeeftijdSelector.Value);
-            DataManagement.AddUser(naam, leeftijd);
         }
 
         private void AddPointsButton_Click(object sender, EventArgs e)

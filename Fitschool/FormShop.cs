@@ -2,7 +2,6 @@
 {
     public partial class FormShop : Form
     {
-        private readonly DataManagement Data = new();
         private readonly UserData UserData;
         public FormShop(UserData userData)
         {   
@@ -21,7 +20,7 @@
         private void Button1_Click(object sender, EventArgs e)
         {
             showPoints -= 10;
-            Data.WritePointsToDB(UserData.loggedInId, -10);
+            DataManagement.WritePointsToDB(UserData.loggedInId, -10);
             labelTotalPoints.Text = showPoints.ToString();
         }
     }
