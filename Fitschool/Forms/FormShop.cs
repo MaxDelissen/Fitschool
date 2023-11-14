@@ -3,7 +3,7 @@
     public partial class FormShop : Form
     {
         public FormShop()
-        {   
+        {
             InitializeComponent();
         }
 
@@ -13,13 +13,20 @@
         {
             showPoints = UserData.LoggedInPoints;
             labelTotalPoints.Text = showPoints.ToString();
+            buttonShop1.FlatStyle = FlatStyle.Flat;
+            buttonShop1.FlatAppearance.BorderColor = BackColor;
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void ButtonShop1_Click(object sender, EventArgs e)
         {
             showPoints -= 10;
             DataManagement.WritePointsToDB(UserData.LoggedInId, -10);
             labelTotalPoints.Text = showPoints.ToString();
+        }
+
+        private void labelTotalPoints_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

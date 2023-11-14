@@ -30,53 +30,47 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShop));
             labelTotalPoints = new Label();
-            pictureBox1 = new PictureBox();
-            button1 = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            buttonShop1 = new Button();
             SuspendLayout();
             // 
             // labelTotalPoints
             // 
             labelTotalPoints.AutoSize = true;
-            labelTotalPoints.Location = new Point(348, 9);
+            labelTotalPoints.BackColor = Color.Transparent;
+            labelTotalPoints.Font = new Font("Segoe UI Semibold", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
+            labelTotalPoints.Location = new Point(1612, 43);
             labelTotalPoints.Name = "labelTotalPoints";
-            labelTotalPoints.Size = new Size(102, 20);
+            labelTotalPoints.Size = new Size(53, 62);
             labelTotalPoints.TabIndex = 0;
-            labelTotalPoints.Text = "Total points: 0";
+            labelTotalPoints.Text = "0";
+            labelTotalPoints.Click += labelTotalPoints_Click;
             // 
-            // pictureBox1
+            // buttonShop1
             // 
-            pictureBox1.Image = Properties.Resources.RodePanda;
-            pictureBox1.Location = new Point(35, 38);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(263, 202);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.TabIndex = 1;
-            pictureBox1.TabStop = false;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(35, 246);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 2;
-            button1.Text = "-10 points";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += Button1_Click;
+            buttonShop1.BackColor = Color.Transparent;
+            buttonShop1.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonShop1.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonShop1.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonShop1.Location = new Point(232, 477);
+            buttonShop1.Name = "buttonShop1";
+            buttonShop1.Size = new Size(159, 61);
+            buttonShop1.TabIndex = 2;
+            buttonShop1.Text = "-10 points";
+            buttonShop1.UseVisualStyleBackColor = false;
+            buttonShop1.Click += ButtonShop1_Click;
             // 
             // FormShop
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(568, 450);
-            Controls.Add(button1);
-            Controls.Add(pictureBox1);
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            ClientSize = new Size(1902, 1033);
+            Controls.Add(buttonShop1);
             Controls.Add(labelTotalPoints);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormShop";
             Text = "Shop - Fitschool";
             Load += FormShop_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -84,7 +78,6 @@
         #endregion
 
         private Label labelTotalPoints;
-        private PictureBox pictureBox1;
-        private Button button1;
+        private Button buttonShop1;
     }
 }

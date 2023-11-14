@@ -12,7 +12,10 @@ namespace Fitschool
 
         private void RequestDataButton_Click(object sender, EventArgs e) // == login knop
         {
+            var myForm = new Keuzescherm();
+            myForm.Show();
             UserData.LoginUser(Convert.ToInt32(IDValue.Value));
+            this.Close();
         }
 
         private void ShopKnop_Click(object sender, EventArgs e)
@@ -30,6 +33,11 @@ namespace Fitschool
         {
             AdminLogin adminLogin = new AdminLogin();
             adminLogin.ShowDialog();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
