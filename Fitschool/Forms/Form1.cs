@@ -1,3 +1,5 @@
+using Fitschool.Forms;
+
 namespace Fitschool
 {
     public partial class Form1 : Form
@@ -6,28 +8,28 @@ namespace Fitschool
         {
             InitializeComponent();
         }
-        readonly UserData UserData = new();
+        //readonly UserData UserData = new();
 
-        private void RequestDataButton_Click(object sender, EventArgs e)
+        private void RequestDataButton_Click(object sender, EventArgs e) // == login knop
         {
             UserData.LoginUser(Convert.ToInt32(IDValue.Value));
         }
 
         private void ShopKnop_Click(object sender, EventArgs e)
         {
-            FormShop formShop = new FormShop(UserData);
+            FormShop formShop = new FormShop();
             formShop.ShowDialog();
         }
 
         private void AddPointsButton_Click(object sender, EventArgs e)
         {
-            DataManagement.WritePointsToDB(UserData.loggedInId, 10);
+            DataManagement.WritePointsToDB(UserData.LoggedInId, 10);
         }
 
         private void OpenUserManagementButton_Click(object sender, EventArgs e)
         {
-            FormUserManagement formUserManagement = new();
-            formUserManagement.ShowDialog();
+            AdminLogin adminLogin = new AdminLogin();
+            adminLogin.ShowDialog();
         }
     }
 }

@@ -9,30 +9,61 @@ namespace Fitschool
         public static string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
             string result = "";
+            int maxRetries = 3; // Maximum aantal keer dat je opnieuw verbinding kan proberen te maken met de database
+            int retryCount = 0;
 
-            try
+            while (retryCount < maxRetries)
             {
-                using MySqlConnection connection = new MySqlConnection(connectionAddress);
-                connection.Open();
-
-                using MySqlCommand command = new MySqlCommand(query, connection);
-
-                // Add parameters if provided
-                command.Parameters.AddRange(parameters);
-
-                // Execute the query
-                using (MySqlDataReader reader = command.ExecuteReader())
+                try
                 {
-                    while (reader.Read())
+                    using MySqlConnection connection = new MySqlConnection(connectionAddress);
+                    connection.Open();
+
+                    using MySqlCommand command = new MySqlCommand(query, connection);
+
+                    // Add parameters if provided
+                    command.Parameters.AddRange(parameters);
+
+                    // Execute the query
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        result += reader[0].ToString();
+                        while (reader.Read())
+                        {
+                            result += reader[0].ToString();
+                        }
                     }
+
+                    // If the query execution is successful, break out of the retry loop
+                    break;
                 }
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions as needed
-                Console.WriteLine($"Error executing query: {ex.Message}");
+                catch (Exception ex)
+                {
+                    // Handle exceptions as needed
+                    Console.WriteLine($"Error executing query: {ex.Message}");
+
+                    DialogResult option = DialogResult.Retry;
+                    if (retryCount >= maxRetries - 1)
+                    {
+                        Console.WriteLine("Maximum retries reached. Exiting.");
+                        option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                        if (option == DialogResult.Yes)
+                        {
+                               Environment.Exit(0);
+                        }
+                    }
+                    else
+                    {
+                        option = MessageBox.Show("Fout bij ophalen van gegevens. Is de VPN ingeschakeld?\nAls u annuleert, kunnen er fouten optreden.", "Fout", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                    }
+
+                    if (option != DialogResult.Retry)
+                    {
+                        // niet doorgaan met de query
+                        break;
+                    }
+
+                    retryCount++;
+                }
             }
 
             return result;
@@ -103,6 +134,10 @@ namespace Fitschool
             if (lastInsertID > 0)
             {
                 MessageBox.Show($"Gebruiker succesvol toegevoegd. ID: {lastInsertID}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (lastInsertID == 0)
+            {
+                MessageBox.Show($"Gebruiker succesvol toegevoegd. ID kon niet worden opgevraagd.", "Succes??", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
