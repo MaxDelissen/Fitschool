@@ -1,10 +1,10 @@
+using System.Diagnostics;
+using System.IO.Ports;
+
 namespace Fitschool
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -17,6 +17,13 @@ namespace Fitschool
                 MessageBox.Show("Initial database connection failed. Please check your internet connection, and VPN settings and try again.\nApplication will exit", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
+            Debug.WriteLine("Application Started");
+
+            /*string[] ports = SerialPort.GetPortNames();
+            foreach (var item in ports)
+            {
+                Debug.WriteLine(item);
+            }*/
 
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());

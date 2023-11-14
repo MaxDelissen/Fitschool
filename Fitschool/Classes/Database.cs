@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System.Diagnostics;
 
 namespace Fitschool
 {
@@ -39,12 +40,12 @@ namespace Fitschool
                 catch (Exception ex)
                 {
                     // Handle exceptions as needed
-                    Console.WriteLine($"Error executing query: {ex.Message}");
+                    Debug.WriteLine($"Error executing query: {ex.Message}");
 
-                    DialogResult option = DialogResult.Retry;
+                    DialogResult option;
                     if (retryCount >= maxRetries - 1)
                     {
-                        Console.WriteLine("Maximum retries reached. Exiting.");
+                        Debug.WriteLine("Maximum retries reached. Exiting.");
                         option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                         if (option == DialogResult.Yes)
                         {
@@ -171,11 +172,11 @@ namespace Fitschool
 
             if (rowsAffected > 0)
             {
-                Console.WriteLine("Punten succesvol toegevoegd.");
+                Debug.WriteLine("Punten succesvol toegevoegd.");
             }
             else
             {
-                Console.WriteLine("Punten toevoegen is mislukt.");
+                Debug.WriteLine("Punten toevoegen is mislukt.");
             }
         }
     }
@@ -219,7 +220,7 @@ namespace Fitschool
             if (string.IsNullOrEmpty(columm))
             {
                 // De ingevoerde kolom bestaat niet.
-                Console.WriteLine("Ongeldige kolomnaam.");
+                Debug.WriteLine("Ongeldige kolomnaam.");
                 connection.Close();
 
                 // Kolom bestaat niet, fout terugsturen en connectie sluiten.
@@ -238,7 +239,7 @@ namespace Fitschool
             catch (Exception ex)
             {
                 // Een probleem met het lezen van de output, dit zou normaal nooit moeten gebeuren, stuurt error message.
-                Console.WriteLine($"Er is een fout opgetreden: {ex.Message}");
+                Debug.WriteLine($"Er is een fout opgetreden: {ex.Message}");
 
                 // Stuurt een error terug.
                 return $"Error: De opgevraagde data was niet gevonden in de database: {ex.Message}";

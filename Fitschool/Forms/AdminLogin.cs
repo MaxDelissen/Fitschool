@@ -7,7 +7,7 @@
             InitializeComponent();
         }
 
-        static string storedPassword = "admin";
+        static readonly string storedPassword = "admin";
 
         private void SubmitPasswordButton_Click(object sender, EventArgs e)
         {
