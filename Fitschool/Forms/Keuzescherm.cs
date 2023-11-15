@@ -26,7 +26,9 @@ namespace Fitschool.Forms
 
         private void buttonToActivity_Click(object sender, EventArgs e)
         {
-
+            var myForm = new FormActiviteiten();
+            myForm.Show();
+            this.Close();
         }
 
         private void Keuzescherm_Load(object sender, EventArgs e)
@@ -35,6 +37,13 @@ namespace Fitschool.Forms
             buttonToActivity.FlatAppearance.BorderColor = BackColor;
             buttonToShop.FlatStyle = FlatStyle.Flat;
             buttonToShop.FlatAppearance.BorderColor = BackColor;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var myForm = new Form1();
+            myForm.Show();
+            this.Close();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Fitschool
+﻿using Fitschool.Forms;
+
+namespace Fitschool
 {
     public partial class FormShop : Form
     {
@@ -27,6 +29,13 @@
         private void labelTotalPoints_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonBackShop_Click(object sender, EventArgs e)
+        {
+            var myForm = new Keuzescherm();
+            myForm.Show();
+            this.Close();
         }
     }
 }

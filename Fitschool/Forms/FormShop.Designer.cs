@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShop));
             labelTotalPoints = new Label();
             buttonShop1 = new Button();
+            buttonBackShop = new Button();
             SuspendLayout();
             // 
             // labelTotalPoints
@@ -48,6 +49,7 @@
             // buttonShop1
             // 
             buttonShop1.BackColor = Color.Transparent;
+            buttonShop1.FlatAppearance.BorderSize = 0;
             buttonShop1.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop1.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop1.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
@@ -59,12 +61,28 @@
             buttonShop1.UseVisualStyleBackColor = false;
             buttonShop1.Click += ButtonShop1_Click;
             // 
+            // buttonBackShop
+            // 
+            buttonBackShop.BackColor = Color.Transparent;
+            buttonBackShop.FlatAppearance.BorderSize = 0;
+            buttonBackShop.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonBackShop.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonBackShop.FlatStyle = FlatStyle.Flat;
+            buttonBackShop.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonBackShop.Location = new Point(61, 26);
+            buttonBackShop.Name = "buttonBackShop";
+            buttonBackShop.Size = new Size(185, 99);
+            buttonBackShop.TabIndex = 3;
+            buttonBackShop.UseVisualStyleBackColor = false;
+            buttonBackShop.Click += buttonBackShop_Click;
+            // 
             // FormShop
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(buttonBackShop);
             Controls.Add(buttonShop1);
             Controls.Add(labelTotalPoints);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -79,5 +97,6 @@
 
         private Label labelTotalPoints;
         private Button buttonShop1;
+        private Button buttonBackShop;
     }
 }
