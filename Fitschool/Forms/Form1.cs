@@ -15,7 +15,7 @@ namespace Fitschool
             var myForm = new Keuzescherm();
             myForm.Show();
             UserData.LoginUser(Convert.ToInt32(IDValue.Value));
-            this.Close();
+            this.Hide();
         }
 
         private void ShopKnop_Click(object sender, EventArgs e)

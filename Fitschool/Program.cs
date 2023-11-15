@@ -19,11 +19,7 @@ namespace Fitschool
             }
             Debug.WriteLine("Application Started");
 
-            /*string[] ports = SerialPort.GetPortNames();
-            foreach (var item in ports)
-            {
-                Debug.WriteLine(item);
-            }*/
+            MessageBox.Show("Status Arduino: " + Arduino.SendCommand("status"));
 
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
