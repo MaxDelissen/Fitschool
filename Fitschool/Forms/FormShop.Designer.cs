@@ -85,9 +85,11 @@
             Controls.Add(buttonBackShop);
             Controls.Add(buttonShop1);
             Controls.Add(labelTotalPoints);
+            FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormShop";
             Text = "Shop - Fitschool";
+            WindowState = FormWindowState.Maximized;
             Load += FormShop_Load;
             ResumeLayout(false);
             PerformLayout();

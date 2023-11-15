@@ -4,7 +4,7 @@ namespace Fitschool.Forms
 {
     public partial class Keuzescherm : Form
     {
-        private Form mainForm; 
+        private Form mainForm;
         public Keuzescherm(Form mainForm)
         {
             InitializeComponent();
@@ -35,7 +35,7 @@ namespace Fitschool.Forms
         }
 
         private void button1_Click(object sender, EventArgs e)
-        { 
+        {
             this.mainForm.Show();
             this.Close();
         }

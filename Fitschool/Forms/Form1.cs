@@ -16,7 +16,7 @@ namespace Fitschool
             keuzescherm.Show();
         }
 
-        private void AddPointsButton_Click(object sender, EventArgs e)
+        private void AddPointsButton_Click(object sender, EventArgs e) // niet in gebruik
         {
             DataManagement.WritePointsToDB(UserData.LoggedInId, 10);
         }
@@ -30,6 +30,11 @@ namespace Fitschool
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

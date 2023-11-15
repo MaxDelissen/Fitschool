@@ -11,7 +11,7 @@ namespace Fitschool
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
 
-            var connectioncheck = DataManagement.ExecuteQuery("SELECT COUNT(*) AS TotalRecords FROM users;");
+            var connectioncheck = DataManagement.ExecuteQuery("SELECT COUNT(*) AS TotalRecords FROM gebruikers;");
             if (string.IsNullOrEmpty(connectioncheck))
             {
                 MessageBox.Show("Initial database connection failed. Please check your internet connection, and VPN settings and try again.\nApplication will exit", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

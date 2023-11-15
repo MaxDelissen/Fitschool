@@ -86,8 +86,10 @@
             Controls.Add(buttonBackKeuzescherm);
             Controls.Add(buttonToActivity);
             Controls.Add(buttonToShop);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "Keuzescherm";
             Text = "Keuzescherm";
+            WindowState = FormWindowState.Maximized;
             Load += Keuzescherm_Load;
             ResumeLayout(false);
         }

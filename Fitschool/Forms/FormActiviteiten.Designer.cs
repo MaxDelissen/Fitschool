@@ -69,8 +69,10 @@
             ClientSize = new Size(1902, 1033);
             Controls.Add(buttonPushUps);
             Controls.Add(buttonBackActiviteiten);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "FormActiviteiten";
             Text = "FormActiviteiten";
+            WindowState = FormWindowState.Maximized;
             ResumeLayout(false);
         }
 

@@ -73,7 +73,7 @@ namespace Fitschool
         public static string IdToName(int id) // Ingevoerd ID naar naam
         {
             // Naam word opgevraagd.
-            string name = ExecuteQuery("SELECT name FROM users WHERE userID = @id", new MySqlParameter("@id", id));
+            string name = ExecuteQuery("SELECT naam FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
 
             // Naam wordt teruggestuurd.
             return name;
@@ -82,7 +82,7 @@ namespace Fitschool
         public static int IdToAge(int id) // Ingevoerd ID naar leeftijd
         {
             // Leeftijd wordt opgevraagd.
-            string age = ExecuteQuery("SELECT age FROM users WHERE userID = @id", new MySqlParameter("@id", id));
+            string age = ExecuteQuery("SELECT leeftijd FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
 
             // Leeftijd wordt omgezet naar een integer.
             if (!int.TryParse(age, out int ageInt))
@@ -102,7 +102,7 @@ namespace Fitschool
         public static int IdToPoints(int id) // ID naar aantal verzamelde punten.
         {
             // Het aantal punten uit de database halen.
-            if (!int.TryParse(ExecuteQuery("SELECT points FROM users WHERE userID = @id", new MySqlParameter("@id", id)), out int points))
+            if (!int.TryParse(ExecuteQuery("SELECT punten FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id)), out int points))
             {
                 // Output van database kan niet worden omgezet naar een integer.
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van punten naar een geheel getal. De punten zijn ingesteld op 0.",
@@ -121,10 +121,10 @@ namespace Fitschool
             // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
             string query =
                 @"
-                    INSERT INTO users (userID, name, age)
-                    SELECT COALESCE(MIN(userID) + 1, 1), @naam, @leeftijd
-                    FROM users
-                    WHERE NOT EXISTS (SELECT 1 FROM users t2 WHERE t2.userID = users.userID + 1);
+                    INSERT INTO gebruikers (gebruiker_id, naam, leeftijd)
+                    SELECT COALESCE(MIN(gebruiker_id) + 1, 1), @naam, @leeftijd
+                    FROM gebruikers
+                    WHERE NOT EXISTS (SELECT 1 FROM gebruikers t2 WHERE t2.gebruiker_id = gebruikers.gebruiker_id + 1);
                     SELECT LAST_INSERT_ID() AS LastInsertID;
                 ";
 
@@ -149,7 +149,8 @@ namespace Fitschool
         public static void RemoveUser(int id)
         {
             // Query uitvoeren om de gebruiker te verwijderen
-            int rowsAffected = Convert.ToInt32(ExecuteQuery($"DELETE FROM users WHERE userID = @id", new MySqlParameter("@id", id)));
+            int rowsAffected = 1;
+            ExecuteQuery($"DELETE FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
 
             if (rowsAffected > 0)
             {
@@ -167,7 +168,7 @@ namespace Fitschool
             int newPoints = currentPoints + pointsToChange;
 
             // Query uitvoeren om de gebruiker toe te voegen
-            string stringRowsAffected = ExecuteQuery("UPDATE users SET points = @newPoints WHERE userID = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
+            string stringRowsAffected = ExecuteQuery("UPDATE gebruikers SET punten = @newPoints WHERE gebruiker_id = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
             int rowsAffected = Convert.ToInt32(stringRowsAffected);
 
             if (rowsAffected > 0)
@@ -179,11 +180,10 @@ namespace Fitschool
                 Debug.WriteLine("Punten toevoegen is mislukt.");
             }
         }
-    }
-}
 
-/* Deprecated
- * 
+
+        /* Deprecated
+ 
         //2 tables, users & punten in de DB
         public string RetrieveFromDB(int id, string columm) // Haalt gegevens uit database, neemt een string voor de kolom.
         {
@@ -245,3 +245,5 @@ namespace Fitschool
                 return $"Error: De opgevraagde data was niet gevonden in de database: {ex.Message}";
             }
         } */
+    }
+}

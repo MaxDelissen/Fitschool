@@ -6,7 +6,7 @@ namespace Fitschool
     {
         public readonly static string arduinoPort = "COM5";
 
-        //werkt niet
+        /*werkt niet
         public static string FindArduinoPort()
         {
             string[] ports = SerialPort.GetPortNames();
@@ -27,13 +27,13 @@ namespace Fitschool
                         return currentPort; // Arduino gevonden
                     }
                 }
-                catch (UnauthorizedAccessException) { /* Poort in gebruik, toegang geweigerd. */ }
-                catch (IOException) { /* Ongeldige poort */ }
-                catch (TimeoutException) { /* Arduino heeft niet gereageerd */ }
+                catch (UnauthorizedAccessException) {}
+                catch (IOException) {}
+                catch (TimeoutException) {}
             }
             MessageBox.Show("Geen Arduino gevonden", "Arduino niet gevonden", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return string.Empty; // Geen poort gevonden
-        }
+        }*/
     
         public static string SendCommand(string command)
         {
@@ -41,10 +41,22 @@ namespace Fitschool
             port.Open();
             port.ReadTimeout = 1000;
             port.WriteLine(command);
-            //Thread.Sleep(500);
-            string readout = port.ReadLine();
-            port.Close();
-            return readout;
+            Thread.Sleep(500);
+            string readout;
+            try
+            {
+                readout = port.ReadLine();
+                return readout;
+            } 
+            catch (TimeoutException)
+            {
+                MessageBox.Show("Arduino reageert niet", "Arduino niet gevonden", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return  string.Empty;
+            }
+            finally
+            {
+                port.Close();
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Fitschool.Forms
+﻿using System.IO.Ports;
+
+namespace Fitschool.Forms
 {
     public partial class FormActiviteiten : Form
     {
@@ -16,9 +18,24 @@
             this.Close();
         }
 
+        readonly string arduinoPort = Arduino.arduinoPort;
+
         private void buttonPushUps_Click(object sender, EventArgs e)
         {
+            SerialPort port = new(arduinoPort, 9600);
+            port.Open();
+            port.WriteLine("start");
+            while (true)
+            {
+                string readout = port.ReadExisting();
+                if (!string.IsNullOrEmpty(readout))
+                {
+                    MessageBox.Show(readout);
+                    port.Close();
+                    break;
+                }
 
+            }
         }
     }
 }
