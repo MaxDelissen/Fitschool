@@ -31,16 +31,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Keuzescherm));
             buttonToActivity = new Button();
             buttonToShop = new Button();
+            buttonBackKeuzescherm = new Button();
             SuspendLayout();
             // 
             // buttonToActivity
             // 
             buttonToActivity.BackColor = Color.Transparent;
-            buttonToActivity.FlatAppearance.BorderColor = SystemColors.ControlLightLight;
             buttonToActivity.FlatAppearance.BorderSize = 0;
             buttonToActivity.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonToActivity.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            buttonToActivity.FlatStyle = FlatStyle.Popup;
+            buttonToActivity.FlatStyle = FlatStyle.Flat;
             buttonToActivity.Location = new Point(124, 400);
             buttonToActivity.Name = "buttonToActivity";
             buttonToActivity.Size = new Size(536, 237);
@@ -63,12 +63,27 @@
             buttonToShop.UseVisualStyleBackColor = false;
             buttonToShop.Click += buttonToShop_Click;
             // 
+            // buttonBackKeuzescherm
+            // 
+            buttonBackKeuzescherm.BackColor = Color.Transparent;
+            buttonBackKeuzescherm.FlatAppearance.BorderSize = 0;
+            buttonBackKeuzescherm.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonBackKeuzescherm.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonBackKeuzescherm.FlatStyle = FlatStyle.Flat;
+            buttonBackKeuzescherm.Location = new Point(61, 31);
+            buttonBackKeuzescherm.Name = "buttonBackKeuzescherm";
+            buttonBackKeuzescherm.Size = new Size(183, 91);
+            buttonBackKeuzescherm.TabIndex = 2;
+            buttonBackKeuzescherm.UseVisualStyleBackColor = false;
+            buttonBackKeuzescherm.Click += button1_Click;
+            // 
             // Keuzescherm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(buttonBackKeuzescherm);
             Controls.Add(buttonToActivity);
             Controls.Add(buttonToShop);
             Name = "Keuzescherm";
@@ -81,5 +96,6 @@
 
         private Button buttonToActivity;
         private Button buttonToShop;
+        private Button buttonBackKeuzescherm;
     }
 }
