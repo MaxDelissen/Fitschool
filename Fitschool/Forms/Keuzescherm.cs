@@ -1,23 +1,28 @@
-﻿namespace Fitschool.Forms
+﻿using System.Security.Cryptography;
+
+namespace Fitschool.Forms
 {
     public partial class Keuzescherm : Form
     {
-        public Keuzescherm()
+        private Form mainForm; 
+        public Keuzescherm(Form mainForm)
         {
             InitializeComponent();
+            this.mainForm = mainForm;
+            this.mainForm.Hide();
         }
 
         private void buttonToShop_Click(object sender, EventArgs e)
         {
-            var myForm = new FormShop();
-            myForm.Show();
+            var shop = new FormShop(mainForm);
+            shop.Show();
             this.Close();
         }
 
         private void buttonToActivity_Click(object sender, EventArgs e)
         {
-            var myForm = new FormActiviteiten();
-            myForm.Show();
+            var activiteiten = new FormActiviteiten(mainForm);
+            activiteiten.Show();
             this.Close();
         }
 
@@ -30,9 +35,8 @@
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            var myForm = new Form1();
-            myForm.Show();
+        { 
+            this.mainForm.Show();
             this.Close();
         }
     }

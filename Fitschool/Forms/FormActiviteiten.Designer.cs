@@ -71,7 +71,6 @@
             Controls.Add(buttonBackActiviteiten);
             Name = "FormActiviteiten";
             Text = "FormActiviteiten";
-            Load += FormActiviteiten_Load;
             ResumeLayout(false);
         }
 

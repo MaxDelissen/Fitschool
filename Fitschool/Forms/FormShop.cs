@@ -4,9 +4,11 @@ namespace Fitschool
 {
     public partial class FormShop : Form
     {
-        public FormShop()
+        private Form mainForm;
+        public FormShop(Form mainForm)
         {
             InitializeComponent();
+            this.mainForm = mainForm;
         }
 
         int showPoints = 69;
@@ -33,7 +35,7 @@ namespace Fitschool
 
         private void buttonBackShop_Click(object sender, EventArgs e)
         {
-            var myForm = new Keuzescherm();
+            var myForm = new Keuzescherm(mainForm);
             myForm.Show();
             this.Close();
         }

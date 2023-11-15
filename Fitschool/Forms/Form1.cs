@@ -8,20 +8,12 @@ namespace Fitschool
         {
             InitializeComponent();
         }
-        //readonly UserData UserData = new();
 
         private void RequestDataButton_Click(object sender, EventArgs e) // == login knop
         {
-            var myForm = new Keuzescherm();
-            myForm.Show();
             UserData.LoginUser(Convert.ToInt32(IDValue.Value));
-            this.Hide();
-        }
-
-        private void ShopKnop_Click(object sender, EventArgs e)
-        {
-            FormShop formShop = new FormShop();
-            formShop.ShowDialog();
+            Keuzescherm keuzescherm = new Keuzescherm(this);
+            keuzescherm.Show();
         }
 
         private void AddPointsButton_Click(object sender, EventArgs e)

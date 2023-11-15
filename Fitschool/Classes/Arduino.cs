@@ -39,9 +39,10 @@ namespace Fitschool
         {
             SerialPort port = new(arduinoPort, 9600);
             port.Open();
+            port.ReadTimeout = 1000;
             port.WriteLine(command);
-            Thread.Sleep(500);
-            string readout = port.ReadExisting();
+            //Thread.Sleep(500);
+            string readout = port.ReadLine();
             port.Close();
             return readout;
         }
