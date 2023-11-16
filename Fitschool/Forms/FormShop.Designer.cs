@@ -44,7 +44,6 @@
             labelTotalPoints.Size = new Size(53, 62);
             labelTotalPoints.TabIndex = 0;
             labelTotalPoints.Text = "0";
-            labelTotalPoints.Click += labelTotalPoints_Click;
             // 
             // buttonShop1
             // 
@@ -52,12 +51,12 @@
             buttonShop1.FlatAppearance.BorderSize = 0;
             buttonShop1.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop1.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            buttonShop1.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonShop1.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
             buttonShop1.Location = new Point(232, 477);
             buttonShop1.Name = "buttonShop1";
             buttonShop1.Size = new Size(159, 61);
             buttonShop1.TabIndex = 2;
-            buttonShop1.Text = "-10 points";
+            buttonShop1.Text = "100 Punten";
             buttonShop1.UseVisualStyleBackColor = false;
             buttonShop1.Click += ButtonShop1_Click;
             // 

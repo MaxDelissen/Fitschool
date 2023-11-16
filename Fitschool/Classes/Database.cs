@@ -87,14 +87,10 @@ namespace Fitschool
             // Leeftijd wordt omgezet naar een integer.
             if (!int.TryParse(age, out int ageInt))
             {
-                // Leeftijd kan niet worden omgezet naar een integer.
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van de leeftijd naar een geheel getal. De leeftijd is ingesteld op 0.",
                                                    "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // Na deze fout leeftijd op 0 zetten.
                 return 0;
             }
-
             // Leeftijd wordt teruggestuurd.
             return ageInt;
         }
@@ -102,34 +98,31 @@ namespace Fitschool
         public static int IdToPoints(int id) // ID naar aantal verzamelde punten.
         {
             // Het aantal punten uit de database halen.
-            if (!int.TryParse(ExecuteQuery("SELECT punten FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id)), out int points))
+            if (!int.TryParse(ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id)), out int points))
             {
                 // Output van database kan niet worden omgezet naar een integer.
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van punten naar een geheel getal. De punten zijn ingesteld op 0.",
                                 "Error parsing output", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // Na deze fout punten op 0 zetten.
                 return 0;
             }
-
             // Wanneer punten om kunnen worden gezet, deze teruggeven.
             return points;
         }
 
-        public static void AddUser(string naam, int leeftijd)
+        public static void AddUser(string naam, int leeftijd, string email)
         {
             // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
             string query =
                 @"
-                    INSERT INTO gebruikers (gebruiker_id, naam, leeftijd)
-                    SELECT COALESCE(MIN(gebruiker_id) + 1, 1), @naam, @leeftijd
+                    INSERT INTO gebruikers (gebruiker_id, naam, leeftijd, email_ouder)
+                    SELECT COALESCE(MIN(gebruiker_id) + 1, 1), @naam, @leeftijd, @email
                     FROM gebruikers
                     WHERE NOT EXISTS (SELECT 1 FROM gebruikers t2 WHERE t2.gebruiker_id = gebruikers.gebruiker_id + 1);
                     SELECT LAST_INSERT_ID() AS LastInsertID;
                 ";
 
 
-            object result = Convert.ToInt32(ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd)));
+            object result = Convert.ToInt32(ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email)));
             int lastInsertID = Convert.ToInt32(result);
 
             if (lastInsertID > 0)
@@ -168,7 +161,7 @@ namespace Fitschool
             int newPoints = currentPoints + pointsToChange;
 
             // Query uitvoeren om de gebruiker toe te voegen
-            string stringRowsAffected = ExecuteQuery("UPDATE gebruikers SET punten = @newPoints WHERE gebruiker_id = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
+            string stringRowsAffected = ExecuteQuery("UPDATE gebruikers SET punten_totaal = @newPoints WHERE gebruiker_id = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
             int rowsAffected = Convert.ToInt32(stringRowsAffected);
 
             if (rowsAffected > 0)

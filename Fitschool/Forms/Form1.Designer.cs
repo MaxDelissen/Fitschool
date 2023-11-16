@@ -41,7 +41,7 @@ namespace Fitschool
             // IDValue
             // 
             IDValue.Location = new Point(837, 536);
-            IDValue.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            IDValue.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             IDValue.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             IDValue.Name = "IDValue";
             IDValue.Size = new Size(238, 27);

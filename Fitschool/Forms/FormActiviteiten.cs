@@ -22,20 +22,29 @@ namespace Fitschool.Forms
 
         private void buttonPushUps_Click(object sender, EventArgs e)
         {
-            SerialPort port = new(arduinoPort, 9600);
-            port.Open();
-            port.WriteLine("start");
-            while (true)
+            try
             {
-                string readout = port.ReadExisting();
-                if (!string.IsNullOrEmpty(readout))
+                SerialPort port = new(arduinoPort, 9600);
+                port.Open();
+                port.WriteLine("start");
+                while (true)
                 {
-                    MessageBox.Show(readout);
-                    port.Close();
-                    break;
-                }
+                    string readout = port.ReadExisting();
+                    if (!string.IsNullOrEmpty(readout))
+                    {
+                        MessageBox.Show(readout);
+                        port.Close();
+                        break;
+                    }
 
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }
