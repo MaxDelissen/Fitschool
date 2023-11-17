@@ -8,35 +8,31 @@ namespace Fitschool
 
         public static string SendCommand(string command)
         {
-            SerialPort port = new(arduinoPort, 9600);
             try
             {
+                SerialPort port = new(arduinoPort, 9600);
                 port.Open();
-                port.ReadTimeout = 1000;
                 port.WriteLine(command);
-
-                Thread.Sleep(500);
-
-                string readout;
-                try
+                string readout = string.Empty;
+                while (true)
                 {
-                    readout = port.ReadLine();
-                    return readout;
-                }
-                catch (TimeoutException)
-                {
-                    MessageBox.Show("Arduino reageert niet", "Arduino niet gevonden", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return "Not responding";
+                    port.ReadTimeout = 1000;
+                    try
+                    {
+                        readout = port.ReadLine();
+                    }
+                    catch (Exception) { }
+
+                    if (!string.IsNullOrEmpty(readout))
+                    {
+                        port.Close();
+                        return readout;
+                    }
                 }
             }
             catch (Exception)
             {
-                MessageBox.Show("Arduino niet verbonden met correcte poort", "Arduino niet gevonden", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return "Not connected";
-            }
-            finally
-            {
-                port.Close();
+                return "Arduino niet correct verbonden, verbind aub met:" + arduinoPort;
             }
         }
     }

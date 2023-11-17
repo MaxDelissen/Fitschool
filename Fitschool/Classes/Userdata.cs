@@ -16,8 +16,7 @@
             loggedInName = DataManagement.IdToName(id);
             loggedInPoints = DataManagement.IdToPoints(id);
             MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
-            Arduino.SendCommand("login");
-        }
+        } 
 
         public static void LogoutUser()
         {
