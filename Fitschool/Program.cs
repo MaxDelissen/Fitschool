@@ -14,8 +14,8 @@ namespace Fitschool
             var connectioncheck = DataManagement.ExecuteQuery("SELECT COUNT(*) AS TotalRecords FROM gebruikers;");
             if (string.IsNullOrEmpty(connectioncheck))
             {
-                MessageBox.Show("Initial database connection failed. Please check your internet connection, and VPN settings and try again.\nApplication will exit", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1);
+                MessageBox.Show("Initiële databaseverbinding is mislukt.\nDeze is verplicht voor het opstarten van fitschool.\n\nControleer alstublieft uw internetverbinding en VPN-instellingen en probeer het opnieuw.\n\nDe applicatie wordt nu afgesloten.", "Full Stop", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //Environment.Exit(1);
             }
             Debug.WriteLine("Application Started");
 

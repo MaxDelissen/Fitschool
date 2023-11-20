@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace Fitschool.Forms
+﻿namespace Fitschool.Forms
 {
     public partial class Keuzescherm : Form
     {
@@ -32,6 +30,12 @@ namespace Fitschool.Forms
             buttonToActivity.FlatAppearance.BorderColor = BackColor;
             buttonToShop.FlatStyle = FlatStyle.Flat;
             buttonToShop.FlatAppearance.BorderColor = BackColor;
+
+            labelName.BackColor = Color.Transparent;
+            labelPunten.BackColor = Color.Transparent;
+
+            labelName.Text = UserData.LoggedInName;
+            labelPunten.Text = UserData.loggedInPoints.ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)

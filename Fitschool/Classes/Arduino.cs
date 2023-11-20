@@ -32,7 +32,7 @@ namespace Fitschool
             }
             catch (Exception)
             {
-                return "Arduino niet correct verbonden, verbind aub met:" + arduinoPort;
+                return "Arduino niet correct verbonden, verbind aub met: " + arduinoPort;
             }
         }
     }

@@ -4,11 +4,10 @@
     {
         private static int loggedInId = -1;
         private static string loggedInName = string.Empty;
-        private static int loggedInPoints = 0;
 
         public static int LoggedInId => loggedInId;
         public static string LoggedInName => loggedInName;
-        public static int LoggedInPoints => loggedInPoints;
+        public static int loggedInPoints = 0;
 
         public static void LoginUser(int id)
         {

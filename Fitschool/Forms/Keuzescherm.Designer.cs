@@ -32,6 +32,8 @@
             buttonToActivity = new Button();
             buttonToShop = new Button();
             buttonBackKeuzescherm = new Button();
+            labelName = new Label();
+            labelPunten = new Label();
             SuspendLayout();
             // 
             // buttonToActivity
@@ -77,12 +79,32 @@
             buttonBackKeuzescherm.UseVisualStyleBackColor = false;
             buttonBackKeuzescherm.Click += button1_Click;
             // 
+            // labelName
+            // 
+            labelName.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold, GraphicsUnit.Point);
+            labelName.Location = new Point(1455, 71);
+            labelName.Name = "labelName";
+            labelName.Size = new Size(373, 38);
+            labelName.TabIndex = 3;
+            labelName.Text = "Jan Diederik Gerards van fittenstein";
+            // 
+            // labelPunten
+            // 
+            labelPunten.Font = new Font("Microsoft Sans Serif", 22F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPunten.Location = new Point(1590, 159);
+            labelPunten.Name = "labelPunten";
+            labelPunten.Size = new Size(137, 46);
+            labelPunten.TabIndex = 4;
+            labelPunten.Text = "1000";
+            // 
             // Keuzescherm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(labelPunten);
+            Controls.Add(labelName);
             Controls.Add(buttonBackKeuzescherm);
             Controls.Add(buttonToActivity);
             Controls.Add(buttonToShop);
@@ -99,5 +121,7 @@
         private Button buttonToActivity;
         private Button buttonToShop;
         private Button buttonBackKeuzescherm;
+        private Label labelName;
+        private Label labelPunten;
     }
 }

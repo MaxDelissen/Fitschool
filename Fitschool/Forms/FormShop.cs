@@ -15,12 +15,9 @@ namespace Fitschool
             LoadData();
         }
 
-        int showPoints = 69;
-
         private void FormShop_Load(object sender, EventArgs e)
         {
-            showPoints = UserData.LoggedInPoints;
-            labelTotalPoints.Text = $"{showPoints.ToString()}🪙"; //het icoontje hierachter is een munt emoji teken
+            labelTotalPoints.Text = $"{UserData.loggedInPoints.ToString()}🪙"; //het icoontje hierachter is een munt emoji teken
         }
 
         private void buttonBackShop_Click(object sender, EventArgs e)
@@ -75,9 +72,9 @@ namespace Fitschool
                 if (email != null)
                 {
                     // Use the retrieved information
-                    showPoints -= productPrijs[productID]; //punten verminderen in shop
+                    UserData.loggedInPoints -= productPrijs[productID]; //punten verminderen in shop
                     DataManagement.WritePointsToDB(UserData.LoggedInId, -productPrijs[productID]); // en in DB
-                    labelTotalPoints.Text = $"{showPoints.ToString()}🪙";
+                    labelTotalPoints.Text = $"{UserData.loggedInPoints.ToString()}🪙";
 
                     DataManagement.ExecuteQuery($"UPDATE producten SET product_voorraad = product_voorraad - 1, aankopen = aankopen + 1 WHERE product_id = @id;", new MySqlParameter("@id", productID)); //voorraad verminderen in DB
 
@@ -96,7 +93,7 @@ namespace Fitschool
 
         private bool IsPurchased(int cost)
         {
-            if (showPoints >= cost)
+            if (UserData.loggedInPoints >= cost)
             {
                 return true;
             }
