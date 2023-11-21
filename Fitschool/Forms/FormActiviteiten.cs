@@ -28,6 +28,9 @@ namespace Fitschool.Forms
                 port.Open();
                 port.WriteLine("start"); //stuur commando om programma te starten.
                 string readout = string.Empty; //aanmaken var. om output arduino in op te slaan.
+
+                MessageBox.Show("Ga op de grond liggen, boven de sensor.\nDruk dan op OK om te beginnen.");
+
                 Thread.Sleep(1000); //wachten, zodat arduino tijd heeft om te starten, en het kind de tijd geeft om te gaan liggen.
                 while (true) //loop om te blijven lezen tot de arduino het commando stuurt dat de activiteit is behaald.
                 {
