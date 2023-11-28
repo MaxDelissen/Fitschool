@@ -2,7 +2,7 @@
 {
     public partial class Keuzescherm : Form
     {
-        private Form mainForm;
+        private readonly Form mainForm;
         public Keuzescherm(Form mainForm)
         {
             InitializeComponent();

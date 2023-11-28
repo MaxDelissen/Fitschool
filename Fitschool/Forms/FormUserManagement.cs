@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Fitschool
 {
@@ -19,7 +18,6 @@ namespace Fitschool
             {
                 Email = textBoxEmail.Text;
                 DataManagement.AddUser(naam, leeftijd, Email);
-
             }
             else
             {

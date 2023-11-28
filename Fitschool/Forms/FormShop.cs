@@ -1,7 +1,7 @@
 ﻿using Fitschool.Forms;
+using MySql.Data.MySqlClient;
 using System.Net;
 using System.Net.Mail;
-using MySql.Data.MySqlClient;
 
 namespace Fitschool
 {
@@ -37,8 +37,7 @@ namespace Fitschool
                 productNaam[i] = DataManagement.ExecuteQuery("SELECT product_naam FROM producten WHERE product_id = @id", new MySqlParameter("@id", i));
                 productPrijs[i] = Convert.ToInt32(DataManagement.ExecuteQuery("SELECT product_prijs FROM producten WHERE product_id = @id", new MySqlParameter("@id", i)));
 
-                Button? btn = Controls.Find($"buttonShop{i}", true).FirstOrDefault() as Button;
-                if (btn != null)
+                if (Controls.Find($"buttonShop{i}", true).FirstOrDefault() is Button btn)
                 {
                     string prijsText = productPrijs[i].ToString();
                     btn.Text = $"{prijsText}🪙";// Set the button text to the corresponding price

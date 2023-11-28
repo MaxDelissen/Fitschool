@@ -17,21 +17,19 @@ namespace Fitschool
             {
                 try
                 {
-                    using MySqlConnection connection = new MySqlConnection(connectionAddress);
+                    using MySqlConnection connection = new(connectionAddress);
                     connection.Open();
 
-                    using MySqlCommand command = new MySqlCommand(query, connection);
+                    using MySqlCommand command = new(query, connection);
 
                     // Add parameters if provided
                     command.Parameters.AddRange(parameters);
 
                     // Execute the query
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    using MySqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            result += reader[0].ToString();
-                        }
+                        result += reader[0].ToString();
                     }
 
                     // If the query execution is successful, break out of the retry loop
@@ -49,7 +47,7 @@ namespace Fitschool
                         option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                         if (option == DialogResult.Yes)
                         {
-                               Environment.Exit(0);
+                            Environment.Exit(0);
                         }
                     }
                     else
@@ -133,7 +131,7 @@ namespace Fitschool
             }
             else
             {
-                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout " + lastInsertID , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout " + lastInsertID, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

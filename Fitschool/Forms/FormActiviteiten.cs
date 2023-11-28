@@ -4,7 +4,7 @@ namespace Fitschool.Forms
 {
     public partial class FormActiviteiten : Form
     {
-        private Form mainForm;
+        private readonly Form mainForm;
         public FormActiviteiten(Form mainForm)
         {
             InitializeComponent();
@@ -49,7 +49,7 @@ namespace Fitschool.Forms
                         break; //stop de loop.
                     }
                 }
-            } 
+            }
             catch (Exception ex) //waarschijnlijk een fout met het openen v.d. poort.
             {
                 MessageBox.Show("Df is iets misgegaan met het starten van deze oefening,\nZorg ervoor dat de push-up sensor verbonden is, en probeer het opnieuw.", "fout " + ex.Message);
@@ -58,31 +58,16 @@ namespace Fitschool.Forms
 
         private void ActivityComplete(int activityID, int aantal)
         {
-            int points;
-            switch (activityID)
+            var points = activityID switch
             {
-                case 1:
-                    points = aantal;
-                    break;
-                case 2:
-                    points = (int)Math.Round(aantal * 1.2); //1.2 als voorbeeld van de mogelijkheden om de conversie aan te passen.
-                    break;
-                case 3:
-                    points = aantal;
-                    break;
-                case 4:
-                    points = aantal *2;
-                    break;
-                case 5:
-                    points = aantal;
-                    break;
-                case 6:
-                    points = aantal;
-                    break;
-                default:
-                    points = aantal;
-                    break;
-            }
+                1 => aantal,
+                2 => (int)Math.Round(aantal * 1.2),//1.2 als voorbeeld van de mogelijkheden om de conversie aan te passen.
+                3 => aantal,
+                4 => aantal * 2,
+                5 => aantal,
+                6 => aantal,
+                _ => aantal,
+            };
             MessageBox.Show($"Activiteit behaald!\nJe hebt {points} punten verdient!");
             DataManagement.WritePointsToDB(UserData.LoggedInId, points); //Schrijf de punten naar de database.
             UserData.loggedInPoints += points; //Voeg de punten toe aan de variabele in de applicatie.
