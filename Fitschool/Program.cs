@@ -17,6 +17,7 @@ namespace Fitschool
                 MessageBox.Show("Initiële databaseverbinding is mislukt.\nDeze is verplicht voor het opstarten van fitschool.\n\nControleer alstublieft uw internetverbinding en VPN-instellingen en probeer het opnieuw.\n\nDe applicatie wordt nu afgesloten.", "Full Stop", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //Environment.Exit(1);
             }
+
             Debug.WriteLine("Application Started");
 
             MessageBox.Show("Status Arduino: " + Arduino.SendCommand("status"));

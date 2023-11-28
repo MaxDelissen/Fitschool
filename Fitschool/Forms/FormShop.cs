@@ -7,7 +7,7 @@ namespace Fitschool
 {
     public partial class FormShop : Form
     {
-        private Form mainForm;
+        private readonly Form mainForm;
         public FormShop(Form mainForm)
         {
             InitializeComponent();
@@ -17,10 +17,10 @@ namespace Fitschool
 
         private void FormShop_Load(object sender, EventArgs e)
         {
-            labelTotalPoints.Text = $"{UserData.loggedInPoints.ToString()}🪙"; //het icoontje hierachter is een munt emoji teken
+            labelTotalPoints.Text = $"{UserData.loggedInPoints}🪙"; //het icoontje hierachter is een munt emoji teken
         }
 
-        private void buttonBackShop_Click(object sender, EventArgs e)
+        private void ButtonBackShop_Click(object sender, EventArgs e)
         {
             var myForm = new Keuzescherm(mainForm);
             myForm.Show();
@@ -49,7 +49,7 @@ namespace Fitschool
 
         }
 
-        private bool inStock(int productId)
+        private static bool InStock(int productId)
         {
             int stock = Convert.ToInt32(DataManagement.ExecuteQuery($"SELECT product_voorraad FROM producten WHERE product_id = @id", new MySqlParameter("@id", productId)));
             if (stock > 0)
@@ -74,7 +74,7 @@ namespace Fitschool
                     // Use the retrieved information
                     UserData.loggedInPoints -= productPrijs[productID]; //punten verminderen in shop
                     DataManagement.WritePointsToDB(UserData.LoggedInId, -productPrijs[productID]); // en in DB
-                    labelTotalPoints.Text = $"{UserData.loggedInPoints.ToString()}🪙";
+                    labelTotalPoints.Text = $"{UserData.loggedInPoints}🪙";
 
                     DataManagement.ExecuteQuery($"UPDATE producten SET product_voorraad = product_voorraad - 1, aankopen = aankopen + 1 WHERE product_id = @id;", new MySqlParameter("@id", productID)); //voorraad verminderen in DB
 
@@ -84,14 +84,14 @@ namespace Fitschool
                     "Mocht u vragen hebben of meer informatie willen, aarzel dan niet om contact met ons op te nemen.\n\n" +
                     "Met vriendelijke groet,\nTeam Fitschool";
 
-                    sendMail(email, "Fitschool - Bestelling Succesvol", emailMessageBody);
+                    SendMail(email, "Fitschool - Bestelling Succesvol", emailMessageBody);
                 }
                 else MessageBox.Show("Geen informatie ingevuld, bestelling geanuleerd.", "Geen informatie ingevuld", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
 
-        private bool IsPurchased(int cost)
+        private static bool IsPurchased(int cost)
         {
             if (UserData.loggedInPoints >= cost)
             {
@@ -104,7 +104,7 @@ namespace Fitschool
             }
         }
 
-        private void sendMail(string email, string onderwerp, string bericht)
+        private static void SendMail(string email, string onderwerp, string bericht)
         //Fitschool Gmail account: fitschool@hotmail.com ==> Wachtwoord: LwKJT3b%@y4mRvq29F&4
         {
             var smtpClient = new SmtpClient("smtp-mail.outlook.com")
@@ -114,7 +114,7 @@ namespace Fitschool
                 EnableSsl = true // STARTTLS-versleuteling inschakelen
             };
 
-            MailMessage mail = new MailMessage("fitschool@hotmail.com", email, onderwerp, bericht);
+            MailMessage mail = new("fitschool@hotmail.com", email, onderwerp, bericht);
 
             try
             {
@@ -122,19 +122,18 @@ namespace Fitschool
             }
             catch (Exception)
             {
-                MessageBox.Show("Er is iets fout gegaan met het afronden van de bestelling.", "Mail niet verzonden", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Er is iets fout gegaan met het verzenden van de email.\nWaarschijnlijk is het email adress niet correct.", "Mail niet verzonden", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ButtonShop_Click(object sender, EventArgs e)
         {
-            Button clickedButton = sender as Button;
-            int buttonNumber;
+            Button clickedButton = sender as Button ?? buttonBackShop;
 
             // Extract the number from the button's name
-            if (int.TryParse(clickedButton.Name.Replace("buttonShop", ""), out buttonNumber))
+            if (int.TryParse(clickedButton.Name.Replace("buttonShop", ""), out int buttonNumber))
             {
-                if (inStock(buttonNumber))
+                if (InStock(buttonNumber))
                 {
                     PlaceOrder(buttonNumber);
                 }

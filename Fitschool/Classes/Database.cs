@@ -62,11 +62,9 @@ namespace Fitschool
                         // niet doorgaan met de query
                         break;
                     }
-
                     retryCount++;
                 }
             }
-
             return result;
         }
 
@@ -173,70 +171,5 @@ namespace Fitschool
                 Debug.WriteLine("Punten toevoegen is mislukt.");
             }
         }
-
-
-        /* Deprecated
- 
-        //2 tables, users & punten in de DB
-        public string RetrieveFromDB(int id, string columm) // Haalt gegevens uit database, neemt een string voor de kolom.
-        {
-            try
-            {
-                // Verbinding maken met de Database
-                connection.Open();
-            }
-
-            catch (Exception ex) // Verbindingsfout, mogelijk staat de VPN of het Netlab uit.
-            {
-                MessageBox.Show("Fout bij verbinden met MySQL database, Staat de VPN aan?", "Verbindingsfout", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                return $"Error: Verbindingsfout: {ex.Message}";
-            }
-
-            // SQL Query om de opgegeven gegevens uit de DB te halen.
-            string query = $"SELECT * FROM users WHERE userID = @id";
-
-            //Stuur SQL query naar DB
-            MySqlCommand command = new(query, connection);
-            command.Parameters.AddWithValue("@id", id);
-
-            // Uitlezen van de resultaten.
-            using MySqlDataReader reader = command.ExecuteReader();
-            if (!reader.Read()) // Wanneer er geen gegevens terugkomen een error sturen.
-            {
-                MessageBox.Show($"Geen gegevens gevonden voor ID {id}", $"Geen gegevens voor {id}", MessageBoxButtons.OK, MessageBoxIcon.Question);
-
-                // Geen data gevonden, sluit de connectie met DB
-                connection.Close();
-                return "Error: Geen data gevonden";
-            }
-
-            if (string.IsNullOrEmpty(columm))
-            {
-                // De ingevoerde kolom bestaat niet.
-                Debug.WriteLine("Ongeldige kolomnaam.");
-                connection.Close();
-
-                // Kolom bestaat niet, fout terugsturen en connectie sluiten.
-                return "Error: Ongeldige kolomnaam.";
-            }
-
-            try
-            {
-                // de string "value" wordt gezet naar de output van de query, wanneer deze leeg is wordt de string ook leeg (ipv null)
-                string value = reader[columm]?.ToString() ?? string.Empty;
-                connection.Close();
-
-                // Sluit de connectie en stuurt de waarde terug, als deze leeg is geeft een error.
-                return string.IsNullOrEmpty(value) ? "Error: Kolom is leeg." : value;
-            }
-            catch (Exception ex)
-            {
-                // Een probleem met het lezen van de output, dit zou normaal nooit moeten gebeuren, stuurt error message.
-                Debug.WriteLine($"Er is een fout opgetreden: {ex.Message}");
-
-                // Stuurt een error terug.
-                return $"Error: De opgevraagde data was niet gevonden in de database: {ex.Message}";
-            }
-        } */
     }
 }

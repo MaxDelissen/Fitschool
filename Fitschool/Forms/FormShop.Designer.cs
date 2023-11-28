@@ -80,7 +80,7 @@
             buttonBackShop.Size = new Size(185, 99);
             buttonBackShop.TabIndex = 3;
             buttonBackShop.UseVisualStyleBackColor = false;
-            buttonBackShop.Click += buttonBackShop_Click;
+            buttonBackShop.Click += ButtonBackShop_Click;
             // 
             // buttonShop2
             // 

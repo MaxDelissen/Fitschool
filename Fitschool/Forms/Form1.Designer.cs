@@ -64,7 +64,7 @@ namespace Fitschool
             OpenUserManagementButton.Name = "OpenUserManagementButton";
             OpenUserManagementButton.Size = new Size(193, 105);
             OpenUserManagementButton.TabIndex = 2;
-            OpenUserManagementButton.Text = "User Management";
+            OpenUserManagementButton.Text = "Gebruiker beheer";
             OpenUserManagementButton.UseVisualStyleBackColor = true;
             OpenUserManagementButton.Click += OpenUserManagementButton_Click;
             // 

@@ -1,4 +1,5 @@
 ﻿using System.IO.Ports;
+using System.Text.RegularExpressions;
 
 namespace Fitschool
 {
