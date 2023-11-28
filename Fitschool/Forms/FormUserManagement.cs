@@ -13,7 +13,7 @@ namespace Fitschool
         {
             string naam = NameBox.Text;
             int leeftijd = Convert.ToInt32(LeeftijdSelector.Value);
-            string Email = string.Empty;
+            string Email;
             if (IsValidEmail(textBoxEmail.Text))
             {
                 Email = textBoxEmail.Text;
@@ -30,7 +30,7 @@ namespace Fitschool
             DataManagement.RemoveUser(Convert.ToInt32(IdToDelete.Value));
         }
 
-        private bool IsValidEmail(string email)
+        private static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 return false;

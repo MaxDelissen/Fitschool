@@ -44,7 +44,7 @@ namespace Fitschool.Forms
                     if (readout == "behaald\r") //arduino stuurt "behaald" als de activiteit is behaald, \r is een carriage return, om de string te vergelijken moet deze ook worden meegegeven.
                     {
                         ActivityComplete(1, 10); //roep de functie aan om de activiteit te voltooien, geef de activiteitID (=1) en het aantal herhalingen (=10) mee.
-                        //port.WriteLine("reset"); //stuur commando om de ardu ino te resetten, Dit is niet meer nodig, omdat de arduino automatisch reset na het voltooien van een activiteit.
+                        //port.WriteLine("stop"); //stuur commando om de arduino te stoppen.
                         port.Close(); //sluit de poort.
                         break; //stop de loop.
                     }
@@ -56,7 +56,7 @@ namespace Fitschool.Forms
             }
         }
 
-        private void ActivityComplete(int activityID, int aantal)
+        private static void ActivityComplete(int activityID, int aantal)
         {
             var points = activityID switch
             {

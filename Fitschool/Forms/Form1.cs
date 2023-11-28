@@ -12,7 +12,7 @@ namespace Fitschool
         private void RequestDataButton_Click(object sender, EventArgs e) // == login knop
         {
             UserData.LoginUser(Convert.ToInt32(IDValue.Value));
-            Keuzescherm keuzescherm = new Keuzescherm(this);
+            Keuzescherm keuzescherm = new(this);
             keuzescherm.Show();
         }
 
@@ -23,7 +23,7 @@ namespace Fitschool
 
         private void OpenUserManagementButton_Click(object sender, EventArgs e)
         {
-            AdminLogin adminLogin = new AdminLogin();
+            AdminLogin adminLogin = new();
             adminLogin.ShowDialog();
         }
 
