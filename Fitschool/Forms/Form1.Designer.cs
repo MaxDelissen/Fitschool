@@ -31,32 +31,10 @@ namespace Fitschool
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            IDValue = new NumericUpDown();
-            RequestDataButton = new Button();
             OpenUserManagementButton = new Button();
             ExitButton = new Button();
-            ((System.ComponentModel.ISupportInitialize)IDValue).BeginInit();
+            IdBox = new TextBox();
             SuspendLayout();
-            // 
-            // IDValue
-            // 
-            IDValue.Location = new Point(837, 536);
-            IDValue.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            IDValue.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            IDValue.Name = "IDValue";
-            IDValue.Size = new Size(238, 27);
-            IDValue.TabIndex = 0;
-            IDValue.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            // 
-            // RequestDataButton
-            // 
-            RequestDataButton.Location = new Point(900, 569);
-            RequestDataButton.Name = "RequestDataButton";
-            RequestDataButton.Size = new Size(94, 29);
-            RequestDataButton.TabIndex = 1;
-            RequestDataButton.Text = "Enter";
-            RequestDataButton.UseVisualStyleBackColor = true;
-            RequestDataButton.Click += RequestDataButton_Click;
             // 
             // OpenUserManagementButton
             // 
@@ -66,6 +44,7 @@ namespace Fitschool
             OpenUserManagementButton.TabIndex = 2;
             OpenUserManagementButton.Text = "Gebruiker beheer";
             OpenUserManagementButton.UseVisualStyleBackColor = true;
+            OpenUserManagementButton.Visible = false;
             OpenUserManagementButton.Click += OpenUserManagementButton_Click;
             // 
             // ExitButton
@@ -81,16 +60,25 @@ namespace Fitschool
             ExitButton.UseVisualStyleBackColor = false;
             ExitButton.Click += ExitButton_Click;
             // 
+            // IdBox
+            // 
+            IdBox.BackColor = Color.FromArgb(76, 240, 18);
+            IdBox.Location = new Point(1889, 1012);
+            IdBox.MaxLength = 5;
+            IdBox.Name = "IdBox";
+            IdBox.Size = new Size(24, 27);
+            IdBox.TabIndex = 4;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(76, 240, 18);
             BackgroundImage = Properties.Resources.Frame_1;
             ClientSize = new Size(1902, 1033);
+            Controls.Add(IdBox);
             Controls.Add(ExitButton);
             Controls.Add(OpenUserManagementButton);
-            Controls.Add(RequestDataButton);
-            Controls.Add(IDValue);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
@@ -98,15 +86,13 @@ namespace Fitschool
             Text = "Inloggen - Fitschool";
             WindowState = FormWindowState.Maximized;
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)IDValue).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private NumericUpDown IDValue;
-        private Button RequestDataButton;
         private Button OpenUserManagementButton;
         private Button ExitButton;
+        private TextBox IdBox;
     }
 }

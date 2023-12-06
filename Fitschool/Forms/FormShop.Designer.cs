@@ -39,6 +39,22 @@
             buttonShop5 = new Button();
             buttonShop8 = new Button();
             buttonShop4 = new Button();
+            pictureShop1 = new PictureBox();
+            pictureShop2 = new PictureBox();
+            pictureShop3 = new PictureBox();
+            pictureShop4 = new PictureBox();
+            pictureShop8 = new PictureBox();
+            pictureShop7 = new PictureBox();
+            pictureShop6 = new PictureBox();
+            pictureShop5 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureShop1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop5).BeginInit();
             SuspendLayout();
             // 
             // labelTotalPoints
@@ -187,12 +203,92 @@
             buttonShop4.UseVisualStyleBackColor = false;
             buttonShop4.Click += ButtonShop_Click;
             // 
+            // pictureShop1
+            // 
+            pictureShop1.Image = (Image)resources.GetObject("pictureShop1.Image");
+            pictureShop1.Location = new Point(213, 260);
+            pictureShop1.Name = "pictureShop1";
+            pictureShop1.Size = new Size(200, 200);
+            pictureShop1.TabIndex = 11;
+            pictureShop1.TabStop = false;
+            // 
+            // pictureShop2
+            // 
+            pictureShop2.Image = (Image)resources.GetObject("pictureShop2.Image");
+            pictureShop2.Location = new Point(637, 260);
+            pictureShop2.Name = "pictureShop2";
+            pictureShop2.Size = new Size(200, 200);
+            pictureShop2.TabIndex = 12;
+            pictureShop2.TabStop = false;
+            // 
+            // pictureShop3
+            // 
+            pictureShop3.Image = (Image)resources.GetObject("pictureShop3.Image");
+            pictureShop3.Location = new Point(1082, 260);
+            pictureShop3.Name = "pictureShop3";
+            pictureShop3.Size = new Size(200, 200);
+            pictureShop3.TabIndex = 13;
+            pictureShop3.TabStop = false;
+            // 
+            // pictureShop4
+            // 
+            pictureShop4.Image = (Image)resources.GetObject("pictureShop4.Image");
+            pictureShop4.Location = new Point(1508, 260);
+            pictureShop4.Name = "pictureShop4";
+            pictureShop4.Size = new Size(200, 200);
+            pictureShop4.TabIndex = 14;
+            pictureShop4.TabStop = false;
+            // 
+            // pictureShop8
+            // 
+            pictureShop8.Image = (Image)resources.GetObject("pictureShop8.Image");
+            pictureShop8.Location = new Point(1508, 648);
+            pictureShop8.Name = "pictureShop8";
+            pictureShop8.Size = new Size(200, 200);
+            pictureShop8.TabIndex = 18;
+            pictureShop8.TabStop = false;
+            // 
+            // pictureShop7
+            // 
+            pictureShop7.Image = (Image)resources.GetObject("pictureShop7.Image");
+            pictureShop7.Location = new Point(1082, 648);
+            pictureShop7.Name = "pictureShop7";
+            pictureShop7.Size = new Size(200, 200);
+            pictureShop7.TabIndex = 17;
+            pictureShop7.TabStop = false;
+            // 
+            // pictureShop6
+            // 
+            pictureShop6.Image = (Image)resources.GetObject("pictureShop6.Image");
+            pictureShop6.Location = new Point(637, 648);
+            pictureShop6.Name = "pictureShop6";
+            pictureShop6.Size = new Size(200, 200);
+            pictureShop6.TabIndex = 16;
+            pictureShop6.TabStop = false;
+            // 
+            // pictureShop5
+            // 
+            pictureShop5.Image = (Image)resources.GetObject("pictureShop5.Image");
+            pictureShop5.Location = new Point(213, 648);
+            pictureShop5.Name = "pictureShop5";
+            pictureShop5.Size = new Size(200, 200);
+            pictureShop5.TabIndex = 15;
+            pictureShop5.TabStop = false;
+            // 
             // FormShop
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(pictureShop8);
+            Controls.Add(pictureShop7);
+            Controls.Add(pictureShop6);
+            Controls.Add(pictureShop5);
+            Controls.Add(pictureShop4);
+            Controls.Add(pictureShop3);
+            Controls.Add(pictureShop2);
+            Controls.Add(pictureShop1);
             Controls.Add(buttonShop8);
             Controls.Add(buttonShop4);
             Controls.Add(buttonShop7);
@@ -209,6 +305,14 @@
             Text = "Shop - Fitschool";
             WindowState = FormWindowState.Maximized;
             Load += FormShop_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureShop1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureShop5).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -225,5 +329,13 @@
         private Button buttonShop5;
         private Button buttonShop8;
         private Button buttonShop4;
+        private PictureBox pictureShop1;
+        private PictureBox pictureShop2;
+        private PictureBox pictureShop3;
+        private PictureBox pictureShop4;
+        private PictureBox pictureShop8;
+        private PictureBox pictureShop7;
+        private PictureBox pictureShop6;
+        private PictureBox pictureShop5;
     }
 }

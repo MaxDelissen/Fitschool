@@ -7,6 +7,9 @@ namespace Fitschool
     {
         private static readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
 
+        public static int maxId = 0;
+
+
         public static string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
             string result = "";
@@ -103,36 +106,6 @@ namespace Fitschool
             }
             // Wanneer punten om kunnen worden gezet, deze teruggeven.
             return points;
-        }
-
-        public static void AddUser(string naam, int leeftijd, string email)
-        {
-            // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
-            string query =
-                @"
-                    INSERT INTO gebruikers (gebruiker_id, naam, leeftijd, email_ouder)
-                    SELECT COALESCE(MIN(gebruiker_id) + 1, 1), @naam, @leeftijd, @email
-                    FROM gebruikers
-                    WHERE NOT EXISTS (SELECT 1 FROM gebruikers t2 WHERE t2.gebruiker_id = gebruikers.gebruiker_id + 1);
-                    SELECT LAST_INSERT_ID() AS LastInsertID;
-                ";
-
-
-            object result = Convert.ToInt32(ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email)));
-            int lastInsertID = Convert.ToInt32(result);
-
-            if (lastInsertID > 0)
-            {
-                MessageBox.Show($"Gebruiker succesvol toegevoegd. ID: {lastInsertID}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            if (lastInsertID == 0)
-            {
-                MessageBox.Show($"Gebruiker succesvol toegevoegd. ID kon niet worden opgevraagd.", "Succes??", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout " + lastInsertID, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         public static void RemoveUser(int id)

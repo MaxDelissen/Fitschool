@@ -2,9 +2,12 @@
 {
     public partial class AdminLogin : Form
     {
-        public AdminLogin()
+        readonly bool unlocked = false;
+
+        public AdminLogin(bool unlocked)
         {
             InitializeComponent();
+            this.unlocked = unlocked;
         }
 
         static readonly string storedPassword = "admin";
@@ -14,12 +17,25 @@
             string password = passwordBox.Text;
             if (password == storedPassword)
             {
-                new FormUserManagement().Show();
-                this.Close();
+                OpenUserManagement();
             }
             else
             {
                 MessageBox.Show("Wachtwoord is onjuist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OpenUserManagement()
+        {
+            new FormUserManagement().Show();
+            this.Close();
+        }
+
+        private void AdminLogin_Load(object sender, EventArgs e)
+        {
+            if (unlocked)
+            {
+                OpenUserManagement();
             }
         }
     }

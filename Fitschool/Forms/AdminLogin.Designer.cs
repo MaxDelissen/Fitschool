@@ -35,27 +35,29 @@
             // 
             // passwordBox
             // 
-            passwordBox.Location = new Point(12, 48);
+            passwordBox.Location = new Point(14, 64);
+            passwordBox.Margin = new Padding(3, 4, 3, 4);
             passwordBox.Name = "passwordBox";
             passwordBox.PlaceholderText = "Wachtwoord";
-            passwordBox.Size = new Size(207, 23);
+            passwordBox.Size = new Size(236, 27);
             passwordBox.TabIndex = 0;
             passwordBox.UseSystemPasswordChar = true;
             // 
             // label1
             // 
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(14, 9);
+            label1.Location = new Point(16, 12);
             label1.Name = "label1";
-            label1.Size = new Size(205, 36);
+            label1.Size = new Size(234, 48);
             label1.TabIndex = 1;
             label1.Text = "Voer het Administratie wachtwoord in.";
             // 
             // SubmitPasswordButton
             // 
-            SubmitPasswordButton.Location = new Point(127, 77);
+            SubmitPasswordButton.Location = new Point(145, 103);
+            SubmitPasswordButton.Margin = new Padding(3, 4, 3, 4);
             SubmitPasswordButton.Name = "SubmitPasswordButton";
-            SubmitPasswordButton.Size = new Size(92, 28);
+            SubmitPasswordButton.Size = new Size(105, 37);
             SubmitPasswordButton.TabIndex = 2;
             SubmitPasswordButton.Text = "Inloggen";
             SubmitPasswordButton.UseVisualStyleBackColor = true;
@@ -63,19 +65,21 @@
             // 
             // AdminLogin
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(231, 131);
+            ClientSize = new Size(264, 175);
             Controls.Add(SubmitPasswordButton);
             Controls.Add(label1);
             Controls.Add(passwordBox);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "AdminLogin";
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
+            Load += AdminLogin_Load;
             ResumeLayout(false);
             PerformLayout();
         }

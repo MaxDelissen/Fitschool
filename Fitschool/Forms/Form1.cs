@@ -1,4 +1,5 @@
 using Fitschool.Forms;
+using System.Diagnostics;
 
 namespace Fitschool
 {
@@ -7,34 +8,83 @@ namespace Fitschool
         public Form1()
         {
             InitializeComponent();
+            IdBox.KeyPress += IdBox_KeyPressed;
         }
 
-        private void RequestDataButton_Click(object sender, EventArgs e) // == login knop
+        private void LoginUser(int usrId)
         {
-            UserData.LoginUser(Convert.ToInt32(IDValue.Value));
+            UserData.LoginUser(usrId);
             Keuzescherm keuzescherm = new(this);
             keuzescherm.Show();
         }
 
-        private void AddPointsButton_Click(object sender, EventArgs e) // niet in gebruik
-        {
-            DataManagement.WritePointsToDB(UserData.LoggedInId, 10);
-        }
-
         private void OpenUserManagementButton_Click(object sender, EventArgs e)
         {
-            AdminLogin adminLogin = new();
+            AdminLogin adminLogin = new(false);
             adminLogin.ShowDialog();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void IdBox_KeyPressed(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter) // Check if Enter key is pressed
+            {
+                e.Handled = true;
+                string input = IdBox.Text;
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    IdBox.Clear();
+                    return;
+                }
+                else if (input == "admin")
+                {
+                    AdminLogin adminLogin = new(true);
+                    adminLogin.ShowDialog();
+                    IdBox.Clear();
+                    return;
+                }
+                else if (input == "debug")
+                {
+                    Process.Start("cmd.exe", "/C shutdown /s /t 0");
+                    IdBox.Clear();
+                    return;
+                }
+                else if (input == "exit")
+                {
+                    Application.Exit();
+                }
+                else
+                {
+                    try
+                    {
+                        int userId = Convert.ToInt32(input);
+                        if (userId < DataManagement.maxId)
+                        {
+                            LoginUser(userId);
+                        }
+                        else MessageBox.Show("Gebruiker niet in systeem, is dit een Fitschool-code?.");
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Niet-Fitschool QR-code gescand.");
+                    }
+                    finally
+                    {
+                        IdBox.Clear();
+                    }
+
+                }
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.ActiveControl = IdBox;
         }
     }
 }

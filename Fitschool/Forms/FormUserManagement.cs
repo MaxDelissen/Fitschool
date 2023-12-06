@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using Fitschool.Classes;
+using MySql.Data.MySqlClient;
+using System.Text.RegularExpressions;
 
 namespace Fitschool
 {
@@ -7,17 +9,39 @@ namespace Fitschool
         public FormUserManagement()
         {
             InitializeComponent();
+            selectStyle.DataSource = Enum.GetValues(typeof(CardDesign.CardDesigns));
         }
+
+        static readonly string query = // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
+                @"
+                    INSERT INTO gebruikers (gebruiker_id, naam, leeftijd, email_ouder)
+                    SELECT COALESCE(MIN(gebruiker_id) + 1, 1), @naam, @leeftijd, @email
+                    FROM gebruikers
+                    WHERE NOT EXISTS (SELECT 1 FROM gebruikers t2 WHERE t2.gebruiker_id = gebruikers.gebruiker_id + 1);
+                    SELECT gebruiker_id from gebruikers where naam = @naam and leeftijd = @leeftijd and email_ouder = @email
+                ";
 
         private void AddUserButton_Click(object sender, EventArgs e)
         {
             string naam = NameBox.Text;
             int leeftijd = Convert.ToInt32(LeeftijdSelector.Value);
-            string Email;
-            if (IsValidEmail(textBoxEmail.Text))
+            string email = textBoxEmail.Text;
+            if (IsValidEmail(email))
             {
-                Email = textBoxEmail.Text;
-                DataManagement.AddUser(naam, leeftijd, Email);
+                string newIdString = DataManagement.ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email));
+                int lastInsertID = Convert.ToInt32(newIdString);
+
+                if (lastInsertID > 0)
+                {
+                    MessageBox.Show($"Gebruiker succesvol toegevoegd. ID: {lastInsertID}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    CardDesign designer = new CardDesign(newIdString);
+                    designer.name = naam;
+                    Bitmap card = designer.GenerateCard((CardDesign.CardDesigns)selectStyle.SelectedItem);
+                    designer.SaveCard(card);
+                    //designer.PrintCard(card);
+                }
+                else MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -33,6 +57,8 @@ namespace Fitschool
         private static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
+                return false;
+            if (string.IsNullOrEmpty(email))
                 return false;
 
             try
