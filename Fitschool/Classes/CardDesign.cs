@@ -46,7 +46,7 @@ namespace Fitschool.Classes
                     graphics.DrawImage(qr, new Point(CoordsX, CoordsY));
 
                     // Define text properties (font, brush, etc.)
-                    Font textFont = new Font("Arial", 18, FontStyle.Bold);
+                    Font textFont = new("Arial", 18, FontStyle.Bold);
                     Brush textBrush = Brushes.White;
 
                     // Create StringFormat for center alignment
@@ -70,7 +70,6 @@ namespace Fitschool.Classes
             {
                 qr?.Dispose(); // Dispose the QR code image
             }
-
             return card;
         }
 

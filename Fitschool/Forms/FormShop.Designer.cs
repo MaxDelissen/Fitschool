@@ -47,6 +47,7 @@
             pictureShop7 = new PictureBox();
             pictureShop6 = new PictureBox();
             pictureShop5 = new PictureBox();
+            shoppingCard = new ListBox();
             ((System.ComponentModel.ISupportInitialize)pictureShop1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop3).BeginInit();
@@ -275,12 +276,24 @@
             pictureShop5.TabIndex = 15;
             pictureShop5.TabStop = false;
             // 
+            // shoppingCard
+            // 
+            shoppingCard.FormattingEnabled = true;
+            shoppingCard.ItemHeight = 20;
+            shoppingCard.Location = new Point(543, 12);
+            shoppingCard.Name = "shoppingCard";
+            shoppingCard.ScrollAlwaysVisible = true;
+            shoppingCard.SelectionMode = SelectionMode.None;
+            shoppingCard.Size = new Size(357, 144);
+            shoppingCard.TabIndex = 19;
+            // 
             // FormShop
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(shoppingCard);
             Controls.Add(pictureShop8);
             Controls.Add(pictureShop7);
             Controls.Add(pictureShop6);
@@ -304,7 +317,6 @@
             Name = "FormShop";
             Text = "Shop - Fitschool";
             WindowState = FormWindowState.Maximized;
-            Load += FormShop_Load;
             ((System.ComponentModel.ISupportInitialize)pictureShop1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop3).EndInit();
@@ -337,5 +349,6 @@
         private PictureBox pictureShop7;
         private PictureBox pictureShop6;
         private PictureBox pictureShop5;
+        private ListBox shoppingCard;
     }
 }

@@ -4,17 +4,19 @@ namespace Fitschool.Forms
 {
     public partial class FormActiviteiten : Form
     {
-        private readonly Form mainForm;
-        public FormActiviteiten(Form mainForm)
+        private readonly Form keuzeScherm;
+        private User user;
+        public FormActiviteiten(Form keuzeScherm, User user)
         {
             InitializeComponent();
-            this.mainForm = mainForm;
+            this.keuzeScherm = keuzeScherm;
+            this.user = user;
         }
 
         private void buttonBackActiviteiten_Click(object sender, EventArgs e)
         {
-            var keuzescherm = new Keuzescherm(mainForm);
-            keuzescherm.Show();
+            //var keuzescherm = new Keuzescherm(keuzeScherm, user);
+            keuzeScherm.Show();
             this.Close();
         }
 
@@ -56,7 +58,7 @@ namespace Fitschool.Forms
             }
         }
 
-        private static void ActivityComplete(int activityID, int aantal)
+        private void ActivityComplete(int activityID, int aantal)
         {
             var points = activityID switch
             {
@@ -69,8 +71,8 @@ namespace Fitschool.Forms
                 _ => aantal,
             };
             MessageBox.Show($"Activiteit behaald!\nJe hebt {points} punten verdient!");
-            DataManagement.WritePointsToDB(UserData.LoggedInId, points); //Schrijf de punten naar de database.
-            UserData.loggedInPoints += points; //Voeg de punten toe aan de variabele in de applicatie.
+            DataManagement.WritePointsToDB(user.Id, points); //Schrijf de punten naar de database.
+            user.UpdatePoints(points); //Update de punten in de applicatie.
         }
     }
 }

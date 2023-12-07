@@ -3,25 +3,26 @@
     public partial class Keuzescherm : Form
     {
         private readonly Form mainForm;
-        public Keuzescherm(Form mainForm)
+        private User user;
+        public Keuzescherm(Form mainForm, User user)
         {
             InitializeComponent();
+            this.user = user;
             this.mainForm = mainForm;
-            this.mainForm.Hide();
         }
 
         private void buttonToShop_Click(object sender, EventArgs e)
         {
-            var shop = new FormShop(mainForm);
+            FormShop shop = new FormShop(this, user);
             shop.Show();
-            this.Close();
+            this.Hide();
         }
 
         private void buttonToActivity_Click(object sender, EventArgs e)
         {
-            var activiteiten = new FormActiviteiten(mainForm);
+            FormActiviteiten activiteiten = new FormActiviteiten(this, user);
             activiteiten.Show();
-            this.Close();
+            this.Hide();
         }
 
         private void Keuzescherm_Load(object sender, EventArgs e)
@@ -34,13 +35,13 @@
             labelName.BackColor = Color.Transparent;
             labelPunten.BackColor = Color.Transparent;
 
-            labelName.Text = UserData.LoggedInName;
-            labelPunten.Text = UserData.loggedInPoints.ToString();
+            labelName.Text = user.Name;
+            labelPunten.Text = user.Points.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) //back button, forgot to rename it
         {
-            this.mainForm.Show();
+            mainForm.Show();
             this.Close();
         }
     }

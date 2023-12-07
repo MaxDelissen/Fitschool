@@ -1,4 +1,4 @@
-﻿using Fitschool.Classes;
+﻿using Fitschool.Classes.Shop;
 using Fitschool.Forms;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
@@ -7,29 +7,30 @@ namespace Fitschool
 {
     public partial class FormShop : Form
     {
-        private readonly Form mainForm;
-        public FormShop(Form mainForm)
+        readonly string[] productNaam = new string[9];
+        readonly int[] productPrijs = new int[9];
+        readonly string[] productAfbeelding = new string[9];
+
+        private Form keuzeScherm;
+        private Order order;
+        public FormShop(Form keuzeScherm, User user)
         {
             InitializeComponent();
-            this.mainForm = mainForm;
-            LoadData();
-        }
+            this.keuzeScherm = keuzeScherm;
+            this.order = new(user);
 
-        private void FormShop_Load(object sender, EventArgs e)
-        {
-            labelTotalPoints.Text = $"{UserData.loggedInPoints}🪙"; //het icoontje hierachter is een munt emoji teken
+            LoadData();
+            labelTotalPoints.Text = $"{user.Points}🪙"; //het icoontje hierachter is een munt emoji teken
         }
 
         private void ButtonBackShop_Click(object sender, EventArgs e)
         {
-            var myForm = new Keuzescherm(mainForm);
-            myForm.Show();
+            //var myForm = new Keuzescherm(keuzeScherm, user);
+            keuzeScherm.Show();
             this.Close();
         }
 
-        readonly string[] productNaam = new string[9];
-        readonly int[] productPrijs = new int[9];
-        readonly string[] productAfbeelding = new string[9];
+        
 
         private void LoadData()
         {
@@ -66,24 +67,10 @@ namespace Fitschool
             }
         }
 
-        private void PlaceOrder(int productID)
+        private void AddToOrder(int productID)
         {
-            Order order = new(productID);
-
-            if (order.EnoughPoints() && order.EnoughPoints() && order.IsValidEmail())
-            {
-                order.UpdatePoints();
-                labelTotalPoints.Text = $"{UserData.loggedInPoints}🪙";
-                order.UpdateStock();
-
-                string emailMessageBody = "Beste ouder/verzorger,\n\n" +
-                    "Gefeliciteerd! Uw kind heeft met zijn/haar verdiende punten het product '" + productNaam[productID] + "' besteld in onze applicatie Fitschool. Dit toont niet alleen hun inzet maar ook hun toewijding aan het programma.\n\n" +
-                    "Wij willen u laten weten dat het product binnenkort op school wordt afgeleverd. Uw kind kan het dan persoonlijk ophalen. We moedigen aan om dit moment met uw kind te bespreken om hun prestatie te vieren!\n\n" +
-                    "Mocht u vragen hebben of meer informatie willen, aarzel dan niet om contact met ons op te nemen.\n\n" +
-                    "Met vriendelijke groet,\nTeam Fitschool";
-
-                order.SendMail("Bestelling Succesvol", emailMessageBody);
-            }
+            order.AddToOrder(productID);
+            shoppingCard.Items.Add(productNaam[productID]);
         }
 
 
@@ -93,7 +80,7 @@ namespace Fitschool
 
             if (int.TryParse(clickedButton.Name.Replace("buttonShop", ""), out int buttonNumber))
             {
-                PlaceOrder(buttonNumber);
+                AddToOrder(buttonNumber);
             }
         }
     }
