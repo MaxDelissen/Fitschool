@@ -8,6 +8,7 @@ namespace Fitschool.Classes.Shop
         public string name { get; private set; }
         public int price { get; private set; }
         public int stock { get; private set; }
+        public string imageUrl { get; private set; }
 
         public Product(int id)
         {
@@ -15,6 +16,7 @@ namespace Fitschool.Classes.Shop
             name = DataManagement.ExecuteQuery("SELECT product_naam FROM producten WHERE product_id = @id", new MySqlParameter("@id", id));
             price = Convert.ToInt32(DataManagement.ExecuteQuery("SELECT product_prijs FROM producten WHERE product_id = @id", new MySqlParameter("@id", id)));
             stock = Convert.ToInt32(DataManagement.ExecuteQuery("SELECT product_voorraad FROM producten WHERE product_id = @id", new MySqlParameter("@id", id)));
+            imageUrl = DataManagement.ExecuteQuery("SELECT product_afbeelding FROM producten WHERE product_id = @id", new MySqlParameter("@id", id));
         }
 
         public bool InStock()
