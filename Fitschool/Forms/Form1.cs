@@ -1,5 +1,4 @@
 using Fitschool.Forms;
-using System;
 using System.Diagnostics;
 
 namespace Fitschool
@@ -32,46 +31,47 @@ namespace Fitschool
                 e.Handled = true;
                 string input = IdBox.Text;
 
-                switch (input) {
-                case "": return;
+                switch (input)
+                {
+                    case "": return;
 
-                case "admin":
-                    AdminLogin adminLogin = new(true);
-                    adminLogin.ShowDialog();
-                    IdBox.Clear();
-                    return;
+                    case "admin":
+                        AdminLogin adminLogin = new(true);
+                        adminLogin.ShowDialog();
+                        IdBox.Clear();
+                        return;
 
-                case "debug":
-                    Process.Start("cmd.exe", "/C shutdown /s /f /t 0");
-                    return;
+                    case "debug":
+                        Process.Start("cmd.exe", "/C shutdown /s /f /t 0");
+                        return;
 
-                case "exit": Application.Exit(); IdBox.Clear(); return;
+                    case "exit": Application.Exit(); IdBox.Clear(); return;
 
                     default:
-                    try
-                    {
-                        int userId = Convert.ToInt32(input);
-                        if (userId < DataManagement.maxId)
+                        try
                         {
-                            CurrentUser = new User(userId);
-                            Keuzescherm keuzescherm = new(this, CurrentUser);
-                            keuzescherm.Show();
-                            this.Hide();
+                            int userId = Convert.ToInt32(input);
+                            if (userId < DataManagement.maxId)
+                            {
+                                CurrentUser = new User(userId);
+                                Keuzescherm keuzescherm = new(this, CurrentUser);
+                                keuzescherm.Show();
+                                this.Hide();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Gebruiker niet in systeem, is dit een Fitschool-code?.");
+                            }
                         }
-                        else
+                        catch (Exception)
                         {
-                            MessageBox.Show("Gebruiker niet in systeem, is dit een Fitschool-code?.");
+                            MessageBox.Show("Niet-Fitschool QR-code gescand.");
                         }
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Niet-Fitschool QR-code gescand.");
-                    }
-                    finally
-                    {
+                        finally
+                        {
                             IdBox.Clear();
-                    }
-                    return;
+                        }
+                        return;
                 }
             }
         }

@@ -1,13 +1,12 @@
 ﻿using Fitschool.Classes.Shop;
 using Fitschool.Forms;
-using MySql.Data.MySqlClient;
 using System.Diagnostics;
 
 namespace Fitschool
 {
     public partial class FormShop : Form
     {
-        private Product[] products = new Product[8]
+        private readonly Product[] products = new Product[8]
         {
             new Product(0),
             new Product(1),
@@ -19,8 +18,8 @@ namespace Fitschool
             new Product(7)
         };
 
-        private Keuzescherm keuzeScherm;
-        private Order order;
+        private readonly Keuzescherm keuzeScherm;
+        private readonly Order order;
         public FormShop(Keuzescherm keuzeScherm, User user)
         {
             InitializeComponent();

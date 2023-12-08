@@ -5,7 +5,7 @@ namespace Fitschool.Forms
     public partial class FormActiviteiten : Form
     {
         private readonly Form keuzeScherm;
-        private User user;
+        private readonly User user;
         public FormActiviteiten(Form keuzeScherm, User user)
         {
             InitializeComponent();
