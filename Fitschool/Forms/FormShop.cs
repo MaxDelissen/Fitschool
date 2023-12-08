@@ -28,7 +28,7 @@ namespace Fitschool
             this.order = new(user);
 
             LoadData();
-            labelTotalPoints.Text = $"{user.Points}🪙"; //het icoontje hierachter is een munt emoji teken
+            labelTotalPoints.Text = $"{user.Points}🪙"; //the character at the end is a coin emoji
         }
 
         private void ButtonBackShop_Click(object sender, EventArgs e)
@@ -48,18 +48,18 @@ namespace Fitschool
         {
             for (int i = 0; i < 8; i++)
             {
-                if (Controls.Find($"buttonShop{i}", true).FirstOrDefault() is Button btn) //buttontext veranderen naar prijs
+                if (Controls.Find($"buttonShop{i}", true).FirstOrDefault() is Button btn) //change button text to price
                 {
                     btn.Text = $"{products[i].Price}🪙";
                     btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderColor = BackColor;
                 }
 
-                if (Controls.Find($"pictureShop{i}", true).FirstOrDefault() is PictureBox pictureBox) //afbeelding toevoegen
+                if (Controls.Find($"pictureShop{i}", true).FirstOrDefault() is PictureBox pictureBox) //add image to picturebox
                 {
                     try
                     {
-                        pictureBox.Load(products[i].ImageUrl); // afbeelding inladen
+                        pictureBox.Load(products[i].ImageUrl); // load the image from the URL
                         pictureBox.BackColor = Color.Transparent;
                     }
                     catch (Exception ex)

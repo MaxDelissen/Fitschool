@@ -13,7 +13,7 @@ namespace Fitschool
         public static string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
             string result = "";
-            int maxRetries = 3; // Maximum aantal keer dat je opnieuw verbinding kan proberen te maken met de database
+            int maxRetries = 3; // maximum number of retries trying to connect to the database
             int retryCount = 0;
 
             while (retryCount < maxRetries)
@@ -60,7 +60,7 @@ namespace Fitschool
 
                     if (option != DialogResult.Retry)
                     {
-                        // niet doorgaan met de query
+                        // do not retry
                         break;
                     }
                     retryCount++;
@@ -69,48 +69,43 @@ namespace Fitschool
             return result;
         }
 
-        public static string IdToName(int id) // Ingevoerd ID naar naam
+        public static string IdToName(int id)
         {
-            // Naam word opgevraagd.
             string name = ExecuteQuery("SELECT naam FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
 
-            // Naam wordt teruggestuurd.
             return name;
         }
 
-        public static int IdToAge(int id) // Ingevoerd ID naar leeftijd
+        public static int IdToAge(int id)
         {
-            // Leeftijd wordt opgevraagd.
             string age = ExecuteQuery("SELECT leeftijd FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
 
-            // Leeftijd wordt omgezet naar een integer.
+            // Try to convert the age to an integer
             if (!int.TryParse(age, out int ageInt))
             {
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van de leeftijd naar een geheel getal. De leeftijd is ingesteld op 0.",
                                                    "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
-            // Leeftijd wordt teruggestuurd.
             return ageInt;
         }
 
-        public static int IdToPoints(int id) // ID naar aantal verzamelde punten.
+        public static int IdToPoints(int id) // ID to the total amount of points in the database
         {
-            // Het aantal punten uit de database halen.
             if (!int.TryParse(ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id)), out int points))
             {
-                // Output van database kan niet worden omgezet naar een integer.
+                // failed to convert points to an integer
                 MessageBox.Show("Er is een fout opgetreden bij het omzetten van punten naar een geheel getal. De punten zijn ingesteld op 0.",
                                 "Error parsing output", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
-            // Wanneer punten om kunnen worden gezet, deze teruggeven.
+            // when the conversion is successful, return the points
             return points;
         }
 
         public static void RemoveUser(int id)
         {
-            // Query uitvoeren om de gebruiker te verwijderen
+            // query to remove a user from the database
             int rowsAffected = 1;
             ExecuteQuery($"DELETE FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
 
@@ -127,13 +122,13 @@ namespace Fitschool
         public static void WritePointsToDB(int id, int pointsToChange)
         {
             int currentPoints = IdToPoints(id);
-            int newPoints = currentPoints + pointsToChange;
+            int newPoints = currentPoints + pointsToChange; // calculate the new amount of points
 
-            // Query uitvoeren om de gebruiker toe te voegen
+            // Execute the query and get the amount of rows affected
             string stringRowsAffected = ExecuteQuery("UPDATE gebruikers SET punten_totaal = @newPoints WHERE gebruiker_id = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
             int rowsAffected = Convert.ToInt32(stringRowsAffected);
 
-            if (rowsAffected > 0)
+            if (rowsAffected > 0) //check if the query was successful
             {
                 Debug.WriteLine("Punten succesvol toegevoegd.");
             }
