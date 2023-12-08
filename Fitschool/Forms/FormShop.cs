@@ -9,19 +9,19 @@ namespace Fitschool
     {
         private Product[] products = new Product[8]
         {
+            new Product(0),
             new Product(1),
             new Product(2),
             new Product(3),
             new Product(4),
             new Product(5),
             new Product(6),
-            new Product(7),
-            new Product(8)
+            new Product(7)
         };
 
-        private Form keuzeScherm;
+        private Keuzescherm keuzeScherm;
         private Order order;
-        public FormShop(Form keuzeScherm, User user)
+        public FormShop(Keuzescherm keuzeScherm, User user)
         {
             InitializeComponent();
             this.keuzeScherm = keuzeScherm;
@@ -33,12 +33,16 @@ namespace Fitschool
 
         private void ButtonBackShop_Click(object sender, EventArgs e)
         {
-            //var myForm = new Keuzescherm(keuzeScherm, user);
+            if (order.Products.Count > 0)
+            {
+                DialogResult confirmOrder = MessageBox.Show("Wil je deze aankoop bevestigen?", "Bevestiging", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirmOrder == DialogResult.Yes) order.Confirm();
+            }
+
+            keuzeScherm.UpdatePoints();
             keuzeScherm.Show();
             this.Close();
         }
-
-
 
         private void LoadData()
         {
@@ -46,7 +50,7 @@ namespace Fitschool
             {
                 if (Controls.Find($"buttonShop{i}", true).FirstOrDefault() is Button btn) //buttontext veranderen naar prijs
                 {
-                    btn.Text = $"{products[i].price}🪙";
+                    btn.Text = $"{products[i].Price}🪙";
                     btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderColor = BackColor;
                 }
@@ -55,7 +59,7 @@ namespace Fitschool
                 {
                     try
                     {
-                        pictureBox.Load(products[i].imageUrl); // afbeelding inladen
+                        pictureBox.Load(products[i].ImageUrl); // afbeelding inladen
                         pictureBox.BackColor = Color.Transparent;
                     }
                     catch (Exception ex)
@@ -67,20 +71,15 @@ namespace Fitschool
             }
         }
 
-        private void AddToOrder(int productID)
-        {
-            order.AddToOrder(productID);
-            shoppingCard.Items.Add(products[productID].name);
-        }
-
-
         private void ButtonShop_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button ?? buttonBackShop;
 
-            if (int.TryParse(clickedButton.Name.Replace("buttonShop", ""), out int buttonNumber))
+            if (int.TryParse(clickedButton.Name.Replace("buttonShop", ""), out int productID))
             {
-                AddToOrder(buttonNumber);
+                order.Add(productID);
+                labelTotalPrice.Text = $"Totaal: {order.TotalPrice}🪙";
+                shoppingCart.Items.Add(products[productID].Name);
             }
         }
     }

@@ -47,7 +47,8 @@
             pictureShop6 = new PictureBox();
             pictureShop5 = new PictureBox();
             pictureShop4 = new PictureBox();
-            shoppingCard = new ListBox();
+            shoppingCart = new ListBox();
+            labelTotalPrice = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureShop0).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop2).BeginInit();
@@ -276,16 +277,25 @@
             pictureShop4.TabIndex = 15;
             pictureShop4.TabStop = false;
             // 
-            // shoppingCard
+            // shoppingCart
             // 
-            shoppingCard.FormattingEnabled = true;
-            shoppingCard.ItemHeight = 20;
-            shoppingCard.Location = new Point(543, 12);
-            shoppingCard.Name = "shoppingCard";
-            shoppingCard.ScrollAlwaysVisible = true;
-            shoppingCard.SelectionMode = SelectionMode.None;
-            shoppingCard.Size = new Size(357, 144);
-            shoppingCard.TabIndex = 19;
+            shoppingCart.FormattingEnabled = true;
+            shoppingCart.ItemHeight = 20;
+            shoppingCart.Location = new Point(449, 3);
+            shoppingCart.Name = "shoppingCart";
+            shoppingCart.SelectionMode = SelectionMode.None;
+            shoppingCart.Size = new Size(301, 144);
+            shoppingCart.TabIndex = 19;
+            // 
+            // labelTotalPrice
+            // 
+            labelTotalPrice.AutoSize = true;
+            labelTotalPrice.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            labelTotalPrice.Location = new Point(764, 9);
+            labelTotalPrice.Name = "labelTotalPrice";
+            labelTotalPrice.Size = new Size(73, 28);
+            labelTotalPrice.TabIndex = 20;
+            labelTotalPrice.Text = "Totaal: ";
             // 
             // FormShop
             // 
@@ -293,7 +303,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
-            Controls.Add(shoppingCard);
+            Controls.Add(labelTotalPrice);
+            Controls.Add(shoppingCart);
             Controls.Add(pictureShop7);
             Controls.Add(pictureShop6);
             Controls.Add(pictureShop5);
@@ -349,6 +360,7 @@
         private PictureBox pictureShop6;
         private PictureBox pictureShop5;
         private PictureBox pictureShop4;
-        private ListBox shoppingCard;
+        private ListBox shoppingCart;
+        private Label labelTotalPrice;
     }
 }

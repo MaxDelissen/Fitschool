@@ -36,6 +36,11 @@
             labelPunten.BackColor = Color.Transparent;
 
             labelName.Text = user.Name;
+            UpdatePoints();
+        }
+
+        public void UpdatePoints()
+        {
             labelPunten.Text = user.Points.ToString();
         }
 

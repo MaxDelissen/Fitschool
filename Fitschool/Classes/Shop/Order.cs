@@ -5,37 +5,87 @@ namespace Fitschool.Classes.Shop
 {
     internal class Order
     {
-        public List<Product> products { get; private set; }
-        public int totalPrice { get; private set; }
+        public List<Product> Products { get; private set; }
+        public int TotalPrice { get; private set; }
 
-        private User user;
+        private readonly User user;
 
         public Order(User user)
         {
             this.user = user;
-            products = new List<Product>();
+            Products = new List<Product>();
         }
 
-        public int AddToOrder(int productID)
+        public int Add(int productID)
         {
             Product product = new Product(productID);
 
             if (product.InStock())
             {
-                totalPrice += product.price;
-                products.Add(product);
+                TotalPrice += product.Price;
+                Products.Add(product);
             }
             else
             {
                 MessageBox.Show("Dit product is niet meer op voorraad.", "Niet op voorraad", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            return TotalPrice;
+        }
 
-            return totalPrice;
+        public int Remove(int productID)
+        {
+            Product product = new Product(productID);
+
+            if (Products.Contains(product))
+            {
+                TotalPrice -= product.Price;
+                Products.Remove(product);
+            }
+            return TotalPrice;
+        }
+
+        public void Confirm()
+        {
+            if (!IsValidEmail() || !EnoughPoints())
+            {
+                return;
+            }
+
+            foreach (Product product in Products) //remove products from stock
+            {
+                product.RemoveFromStock(1);
+            }
+
+            user.UpdatePoints(-TotalPrice);
+
+            #region Email
+            string onderwerp = "Bevestiging van bestelling bij Fitschool";
+            string bericht = $"Beste ouder/verzorger van {user.Name},\n\n" +
+                $"Uw kind heeft onlangs een bestelling geplaatst bij Fitschool.\n" +
+                $"Fitschool is een initiatief op school waarbij kinderen door middel van opdrachten en oefeningen punten kunnen verdienen om diverse prijzen te kunnen kopen.\n" +
+                $"We willen u laten weten dat er geen kosten zijn verbonden aan deze aankoop, en de producten zullen binnenkort op de school van uw kind worden afgeleverd.\n\n" +
+                $"Uw bestelling:\n";
+
+            foreach (Product product in Products)
+            {
+                bericht += $"- {product.Name}\n";
+            }
+
+            bericht += $"\nHet totaal aantal verdiende punten voor deze aankoop bedraagt: {TotalPrice}🪙\n\n" +
+                $"Mocht u nog vragen hebben, aarzel dan niet om contact op te nemen met de school of een e-mail te sturen naar 'fitschool@hotmail.com'.\n\n" +
+                $"Met vriendelijke groet,\nCasper Wijngaarden\nSupport & Marketing Director Fitschool";
+            #endregion
+
+            SendMail(onderwerp, bericht);
+
+            MessageBox.Show("Je bestelling is geplaatst. Je ontvangt een email ter bevestiging.", "Bestelling geplaatst", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Products.Clear();
+            TotalPrice = 0;
         }
 
         public bool EnoughPoints()
         {
-            if (user.Points >= totalPrice)
+            if (user.Points >= TotalPrice)
             {
                 return true;
             }
@@ -45,42 +95,6 @@ namespace Fitschool.Classes.Shop
                 return false;
             }
         }
-
-        public void ConfirmOrder()
-        {
-            if (!IsValidEmail() || !EnoughPoints())
-            {
-                return;
-            }
-
-            foreach (Product product in products)
-            {
-                product.RemoveFromStock(1);
-            }
-
-            user.UpdatePoints(-totalPrice);
-
-            #region Email bericht
-            string onderwerp = "Bevestiging van bestelling bij Fitschool";
-            string bericht = $"Beste ouder/verzorger van {user.Name},\n\n" +
-                $"Uw kind heeft onlangs een bestelling geplaatst bij Fitschool.\n" +
-                $"Fitschool is een initiatief op school waarbij kinderen door middel van opdrachten en oefeningen punten kunnen verdienen om diverse prijzen te kunnen kopen.\n" +
-                $"We willen u laten weten dat er geen kosten zijn verbonden aan deze aankoop, en de producten zullen binnenkort op de school van uw kind worden afgeleverd.\n\n" +
-                $"Uw bestelling:\n";
-
-            foreach (Product product in products)
-            {
-                bericht += $"- {product.name}\n"; // Veronderstelde eigenschap voor productnaam is "Name"
-            }
-
-            bericht += $"\nHet totaal aantal verdiende punten voor deze aankoop bedraagt: {totalPrice}🪙\n\n" +
-                $"Mocht u nog vragen hebben, aarzel dan niet om contact op te nemen met de school of een e-mail te sturen naar 'fitschool@hotmail.com'.\n\n" +
-                $"Met vriendelijke groet,\nCasper Wijngaarden\nSupport & Marketing Director Fitschool";
-            #endregion
-
-            SendMail(onderwerp, bericht);
-        }
-
 
         public bool IsValidEmail()
         {
@@ -95,7 +109,7 @@ namespace Fitschool.Classes.Shop
             }
         }
 
-        public void SendMail(string onderwerp, string bericht)
+        private void SendMail(string onderwerp, string bericht)
         //Fitschool outlook account: fitschool@hotmail.com ==> Wachtwoord: LwKJT3b%@y4mRvq29F&4
         {
             SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com")
@@ -106,7 +120,6 @@ namespace Fitschool.Classes.Shop
             };
 
             MailMessage mail = new("fitschool@hotmail.com", user.EmailParents, onderwerp, bericht);
-
             try
             {
                 smtpClient.Send(mail);
