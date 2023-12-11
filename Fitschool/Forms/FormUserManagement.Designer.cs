@@ -80,7 +80,6 @@
             textBoxEmail.PlaceholderText = "Voer Email van ouder/ verzorger in.";
             textBoxEmail.Size = new Size(371, 27);
             textBoxEmail.TabIndex = 2;
-            textBoxEmail.TextChanged += textBoxEmail_TextChanged;
             // 
             // leeftijdLabel
             // 

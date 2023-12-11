@@ -9,7 +9,7 @@ namespace Fitschool
         public FormUserManagement()
         {
             InitializeComponent();
-            selectStyle.DataSource = Enum.GetValues(typeof(CardDesign.CardDesigns));
+            selectStyle.DataSource = Enum.GetValues(typeof(Card.CardDesigns));
         }
 
         static readonly string query = // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
@@ -23,30 +23,37 @@ namespace Fitschool
 
         private void AddUserButton_Click(object sender, EventArgs e)
         {
+            DataManagement.Log("Adding user");
             string naam = NameBox.Text;
             int leeftijd = Convert.ToInt32(LeeftijdSelector.Value);
+
             string email = textBoxEmail.Text;
-            if (IsValidEmail(email))
-            {
-                string newIdString = DataManagement.ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email));
-                int lastInsertID = Convert.ToInt32(newIdString);
-
-                if (lastInsertID > 0)
-                {
-                    MessageBox.Show($"Gebruiker succesvol toegevoegd. ID: {lastInsertID}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    CardDesign designer = new CardDesign(newIdString);
-                    designer.name = naam;
-                    Bitmap card = designer.GenerateCard((CardDesign.CardDesigns)selectStyle.SelectedItem);
-                    designer.SaveCard(card);
-                    //designer.PrintCard(card);
-                }
-                else MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
+            if (!IsValidEmail(email))
             {
                 MessageBox.Show("Please enter a valid email address.", "Invalid Email", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                DataManagement.Log("Invalid email entered");
+                return;
             }
+
+            //adding user, and getting the last inserted ID
+            int lastInsertID = Convert.ToInt32(DataManagement.ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email)));
+            if (lastInsertID <= 0)
+            {
+                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DataManagement.Log("Failed to add user, last insertedID <= 0");
+                return;
+            }
+
+            User newUser = new(lastInsertID);
+
+            MessageBox.Show($"De gebruiker is toegevoegd met id nummer {lastInsertID}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            DataManagement.Log($"User added with ID {lastInsertID}, name {naam}");
+
+            Card designer = new(newUser);
+            Bitmap card = designer.GenerateCard((Card.CardDesigns)selectStyle.SelectedItem);
+            designer.SaveCard(card);
+            //designer.PrintCard(card);
+            DataManagement.Log($"Card generated for user {newUser}");
         }
 
         private void RemoveUserButton_Click(object sender, EventArgs e)
@@ -69,13 +76,9 @@ namespace Fitschool
             }
             catch (RegexMatchTimeoutException)
             {
+                DataManagement.Log("Regex match timeout exception");
                 return false;
             }
-        }
-
-        private void textBoxEmail_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

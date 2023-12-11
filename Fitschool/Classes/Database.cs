@@ -5,10 +5,37 @@ namespace Fitschool
 {
     public class DataManagement
     {
+        public static string LogFilePath;
+        public static string LogDirectory = "Logs";
+        static DataManagement()
+        {
+            Directory.CreateDirectory(LogDirectory);
+
+            // Create the log file path within the directory
+            LogFilePath = Path.Combine(LogDirectory, $"log_{DateTime.Now:yyyy-MM-dd}.txt");
+        }
+
+        public static void Log(string message)
+        {
+            Debug.WriteLine(message);
+
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(LogFilePath, true))
+                {
+                    writer.WriteLine($"{DateTime.Now}: {message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error writing to log file: {ex.Message}");
+            }
+        }
+
+
         private static readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
 
         public static int maxId = 0;
-
 
         public static string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
@@ -36,31 +63,33 @@ namespace Fitschool
                     }
 
                     // If the query execution is successful, break out of the retry loop
+                    Log($"Query ({query}) executed successfully");
                     break;
                 }
                 catch (Exception ex)
                 {
                     // Handle exceptions as needed
-                    Debug.WriteLine($"Error executing query: {ex.Message}");
+                    Log($"Error executing query ({query}): {ex.Message}");
 
                     DialogResult option;
                     if (retryCount >= maxRetries - 1)
                     {
-                        Debug.WriteLine("Maximum retries reached. Exiting.");
+                        Log("Maximum retries reached. User has choice to exit.");
                         option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                         if (option == DialogResult.Yes)
                         {
+                            Log("Application closed due to connection error");
                             Environment.Exit(0);
                         }
                     }
                     else
                     {
                         option = MessageBox.Show("Fout bij ophalen van gegevens. Is de VPN ingeschakeld?\nAls u annuleert, kunnen er fouten optreden.", "Fout", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                        Log("Problem with connection, user chooses: " + option.ToString());
                     }
 
                     if (option != DialogResult.Retry)
                     {
-                        // do not retry
                         break;
                     }
                     retryCount++;
@@ -83,8 +112,7 @@ namespace Fitschool
             // Try to convert the age to an integer
             if (!int.TryParse(age, out int ageInt))
             {
-                MessageBox.Show("Er is een fout opgetreden bij het omzetten van de leeftijd naar een geheel getal. De leeftijd is ingesteld op 0.",
-                                                   "Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log("Failed to convert age to an integer");
                 return 0;
             }
             return ageInt;
@@ -94,9 +122,7 @@ namespace Fitschool
         {
             if (!int.TryParse(ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id)), out int points))
             {
-                // failed to convert points to an integer
-                MessageBox.Show("Er is een fout opgetreden bij het omzetten van punten naar een geheel getal. De punten zijn ingesteld op 0.",
-                                "Error parsing output", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log("Failed to convert points to an integer");
                 return 0;
             }
             // when the conversion is successful, return the points
@@ -112,10 +138,12 @@ namespace Fitschool
             if (rowsAffected > 0)
             {
                 MessageBox.Show($"Gebruiker succesvol verwijderd. ID: {id}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Log($"User with ID {id} removed");
             }
             else
             {
                 MessageBox.Show("Er is een fout opgetreden bij het verwijderen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log($"Failed to remove user with ID {id}");
             }
         }
 
@@ -125,16 +153,17 @@ namespace Fitschool
             int newPoints = currentPoints + pointsToChange; // calculate the new amount of points
 
             // Execute the query and get the amount of rows affected
+            Log($"Updating points for user with ID {id} to {newPoints}, difference: {pointsToChange}");
             string stringRowsAffected = ExecuteQuery("UPDATE gebruikers SET punten_totaal = @newPoints WHERE gebruiker_id = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
             int rowsAffected = Convert.ToInt32(stringRowsAffected);
 
             if (rowsAffected > 0) //check if the query was successful
             {
-                Debug.WriteLine("Punten succesvol toegevoegd.");
+                Log("Punten succesvol gewijzigd.");
             }
             else
             {
-                Debug.WriteLine("Punten toevoegen is mislukt.");
+                Log("Punten toevoegen is mislukt.");
             }
         }
     }

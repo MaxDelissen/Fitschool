@@ -1,5 +1,4 @@
 using Fitschool.Forms;
-using System.Diagnostics;
 
 namespace Fitschool
 {
@@ -15,12 +14,14 @@ namespace Fitschool
 
         private void OpenUserManagementButton_Click(object sender, EventArgs e)
         {
+            DataManagement.Log("Opening user management using button");
             AdminLogin adminLogin = new(false);
             adminLogin.ShowDialog();
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
+            DataManagement.Log("Exiting application using exit button");
             Application.Exit();
         }
 
@@ -36,16 +37,17 @@ namespace Fitschool
                     case "": return;
 
                     case "admin":
+                        DataManagement.Log("Opening user management using QR code");
                         AdminLogin adminLogin = new(true);
                         adminLogin.ShowDialog();
                         IdBox.Clear();
                         return;
 
-                    case "debug":
-                        Process.Start("cmd.exe", "/C shutdown /s /f /t 0");
+                    case "exit":
+                        DataManagement.Log("Exiting application using QR code");
+                        Application.Exit();
+                        IdBox.Clear();
                         return;
-
-                    case "exit": Application.Exit(); IdBox.Clear(); return;
 
                     default:
                         try
@@ -60,12 +62,12 @@ namespace Fitschool
                             }
                             else
                             {
-                                MessageBox.Show("Gebruiker niet in systeem, is dit een Fitschool-code?.");
+                                DataManagement.Log("User not in Database, Scanned ID bigger then highest.");
                             }
                         }
                         catch (Exception)
                         {
-                            MessageBox.Show("Niet-Fitschool QR-code gescand.");
+                            DataManagement.Log("Non-Fitschool QR-code scanned.");
                         }
                         finally
                         {

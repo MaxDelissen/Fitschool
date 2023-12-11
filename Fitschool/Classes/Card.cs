@@ -5,10 +5,9 @@ using System.Drawing.Printing;
 
 namespace Fitschool.Classes
 {
-    public class CardDesign
+    public class Card
     {
-        public string userId { get; set; }
-        public string? name { get; set; }
+        public User User { get; set; }
 
         public enum CardDesigns
         {
@@ -18,12 +17,12 @@ namespace Fitschool.Classes
             eekhoorn,
             miereneter,
             rodePanda,
-            //schatkaart
+            schatkaart
         }
 
-        public CardDesign(string userId)
+        public Card(User User)
         {
-            this.userId = userId;
+            this.User = User;
         }
 
         public Bitmap GenerateCard(CardDesigns design)
@@ -31,10 +30,10 @@ namespace Fitschool.Classes
             Bitmap card = new Bitmap(getPath(design));
 
             int CoordsX = 21; int CoordsY = 60;
-            //if (design == CardDesigns.schatkaart)
-            //{
-            //    CoordsX = 225; CoordsY = 23;
-            //}
+            if (design == CardDesigns.schatkaart)
+            {
+                CoordsX = 225; CoordsY = 23;
+            }
 
             Bitmap qr = GenerateQR();
 
@@ -59,12 +58,27 @@ namespace Fitschool.Classes
                     int textX = (card.Width - textWidth) / 2; // X coordinate of the text area (centered horizontally)
                     int textY = 150; // Y coordinate of the text area (below image)
 
+                    if (design == CardDesigns.schatkaart)
+                    {
+                        textX = 12; textY = 12;
+                        stringFormat.Alignment = StringAlignment.Near;
+                        stringFormat.LineAlignment = StringAlignment.Near;
+                        textBrush = Brushes.Black;
+                        textFont = new Font("", 18, FontStyle.Bold);
+                    }
+
                     RectangleF textRect = new RectangleF(textX, textY, textWidth, textHeight);
 
 
                     // Draw the 'name' text onto the card
-                    graphics.DrawString(name, textFont, textBrush, textRect, stringFormat);
+                    graphics.DrawString(User.Name, textFont, textBrush, textRect, stringFormat);
                 }
+                DataManagement.Log("Card generated successfully");
+            }
+            catch (Exception ex)
+            {
+                DataManagement.Log($"Error generating card: {ex.Message}");
+                MessageBox.Show("Er ging iets mis met het maken van de pas.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -76,10 +90,10 @@ namespace Fitschool.Classes
         private Bitmap GenerateQR()
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(userId, QRCodeGenerator.ECCLevel.Q);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(User.Id.ToString(), QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(5, Color.Black, Color.White, true);
-
+            DataManagement.Log("QR code generated");
             return qrCodeImage;
         }
 
@@ -94,11 +108,14 @@ namespace Fitschool.Classes
                 CardDesigns.eekhoorn => "eekhoorn.png",
                 CardDesigns.miereneter => "miereneter.png",
                 CardDesigns.rodePanda => "rodePanda.png",
-                //CardDesigns.schatkaart => "schatkaart.png",
+                CardDesigns.schatkaart => "schatkaart.png",
                 _ => "default.png"
             };
-            return
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Fitschool\Pasjes Template", path);
+
+            string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string templateFilePath = Path.Combine(appDirectory, "Templates", path);
+
+            return templateFilePath;
         }
 
         public void SaveCard(Bitmap card)
@@ -107,26 +124,41 @@ namespace Fitschool.Classes
             saveFileDialog.Filter = "PNG Image|*.png";
             saveFileDialog.Title = "Waar wil je de pas opslaan?";
             saveFileDialog.AddExtension = true;
-            saveFileDialog.FileName = $"Pas {name}";
+            saveFileDialog.FileName = $"Pas {User.Name}";
 
             DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == DialogResult.OK)
             {
+                DataManagement.Log("Saving card");
                 string fileName = saveFileDialog.FileName;
 
                 if (fileName != "")
                 {
-                    card.Save(fileName, ImageFormat.Png);
+                    try
+                    {
+                        card.Save(fileName, ImageFormat.Png);
+                        DataManagement.Log("Card saved successfully");
+                    }
+                    catch (Exception ex)
+                    {
+                        DataManagement.Log($"Error saving card: {ex.Message}");
+                        MessageBox.Show("Er is een fout opgetreden tijdens het opslaan van de pas.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
 
         public void PrintCard(Bitmap card)
         {
+            DataManagement.Log("Printing card");
             PrintDocument printDocument = new();
             printDocument.PrintPage += (sender, e) =>
             {
+                if (e == null)
+                {
+                    return;
+                }
                 RectangleF printArea = e.MarginBounds;
 
                 // Calculate the position to maintain the original aspect ratio
@@ -166,10 +198,11 @@ namespace Fitschool.Classes
                 {
                     // Start the printing process
                     printDocument.Print();
+                    DataManagement.Log("Card send to printer successfully");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Er is een fout opgetreden tijdens het afdrukken: " + ex.Message, "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DataManagement.Log("Printing failed: " + ex.Message);
                 }
             }
         }
