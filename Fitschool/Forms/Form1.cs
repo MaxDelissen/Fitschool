@@ -8,6 +8,7 @@ namespace Fitschool
 
         public Form1()
         {
+            this.DoubleBuffered = true;
             InitializeComponent();
             IdBox.KeyPress += IdBox_KeyPressed;
         }
@@ -53,7 +54,7 @@ namespace Fitschool
                         try
                         {
                             int userId = Convert.ToInt32(input);
-                            if (userId < DataManagement.maxId)
+                            if (userId < int.Parse(new DataManagement().ExecuteQuery("SELECT MAX(gebruiker_id) AS highest FROM gebruikers;"))) // Check if user exists
                             {
                                 CurrentUser = new User(userId);
                                 Keuzescherm keuzescherm = new(this, CurrentUser);

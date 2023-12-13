@@ -1,4 +1,5 @@
 ﻿using Fitschool.Classes;
+using Fitschool.Forms;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 
@@ -24,19 +25,17 @@ namespace Fitschool
         private void AddUserButton_Click(object sender, EventArgs e)
         {
             DataManagement.Log("Adding user");
-            string naam = NameBox.Text;
-            int leeftijd = Convert.ToInt32(LeeftijdSelector.Value);
 
-            string email = textBoxEmail.Text;
-            if (!IsValidEmail(email))
+            if (!ValidateInput())
             {
-                MessageBox.Show("Please enter a valid email address.", "Invalid Email", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                DataManagement.Log("Invalid email entered");
                 return;
             }
 
+            string naam = NameBox.Text;
+            decimal leeftijd = LeeftijdSelector.Value;
+            string email = textBoxEmail.Text;
             //adding user, and getting the last inserted ID
-            int lastInsertID = Convert.ToInt32(DataManagement.ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email)));
+            int lastInsertID = Convert.ToInt32(new DataManagement().ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email)));
             if (lastInsertID <= 0)
             {
                 MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -58,7 +57,41 @@ namespace Fitschool
 
         private void RemoveUserButton_Click(object sender, EventArgs e)
         {
-            DataManagement.RemoveUser(Convert.ToInt32(IdToDelete.Value));
+            new DataManagement().RemoveUser(Convert.ToInt32(IdToDelete.Value));
+        }
+
+        private bool ValidateInput()
+        {
+            string naam = NameBox.Text;
+            if (naam.Length > 50)
+            {
+                MessageBox.Show("De naam mag niet langer zijn dan 50 karakters.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DataManagement.Log("Name too long: " + naam);
+                return false;
+            }
+
+            if (!int.TryParse(LeeftijdSelector.Value.ToString(), out int _))
+            {
+                MessageBox.Show("De leeftijd moet een getal zijn.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DataManagement.Log("Invalid age entered: " + LeeftijdSelector.Value);
+                return false;
+            }
+
+            string email = textBoxEmail.Text;
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Please enter a valid email address.", "Invalid Email", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                DataManagement.Log("Invalid email entered");
+                return false;
+            }
+
+            if (ContainsSQLInjection(naam) || ContainsSQLInjection(email))
+            {
+                Application.Exit();
+                return false;
+            }
+
+            return true;
         }
 
         private static bool IsValidEmail(string email)
@@ -79,6 +112,19 @@ namespace Fitschool
                 DataManagement.Log("Regex match timeout exception");
                 return false;
             }
+        }
+
+        private bool ContainsSQLInjection(string input)
+        {
+            
+            if (input.Contains(";"))
+            {
+                DataManagement.Log($"------------------SQL Injection detected!------------------\nExiting...");
+                MessageBox.Show("SQL injection detected, this will be reported and the application will now close.", "SQL Injection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
+            }
+            
+            return false;
         }
     }
 }

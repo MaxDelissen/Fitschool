@@ -22,6 +22,7 @@ namespace Fitschool
         private readonly Order order;
         public FormShop(Keuzescherm keuzeScherm, User user)
         {
+            this.DoubleBuffered = true;
             InitializeComponent();
             this.keuzeScherm = keuzeScherm;
             this.order = new(user);

@@ -32,104 +32,88 @@ namespace Fitschool
             }
         }
 
+        private readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
 
-        private static readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
-
-        public static int maxId = 0;
-
-        public static string ExecuteQuery(string query, params MySqlParameter[] parameters)
+        public string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
             string result = "";
-            int maxRetries = 3; // maximum number of retries trying to connect to the database
+            int maxRetries = 3;
             int retryCount = 0;
 
             while (retryCount < maxRetries)
             {
                 try
                 {
-                    using MySqlConnection connection = new(connectionAddress);
-                    connection.Open();
-
-                    using MySqlCommand command = new(query, connection);
-
-                    // Add parameters if provided
-                    command.Parameters.AddRange(parameters);
-
-                    // Execute the query
-                    using MySqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        result += reader[0].ToString();
-                    }
-
+                    result = ExecuteQueryWithRetry(query, parameters);
                     // If the query execution is successful, break out of the retry loop
                     Log($"Query ({query}) executed successfully");
                     break;
                 }
                 catch (Exception ex)
                 {
-                    // Handle exceptions as needed
-                    Log($"Error executing query ({query}): {ex.Message}");
-
-                    DialogResult option;
-                    if (retryCount >= maxRetries - 1)
-                    {
-                        Log("Maximum retries reached. User has choice to exit.");
-                        option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-                        if (option == DialogResult.Yes)
-                        {
-                            Log("Application closed due to connection error");
-                            Environment.Exit(0);
-                        }
-                    }
-                    else
-                    {
-                        option = MessageBox.Show("Fout bij ophalen van gegevens. Is de VPN ingeschakeld?\nAls u annuleert, kunnen er fouten optreden.", "Fout", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                        Log("Problem with connection, user chooses: " + option.ToString());
-                    }
-
-                    if (option != DialogResult.Retry)
-                    {
-                        break;
-                    }
-                    retryCount++;
+                    HandleQueryExecutionError(ex, query, ref retryCount, maxRetries);
                 }
             }
             return result;
         }
 
-        public static string IdToName(int id)
+        private string ExecuteQueryWithRetry(string query, params MySqlParameter[] parameters)
         {
-            string name = ExecuteQuery("SELECT naam FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
+            string result = "";
 
-            return name;
-        }
+            using MySqlConnection connection = new MySqlConnection(connectionAddress);
+            connection.Open();
 
-        public static int IdToAge(int id)
-        {
-            string age = ExecuteQuery("SELECT leeftijd FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
+            using MySqlCommand command = new MySqlCommand(query, connection);
+            command.Parameters.AddRange(parameters);
 
-            // Try to convert the age to an integer
-            if (!int.TryParse(age, out int ageInt))
+            using MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                Log("Failed to convert age to an integer");
-                return 0;
+                result += reader[0].ToString(); // Adjust this based on the expected result
             }
-            return ageInt;
+
+            return result;
         }
 
-        public static int IdToPoints(int id) // ID to the total amount of points in the database
+        private void HandleQueryExecutionError(Exception ex, string query, ref int retryCount, int maxRetries)
         {
-            if (!int.TryParse(ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id)), out int points))
+            Log($"Error executing query ({query}): {ex.Message}");
+
+            if (retryCount >= maxRetries - 1)
             {
-                Log("Failed to convert points to an integer");
-                return 0;
+                HandleMaxRetryReached(ex);
             }
-            // when the conversion is successful, return the points
-            return points;
+            else
+            {
+                HandleRetryOption(ref retryCount);
+            }
         }
 
-        public static void RemoveUser(int id)
+        private void HandleMaxRetryReached(Exception ex)
+        {
+            Log("Maximum retries reached. User has choice to exit.");
+            DialogResult option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+
+            if (option == DialogResult.Yes)
+            {
+                Log("Application closed due to connection error");
+                Environment.Exit(0);
+            }
+        }
+
+        private void HandleRetryOption(ref int retryCount)
+        {
+            DialogResult option = MessageBox.Show("Fout bij ophalen van gegevens. Is de VPN ingeschakeld?\nAls u annuleert, kunnen er fouten optreden.", "Fout", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+            Log("Problem with connection, user chooses: " + option.ToString());
+
+            if (option != DialogResult.Retry)
+            {
+                retryCount++;
+            }
+        }
+
+        public void RemoveUser(int id) //TODO: move to FormUserManagement, DataManagement only responsible for direct database interaction
         {
             // query to remove a user from the database
             int rowsAffected = 1;
@@ -147,9 +131,17 @@ namespace Fitschool
             }
         }
 
-        public static void WritePointsToDB(int id, int pointsToChange)
+        public void WritePointsToDB(int id, int pointsToChange)
         {
-            int currentPoints = IdToPoints(id);
+            int currentPoints = 0;
+            try
+            {
+                currentPoints = int.Parse(ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id))); // get the current amount of points
+            }
+            catch (Exception ex)
+            {
+                Log("Failed to get current points: " + ex.Message);
+            }
             int newPoints = currentPoints + pointsToChange; // calculate the new amount of points
 
             // Execute the query and get the amount of rows affected

@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormActiviteiten));
             buttonBackActiviteiten = new Button();
             buttonPushUps = new Button();
+            buttonTTT = new Button();
             SuspendLayout();
             // 
             // buttonBackActiviteiten
@@ -61,12 +62,29 @@
             buttonPushUps.UseVisualStyleBackColor = false;
             buttonPushUps.Click += buttonPushUps_Click;
             // 
+            // buttonTTT
+            // 
+            buttonTTT.BackColor = Color.Yellow;
+            buttonTTT.FlatAppearance.BorderSize = 0;
+            buttonTTT.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonTTT.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonTTT.FlatStyle = FlatStyle.Flat;
+            buttonTTT.Font = new Font("Segoe UI", 48F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonTTT.Location = new Point(724, 158);
+            buttonTTT.Name = "buttonTTT";
+            buttonTTT.Size = new Size(472, 358);
+            buttonTTT.TabIndex = 2;
+            buttonTTT.Text = "TicTacToe";
+            buttonTTT.UseVisualStyleBackColor = false;
+            buttonTTT.Click += buttonTTT_Click;
+            // 
             // FormActiviteiten
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(buttonTTT);
             Controls.Add(buttonPushUps);
             Controls.Add(buttonBackActiviteiten);
             FormBorderStyle = FormBorderStyle.None;
@@ -80,5 +98,6 @@
 
         private Button buttonBackActiviteiten;
         private Button buttonPushUps;
+        private Button buttonTTT;
     }
 }

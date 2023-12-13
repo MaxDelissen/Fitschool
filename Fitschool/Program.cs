@@ -10,14 +10,22 @@ namespace Fitschool
 
             DataManagement.Log("Starting application...");
             DataManagement.Log("Initial connection check:");
-            string connectioncheck = DataManagement.ExecuteQuery("SELECT MAX(gebruiker_id) AS highest FROM gebruikers;");
+            string connectioncheck = new DataManagement().ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = 1;");
             if (string.IsNullOrEmpty(connectioncheck))
             {
                 DataManagement.Log("Failed to connect to database, this may result in future errors, continuing...");
             }
             else
             {
-                DataManagement.maxId = int.Parse(connectioncheck);
+                if (int.Parse(connectioncheck) < 500)
+                {
+                    DataManagement.Log("Points Timo too low, setting points to 500");
+                    new DataManagement().ExecuteQuery("UPDATE gebruikers SET punten_totaal = 500 WHERE gebruiker_id = 1;");
+                }
+                else
+                {
+                    DataManagement.Log("Connected to database!");
+                }
                 DataManagement.Log("Connected to database!");
             }
 

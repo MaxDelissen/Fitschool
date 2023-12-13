@@ -13,10 +13,12 @@ namespace Fitschool.Classes.Shop
         public Product(int id)
         {
             this.Id = id + 1; // +1 because the database starts at 1 instead of 0
-            Name = DataManagement.ExecuteQuery("SELECT product_naam FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id));
-            Price = Convert.ToInt32(DataManagement.ExecuteQuery("SELECT product_prijs FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id)));
-            Stock = Convert.ToInt32(DataManagement.ExecuteQuery("SELECT product_voorraad FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id)));
-            ImageUrl = DataManagement.ExecuteQuery("SELECT product_afbeelding FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id));
+
+            DataManagement dataManagement = new();
+            Name = dataManagement.ExecuteQuery("SELECT product_naam FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id));
+            Price = Convert.ToInt32(dataManagement.ExecuteQuery("SELECT product_prijs FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id)));
+            Stock = Convert.ToInt32(dataManagement.ExecuteQuery("SELECT product_voorraad FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id)));
+            ImageUrl = dataManagement.ExecuteQuery("SELECT product_afbeelding FROM producten WHERE product_id = @id", new MySqlParameter("@id", Id));
         }
 
         public bool InStock()
@@ -33,7 +35,7 @@ namespace Fitschool.Classes.Shop
 
         public void RemoveFromStock(int amount)
         {
-            DataManagement.ExecuteQuery("UPDATE producten SET product_voorraad = product_voorraad - @amount WHERE product_id = @id", new MySqlParameter("@id", Id), new MySqlParameter("@amount", amount));
+            new DataManagement().ExecuteQuery("UPDATE producten SET product_voorraad = product_voorraad - @amount WHERE product_id = @id", new MySqlParameter("@id", Id), new MySqlParameter("@amount", amount));
         }
     }
 }

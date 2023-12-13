@@ -12,10 +12,12 @@ namespace Fitschool
         // Constructor
         public User(int userId)
         {
+            DataManagement.Log($"Creating user object for user with ID {userId}");
+            DataManagement DB = new();
             Id = userId;
-            Name = DataManagement.IdToName(Id);
-            Points = DataManagement.IdToPoints(Id);
-            EmailParents = DataManagement.ExecuteQuery("SELECT email_ouder FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id));
+            Name = DB.ExecuteQuery("SELECT naam FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id));
+            Points = int.Parse(DB.ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id)));
+            EmailParents = DB.ExecuteQuery("SELECT email_ouder FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id));
             //MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
         }
 
@@ -29,7 +31,7 @@ namespace Fitschool
         public int UpdatePoints(int amountToChange)
         {
             Points += amountToChange;
-            DataManagement.WritePointsToDB(Id, amountToChange);
+            new DataManagement().WritePointsToDB(Id, amountToChange);
             return Points;
         }
     }

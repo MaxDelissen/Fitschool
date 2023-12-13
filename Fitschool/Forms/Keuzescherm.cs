@@ -6,6 +6,7 @@
         private readonly User user;
         public Keuzescherm(Form mainForm, User user)
         {
+            this.DoubleBuffered = true;
             InitializeComponent();
             this.user = user;
             this.mainForm = mainForm;
