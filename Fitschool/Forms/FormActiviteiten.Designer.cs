@@ -32,6 +32,7 @@
             buttonBackActiviteiten = new Button();
             buttonPushUps = new Button();
             buttonTTT = new Button();
+            IdBox = new TextBox();
             SuspendLayout();
             // 
             // buttonBackActiviteiten
@@ -78,12 +79,23 @@
             buttonTTT.UseVisualStyleBackColor = false;
             buttonTTT.Click += buttonTTT_Click;
             // 
+            // IdBox
+            // 
+            IdBox.BackColor = Color.FromArgb(6, 225, 219);
+            IdBox.BorderStyle = BorderStyle.None;
+            IdBox.Location = new Point(1887, 1009);
+            IdBox.MaxLength = 5;
+            IdBox.Name = "IdBox";
+            IdBox.Size = new Size(19, 20);
+            IdBox.TabIndex = 5;
+            // 
             // FormActiviteiten
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(IdBox);
             Controls.Add(buttonTTT);
             Controls.Add(buttonPushUps);
             Controls.Add(buttonBackActiviteiten);
@@ -91,7 +103,9 @@
             Name = "FormActiviteiten";
             Text = "FormActiviteiten";
             WindowState = FormWindowState.Maximized;
+            Load += FormActiviteiten_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -99,5 +113,6 @@
         private Button buttonBackActiviteiten;
         private Button buttonPushUps;
         private Button buttonTTT;
+        private TextBox IdBox;
     }
 }

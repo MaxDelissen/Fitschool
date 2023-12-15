@@ -1,119 +1,99 @@
 ﻿using Fitschool.Forms;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Fitschool.Classes
 {
+    //Class to handle starting, running and completing activities. Started from FormActiviteiten.cs
     public class Activity
     {
         private FormActiviteiten form;
-        FormActiviteiten.Activity chosenActivity;
+        ActivityType chosenActivity;
 
         private User LoggedInUser;
-        private User SecondUser;
-        public User Winner { get; private set; }
+        public User? SecondUser;
+        public User? Winner { get; private set; }
 
-        public Activity(Activity activity, FormActiviteiten form)
+        public Activity(ActivityType activity, FormActiviteiten form)
         {
             chosenActivity = activity;
-            LoggedInUser = form.user;
+            LoggedInUser = form.loggedInUser;
             this.form = form;
         }
-
-        public enum Activitys
-        {
-            PushUps,
-            TicTacToe,
-            Math,
-            Language
-        }
-
+        
         public void StartActivity()
         {
             switch (chosenActivity)
             {
-                case FormActiviteiten.Activity.PushUps:
+                case ActivityType.PushUps:
                     PushUps();
                     break;
-                case FormActiviteiten.Activity.TicTacToe:
+                case ActivityType.TicTacToe:
                     TicTacToe();
                     break;
-                case FormActiviteiten.Activity.Math:
+                case ActivityType.Math:
                     //Math();
                     break;
-                case FormActiviteiten.Activity.Language:
+                case ActivityType.Language:
                     //Language();
                     break;
             }
         }
 
+        public void SetWinner(User winner)
+        {
+            Winner = winner;
+        }
+
         private void PushUps()
         {
-            string arduinoPort = Arduino.arduinoPort;
-            try
-            {
-                SerialPort port = new(arduinoPort, 9600); //open poort
-                port.Open();
-                port.WriteLine("start"); //stuur commando om programma te starten.
-                string readout = string.Empty; //aanmaken var. om output arduino in op te slaan.
-
-                MessageBox.Show("Ga op de grond liggen, boven de sensor.\nDruk dan op OK om te beginnen.");
-
-                Thread.Sleep(1000); //wachten, zodat arduino tijd heeft om te starten, en het kind de tijd geeft om te gaan liggen.
-                while (true) //loop om te blijven lezen tot de arduino het commando stuurt dat de activiteit is behaald.
-                {
-                    port.ReadTimeout = 1000; //een timeout van 1 seconde, om te voorkomen dat het programma blijft wachten / soft crashed.
-                    try //try catch om de timeout te vangen.
-                    {
-                        readout = port.ReadLine(); //lees de output van de arduino.
-                    }
-                    catch (TimeoutException) { } //vang de timeout, hierna opnieuw proberen te lezen.
-
-                    if (readout == "behaald\r") //arduino stuurt "behaald" als de activiteit is behaald, \r is een carriage return, om de string te vergelijken moet deze ook worden meegegeven.
-                    {
-                        ActivityComplete(LoggedInUser, FormActiviteiten.Activity.PushUps); //roep de functie aan om de activiteit te voltooien, geef de activiteitID (=1) en het aantal herhalingen (=10) mee.
-                        //port.WriteLine("stop"); //stuur commando om de arduino te stoppen.
-                        port.Close(); //sluit de poort.
-                        break; //stop de loop.
-                    }
-                }
-            }
-            catch (Exception ex) //waarschijnlijk een fout met het openen v.d. poort.
-            {
-                MessageBox.Show("Df is iets misgegaan met het starten van deze oefening,\nZorg ervoor dat de push-up sensor verbonden is, en probeer het opnieuw.", "fout " + ex.Message);
-            }
+            PushUps pushUps = new();
+            pushUps.Start();
+            ActivityComplete(LoggedInUser); 
         }
 
         private void TicTacToe()
         {
-            FormTicTacToe formTicTacToe = new(form);
-            formTicTacToe.Show();
+            Winner = null;
+            SecondUser = form.secondUser;
+            FormTicTacToe formTicTacToe = new(this ,LoggedInUser, SecondUser ?? new(1));
+            formTicTacToe.ShowDialog();
+            //activity is ran from FormTicTacToe.cs, when the game is over, the winner is set and the form is closed. coming back here.
+            ActivityComplete(Winner);
         }
 
-        private void GetSecondUser()
+        public void ActivityComplete(User? winner)
         {
+            int points;
 
-        }
-
-        private void ActivityComplete(User triumphantUser, FormActiviteiten.Activity completedActivity)
-        {
-            var points = completedActivity switch
+            switch (chosenActivity)
             {
-                FormActiviteiten.Activity.PushUps => 10,    //1 point per pushup
-                FormActiviteiten.Activity.TicTacToe => 3,   //to be assigned
-                FormActiviteiten.Activity.Math => 5,        //to be assigned
-                FormActiviteiten.Activity.Language => 5,    //to be assigned
-                _ => 0,
-            };
-            
-            MessageBox.Show($"Gefeliciteerd {triumphantUser.Name}, Je hebt voor het doen van deze activiteit {points}💰 verdiend");
-            new DataManagement().WritePointsToDB(LoggedInUser.Id, points); //Schrijf de punten naar de database.
-            LoggedInUser.UpdatePoints(points); //Update de punten in de applicatie.
+                case ActivityType.PushUps:
+                    points = 10; // 1 point per pushup
+                    break;
+                case ActivityType.TicTacToe:
+                    points = 3; // to be assigned
+                    break;
+                case ActivityType.Math:
+                    points = 5; // to be assigned
+                    break;
+                case ActivityType.Language:
+                    points = 5; // to be assigned
+                    break;
+                default:
+                    points = 0;
+                    break;
+            }
+
+            if (winner == null) //if no winner, it's a draw.
+            {
+                MessageBox.Show("Gelijkspel!\nJullie kunnen de activiteit opnieuw starten, én hebben allebei 1💰 verdient!");
+                int devidedPoints = (int)Math.Floor(points / 2.0); //deel de punten door 2, en rond af naar beneden.
+                LoggedInUser.UpdatePoints(devidedPoints); //update points for both users, both get a point for the effort.
+                SecondUser?.UpdatePoints(devidedPoints); //if second user is null, it will not update points, as there is no second user.
+                return;
+            }
+            MessageBox.Show($"Gefeliciteerd {winner.Name}, Je hebt voor het doen van deze activiteit {points}💰 verdiend"); // 1 winner
+            winner.UpdatePoints(points); //Update de punten in de applicatie.
         }
     }
 }

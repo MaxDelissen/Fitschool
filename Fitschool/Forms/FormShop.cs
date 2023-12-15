@@ -6,18 +6,6 @@ namespace Fitschool
 {
     public partial class FormShop : Form
     {
-        private readonly Product[] products = new Product[8]
-        {
-            new Product(0),
-            new Product(1),
-            new Product(2),
-            new Product(3),
-            new Product(4),
-            new Product(5),
-            new Product(6),
-            new Product(7)
-        };
-
         private readonly Keuzescherm keuzeScherm;
         private readonly Order order;
         public FormShop(Keuzescherm keuzeScherm, User user)
@@ -28,7 +16,7 @@ namespace Fitschool
             this.order = new(user);
 
             LoadData();
-            labelTotalPoints.Text = $"{user.Points}🪙"; //the character at the end is a coin emoji
+            labelTotalPoints.Text = $"{user.Points}💰"; //the character at the end is a coin emoji
         }
 
         private void ButtonBackShop_Click(object sender, EventArgs e)
@@ -50,24 +38,25 @@ namespace Fitschool
             {
                 if (Controls.Find($"buttonShop{i}", true).FirstOrDefault() is Button btn) //change button text to price
                 {
-                    btn.Text = $"{products[i].Price}🪙";
+                    btn.Tag = new Product(i);
+                    btn.Text = $"{((Product)btn.Tag).Price}💰";
                     btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderColor = BackColor;
-                }
 
-                if (Controls.Find($"pictureShop{i}", true).FirstOrDefault() is PictureBox pictureBox) //add image to picturebox
-                {
-                    try
+                    if (Controls.Find($"pictureShop{i}", true).FirstOrDefault() is PictureBox pictureBox) //add image to picturebox
                     {
-                        pictureBox.Load(products[i].ImageUrl); // load the image from the URL
-                        pictureBox.BackColor = Color.Transparent;
+                        try
+                        {
+                            pictureBox.Load(((Product)btn.Tag).ImageUrl); // load the image from the URL
+                            pictureBox.BackColor = Color.Transparent;
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle any exceptions that might occur while loading the image
+                            Debug.WriteLine($"Error loading image for product {i}: {ex.Message}");
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        // Handle any exceptions that might occur while loading the image
-                        Debug.WriteLine($"Error loading image for product {i}: {ex.Message}");
-                    }
-                }
+                }              
             }
         }
 
@@ -75,12 +64,13 @@ namespace Fitschool
         {
             Button clickedButton = sender as Button ?? buttonBackShop;
 
-            if (int.TryParse(clickedButton.Name.Replace("buttonShop", ""), out int productID))
+            Product product = (Product)clickedButton.Tag;
+            if(!order.Add(product))
             {
-                order.Add(productID);
-                labelTotalPrice.Text = $"Totaal: {order.TotalPrice}🪙";
-                shoppingCart.Items.Add(products[productID].Name);
+                MessageBox.Show("Dit product is niet op voorraad.", "Niet op voorraad", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            labelTotalPrice.Text = $"Totaal: {order.TotalPrice}💰";
+            shoppingCart.Items.Add(((Product)clickedButton.Tag).Name);
         }
     }
 }

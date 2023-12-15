@@ -42,7 +42,7 @@
 
         public void UpdatePoints()
         {
-            labelPunten.Text = user.Points.ToString();
+            labelPunten.Text = (user.Points.ToString() + "💰");
         }
 
         private void button1_Click(object sender, EventArgs e) //back button, forgot to rename it

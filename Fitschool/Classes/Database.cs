@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 using System.Diagnostics;
+using System.Text;
 
 namespace Fitschool
 {
@@ -34,88 +36,99 @@ namespace Fitschool
 
         private readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
 
+        #pragma warning disable CS8600, CS8603 // Converting null literal or possible null value to non-nullable type, intended behaviour, its fine trust me bro :)
         public string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
             string result = "";
-            int maxRetries = 3;
+            int maxRetries = 3; // maximum number of retries trying to connect to the database
             int retryCount = 0;
 
             while (retryCount < maxRetries)
             {
                 try
                 {
-                    result = ExecuteQueryWithRetry(query, parameters);
+                    using MySqlConnection connection = new(connectionAddress);
+                    connection.Open();
+
+                    using MySqlCommand command = new(query, connection);
+
+                    // Add parameters if provided
+                    command.Parameters.AddRange(parameters);
+
+                    List<string> results = new List<string>(); // Create a list to hold the results
+
+                    // Execute the query
+                    using MySqlDataReader reader = command.ExecuteReader();
+                    {
+                        //int fieldCount = reader.FieldCount; // Get the number of fields returned by the query
+
+                        while (reader.Read())
+                        {
+                            if (reader.FieldCount == 1)
+                            {
+                                // Single output query
+                                result = reader[0].ToString();
+                            }
+                            else
+                            {
+                                // Multiple output query
+                                StringBuilder rowResult = new StringBuilder();
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                {
+                                    rowResult.Append(reader[i].ToString());
+                                    if (i < reader.FieldCount - 1)
+                                    {
+                                        rowResult.Append(","); // Add a comma between values
+                                    }
+                                }
+                                //results.Add(rowResult.ToString());
+                                result = rowResult.ToString();
+                            }
+                        }
+                    }
+                    //string[] resultArray = results.ToArray();                                             ///not needed?
+                    //result = string.Join("-", resultArray); // Join the results with a newline character
+
                     // If the query execution is successful, break out of the retry loop
                     Log($"Query ({query}) executed successfully");
                     break;
                 }
                 catch (Exception ex)
                 {
-                    HandleQueryExecutionError(ex, query, ref retryCount, maxRetries);
+                    // Handle exceptions as needed
+                    Log($"Error executing query ({query}): {ex.Message}");
+
+                    DialogResult option;
+                    if (retryCount >= maxRetries - 1)
+                    {
+                        Log("Maximum retries reached. User has choice to exit.");
+                        option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                        if (option == DialogResult.Yes)
+                        {
+                            Log("Application closed due to connection error");
+                            Environment.Exit(0);
+                        }
+                    }
+                    else
+                    {
+                        option = MessageBox.Show("Fout bij ophalen van gegevens. Is de VPN ingeschakeld?\nAls u annuleert, kunnen er fouten optreden.", "Fout", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                        Log("Problem with connection, user chooses: " + option.ToString());
+                    }
+
+                    if (option != DialogResult.Retry)
+                    {
+                        break;
+                    }
+                    retryCount++;
                 }
             }
             return result;
         }
-
-        private string ExecuteQueryWithRetry(string query, params MySqlParameter[] parameters)
-        {
-            string result = "";
-
-            using MySqlConnection connection = new MySqlConnection(connectionAddress);
-            connection.Open();
-
-            using MySqlCommand command = new MySqlCommand(query, connection);
-            command.Parameters.AddRange(parameters);
-
-            using MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                result += reader[0].ToString(); // Adjust this based on the expected result
-            }
-
-            return result;
-        }
-
-        private void HandleQueryExecutionError(Exception ex, string query, ref int retryCount, int maxRetries)
-        {
-            Log($"Error executing query ({query}): {ex.Message}");
-
-            if (retryCount >= maxRetries - 1)
-            {
-                HandleMaxRetryReached(ex);
-            }
-            else
-            {
-                HandleRetryOption(ref retryCount);
-            }
-        }
-
-        private void HandleMaxRetryReached(Exception ex)
-        {
-            Log("Maximum retries reached. User has choice to exit.");
-            DialogResult option = MessageBox.Show("Maximaal aantal pogingen bereikt. Klik op 'Ja' om de applicatie af te sluiten, klik op 'Nee' om door te gaan, dit kan fouten opleveren.", "Fout: " + ex.Message, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-
-            if (option == DialogResult.Yes)
-            {
-                Log("Application closed due to connection error");
-                Environment.Exit(0);
-            }
-        }
-
-        private void HandleRetryOption(ref int retryCount)
-        {
-            DialogResult option = MessageBox.Show("Fout bij ophalen van gegevens. Is de VPN ingeschakeld?\nAls u annuleert, kunnen er fouten optreden.", "Fout", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-            Log("Problem with connection, user chooses: " + option.ToString());
-
-            if (option != DialogResult.Retry)
-            {
-                retryCount++;
-            }
-        }
+        #pragma warning restore CS8600, CS8603 // Converting null literal or possible null value to non-nullable type.
 
         public void RemoveUser(int id) //TODO: move to FormUserManagement, DataManagement only responsible for direct database interaction
         {
-            // query to remove a user from the database
+            // query to remove a loggedInUser from the database
             int rowsAffected = 1;
             ExecuteQuery($"DELETE FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", id));
 
@@ -127,7 +140,7 @@ namespace Fitschool
             else
             {
                 MessageBox.Show("Er is een fout opgetreden bij het verwijderen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Log($"Failed to remove user with ID {id}");
+                Log($"Failed to remove loggedInUser with ID {id}");
             }
         }
 
@@ -145,7 +158,7 @@ namespace Fitschool
             int newPoints = currentPoints + pointsToChange; // calculate the new amount of points
 
             // Execute the query and get the amount of rows affected
-            Log($"Updating points for user with ID {id} to {newPoints}, difference: {pointsToChange}");
+            Log($"Updating points for loggedInUser with ID {id} to {newPoints}, difference: {pointsToChange}");
             string stringRowsAffected = ExecuteQuery("UPDATE gebruikers SET punten_totaal = @newPoints WHERE gebruiker_id = @id; SELECT ROW_COUNT() AS RowsAffected;", new MySqlParameter("@newPoints", newPoints), new MySqlParameter("@id", id));
             int rowsAffected = Convert.ToInt32(stringRowsAffected);
 

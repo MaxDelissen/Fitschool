@@ -12,12 +12,15 @@ namespace Fitschool
         // Constructor
         public User(int userId)
         {
-            DataManagement.Log($"Creating user object for user with ID {userId}");
-            DataManagement DB = new();
+            DataManagement.Log($"Creating loggedInUser object for loggedInUser with ID {userId}");
             Id = userId;
-            Name = DB.ExecuteQuery("SELECT naam FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id));
-            Points = int.Parse(DB.ExecuteQuery("SELECT punten_totaal FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id)));
-            EmailParents = DB.ExecuteQuery("SELECT email_ouder FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id));
+
+            DataManagement DB = new();
+            string userData = DB.ExecuteQuery("SELECT naam, punten_totaal, email_ouder FROM gebruikers WHERE gebruiker_id = @id", new MySqlParameter("@id", Id));
+            string[] userDataSplit = userData.Split(',');
+            Name = userDataSplit[0];
+            Points = int.Parse(userDataSplit[1]);
+            EmailParents = userDataSplit[2];
             //MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
         }
 

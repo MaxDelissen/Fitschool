@@ -16,32 +16,29 @@ namespace Fitschool.Classes.Shop
             Products = new List<Product>();
         }
 
-        public int Add(int productID)
+        public bool Add(Product product)
         {
-            Product product = new Product(productID);
-
             if (product.InStock())
             {
                 TotalPrice += product.Price;
                 Products.Add(product);
+                return true;
             }
             else
             {
-                MessageBox.Show("Dit product is niet meer op voorraad.", "Niet op voorraad", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
             }
-            return TotalPrice;
         }
 
-        public int Remove(int productID)
+        public bool Remove(Product product)
         {
-            Product product = new Product(productID);
-
             if (Products.Contains(product))
             {
                 TotalPrice -= product.Price;
                 Products.Remove(product);
+                return true;
             }
-            return TotalPrice;
+            return false;
         }
 
         public void Confirm()

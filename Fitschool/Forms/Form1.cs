@@ -15,7 +15,7 @@ namespace Fitschool
 
         private void OpenUserManagementButton_Click(object sender, EventArgs e)
         {
-            DataManagement.Log("Opening user management using button");
+            DataManagement.Log("Opening loggedInUser management using button");
             AdminLogin adminLogin = new(false);
             adminLogin.ShowDialog();
         }
@@ -38,7 +38,7 @@ namespace Fitschool
                     case "": return;
 
                     case "admin":
-                        DataManagement.Log("Opening user management using QR code");
+                        DataManagement.Log("Opening loggedInUser management using QR code");
                         AdminLogin adminLogin = new(true);
                         adminLogin.ShowDialog();
                         IdBox.Clear();
@@ -54,7 +54,7 @@ namespace Fitschool
                         try
                         {
                             int userId = Convert.ToInt32(input);
-                            if (userId < int.Parse(new DataManagement().ExecuteQuery("SELECT MAX(gebruiker_id) AS highest FROM gebruikers;"))) // Check if user exists
+                            if (userId <= int.Parse(new DataManagement().ExecuteQuery("SELECT MAX(gebruiker_id) AS highest FROM gebruikers;"))) // Check if loggedInUser exists
                             {
                                 CurrentUser = new User(userId);
                                 Keuzescherm keuzescherm = new(this, CurrentUser);

@@ -149,6 +149,7 @@ namespace Fitschool.Classes
             }
         }
 
+
         public void PrintCard(Bitmap card)
         {
             DataManagement.Log("Printing card");
@@ -184,7 +185,9 @@ namespace Fitschool.Classes
                 RectangleF destinationRect = new RectangleF(x, y, adjustedWidth, adjustedHeight);
                 RectangleF sourceRect = new RectangleF(0, 0, imageWidth, imageHeight);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 e.Graphics.DrawImage(card, destinationRect, sourceRect, GraphicsUnit.Pixel);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             };
 
             PrintDialog printDialog = new PrintDialog();

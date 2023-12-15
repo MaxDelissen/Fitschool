@@ -1,20 +1,37 @@
-﻿namespace Fitschool.Forms
+﻿using System.Diagnostics;
+
+namespace Fitschool.Forms
 {
     public partial class FormTicTacToe : Form
     {
-        private readonly FormActiviteiten formActiviteiten;
+        private Fitschool.Classes.Activity ActivityClass;
+
         private User loggedInPlayer;
         private User secondPlayer;
 
         private Player currentPlayer;
-        public User WinningPlayer { get; set; }
+        public User? WinningPlayer { get; set; }
 
-        public FormTicTacToe(FormActiviteiten formActiviteiten)
+        public FormTicTacToe(Fitschool.Classes.Activity ActivityClass ,User Player1, User Player2)
         {
             InitializeComponent();
-            this.formActiviteiten = formActiviteiten;
-            loggedInPlayer = formActiviteiten.user;
+            loggedInPlayer = Player1;
+            secondPlayer = Player2;
+            this.ActivityClass = ActivityClass;
+        }
+
+        private void FormTicTacToe_Load(object sender, EventArgs e)
+        {
+            labelPlayerX.Text = $"Speler X = {loggedInPlayer.Name}";
+            labelPlayerO.Text = $"Speler O = {secondPlayer.Name}";
+
             currentPlayer = Player.X;
+            labelPlayerTurn.Text = GetLabelText();
+
+            foreach (var button in Panel.Controls.OfType<Button>())
+            {
+                button.Text = "";
+            }
         }
 
         public enum Player //The loggin in player is always X, the second player is always O
@@ -23,13 +40,18 @@
             O
         }
 
-        private void Option_Click(object sender, EventArgs e)
+        private void Option_Click(object sender, EventArgs e) //When a button is clicked, the text is changed to the current player and the button is disabled
         {
             Button button = (Button)sender;
             button.Text = currentPlayer.ToString();
             button.Enabled = false;
             currentPlayer = currentPlayer == Player.X ? Player.O : Player.X;
-            CheckForWinner();
+            if (CheckForWinner())
+            {
+               ActivityClass.SetWinner(WinningPlayer);
+                this.Close();
+            }
+            labelPlayerTurn.Text = GetLabelText();
             // SUGESTION: Login second player and play against each other instead of against the computer
         }
 
@@ -62,15 +84,56 @@
 
                 if (text1 != "" && text1 == text2 && text2 == text3)
                 {
-                    MessageBox.Show($"{text1} wins!");
                     WinningPlayer = text1 == "X" ? loggedInPlayer : secondPlayer;
+                    if (WinningPlayer == loggedInPlayer)
+                    {
+                        MessageBox.Show($"{ loggedInPlayer.Name} heeft gewonnen!");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"{ secondPlayer.Name} heeft gewonnen!");
+                    }
                     return true;
                 }
             }
-
+            if (CheckForDraw())
+            {
+                this.Close();
+            }
             return false;
         }
 
+        private bool CheckForDraw()
+        {
+            Button[] gameButtons = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };
+            foreach (var button in gameButtons)
+            {
+                if (button.Text == "")
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
+        private string GetLabelText()
+        {
+            string labelText = "";
+            if (currentPlayer == Player.X)
+            {
+                labelText = $"{RemoveSurname(loggedInPlayer.Name)} is aan de beurt";
+            }
+            else
+            {
+                labelText = $"{RemoveSurname(secondPlayer.Name)} is aan de beurt";
+            }
+            return labelText;
+        }
+
+        private string RemoveSurname(string name)
+        {
+            string[] splitName = name.Split(' ');
+            return splitName[0];
+        }
     }
 }

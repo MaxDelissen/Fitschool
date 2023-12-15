@@ -24,7 +24,7 @@ namespace Fitschool
 
         private void AddUserButton_Click(object sender, EventArgs e)
         {
-            DataManagement.Log("Adding user");
+            DataManagement.Log("Adding loggedInUser");
 
             if (!ValidateInput())
             {
@@ -34,12 +34,12 @@ namespace Fitschool
             string naam = NameBox.Text;
             decimal leeftijd = LeeftijdSelector.Value;
             string email = textBoxEmail.Text;
-            //adding user, and getting the last inserted ID
+            //adding loggedInUser, and getting the last inserted ID
             int lastInsertID = Convert.ToInt32(new DataManagement().ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email)));
             if (lastInsertID <= 0)
             {
                 MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                DataManagement.Log("Failed to add user, last insertedID <= 0");
+                DataManagement.Log("Failed to add loggedInUser, last insertedID <= 0");
                 return;
             }
 
@@ -52,12 +52,47 @@ namespace Fitschool
             Bitmap card = designer.GenerateCard((Card.CardDesigns)selectStyle.SelectedItem);
             designer.SaveCard(card);
             //designer.PrintCard(card);
-            DataManagement.Log($"Card generated for user {newUser}");
+            DataManagement.Log($"Card generated for loggedInUser {newUser.Name}");
         }
 
         private void RemoveUserButton_Click(object sender, EventArgs e)
         {
-            new DataManagement().RemoveUser(Convert.ToInt32(IdToDelete.Value));
+            //new DataManagement().RemoveUser(Convert.ToInt32(IdToDelete.Value));
+            chaos(); //invoke this method to generate cards for all users, see warning below
+        }
+
+        private void chaos() //Generate cards for all users, warning: this will take a while, lag the application and generate a lot of files. This could take up to 3 minutes for 1000 users.
+        {
+            int maxID = Convert.ToInt32(new DataManagement().ExecuteQuery("SELECT MAX(gebruiker_id) FROM gebruikers"));
+            Random random = new();
+
+            string documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string folderName = "GeneratedCards"; // Name of the folder where you'll save the cards
+            string folderPath = Path.Combine(documentsFolder, folderName);
+
+            for (int i = 1; i <= maxID; i++)
+            {
+                Card designer = new(new User(i));
+
+                // Get an array of all enum values for CardDesigns
+                Array cardDesigns = Enum.GetValues(typeof(Card.CardDesigns));
+
+                // Generate a random index within the cardDesigns array length
+                int randomIndex = random.Next(cardDesigns.Length);
+
+                // Get the enum value at the random index
+                Card.CardDesigns randomCardDesign = (Card.CardDesigns)cardDesigns.GetValue(randomIndex);
+
+                Bitmap card = designer.GenerateCard((Card.CardDesigns)cardDesigns.GetValue(randomIndex));
+
+                string filePath = Path.Combine(folderPath, $"Card_{i}.png"); // Change file extension as needed
+
+                // Save the card Bitmap to the specified file path
+                card.Save(filePath);
+
+                DataManagement.Log($"Card generated for User {i}");
+            }
         }
 
         private bool ValidateInput()
