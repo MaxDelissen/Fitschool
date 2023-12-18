@@ -1,3 +1,5 @@
+using Fitschool.Classes.Activiteiten;
+
 namespace Fitschool
 {
     internal static class Program

@@ -1,5 +1,4 @@
-﻿using Fitschool.Classes;
-using System.IO.Ports;
+﻿using Fitschool.Classes.Activiteiten;
 
 namespace Fitschool.Forms
 {
@@ -90,11 +89,9 @@ namespace Fitschool.Forms
 
         private void buttonTTT_Click(object sender, EventArgs e)
         {
-            if (MultiplayerReady(secondUser))
-            {
-                Activity activity = new(ActivityType.TicTacToe, this);
-                activity.StartActivity();
-            }
+            Activity activity = new(ActivityType.TicTacToe, this);
+            activity.StartActivity();
+            IdBox.Focus();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.IO.Ports;
 
-namespace Fitschool
+namespace Fitschool.Classes.Activiteiten
 {
     public class Arduino
     {

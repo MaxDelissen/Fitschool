@@ -1,7 +1,7 @@
 ﻿using System.IO.Ports;
 
 
-namespace Fitschool.Classes
+namespace Fitschool.Classes.Activiteiten
 {
     public class PushUps
     {
