@@ -33,6 +33,7 @@
             buttonPushUps = new Button();
             buttonTTT = new Button();
             IdBox = new TextBox();
+            buttonMath = new Button();
             SuspendLayout();
             // 
             // buttonBackActiviteiten
@@ -56,7 +57,7 @@
             buttonPushUps.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonPushUps.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonPushUps.FlatStyle = FlatStyle.Flat;
-            buttonPushUps.Location = new Point(124, 158);
+            buttonPushUps.Location = new Point(333, 158);
             buttonPushUps.Name = "buttonPushUps";
             buttonPushUps.Size = new Size(472, 358);
             buttonPushUps.TabIndex = 1;
@@ -65,17 +66,16 @@
             // 
             // buttonTTT
             // 
-            buttonTTT.BackColor = Color.Yellow;
+            buttonTTT.BackColor = Color.Transparent;
             buttonTTT.FlatAppearance.BorderSize = 0;
             buttonTTT.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonTTT.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonTTT.FlatStyle = FlatStyle.Flat;
             buttonTTT.Font = new Font("Segoe UI", 48F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonTTT.Location = new Point(724, 158);
+            buttonTTT.Location = new Point(1156, 158);
             buttonTTT.Name = "buttonTTT";
             buttonTTT.Size = new Size(472, 358);
             buttonTTT.TabIndex = 2;
-            buttonTTT.Text = "TicTacToe";
             buttonTTT.UseVisualStyleBackColor = false;
             buttonTTT.Click += buttonTTT_Click;
             // 
@@ -89,12 +89,28 @@
             IdBox.Size = new Size(19, 20);
             IdBox.TabIndex = 5;
             // 
+            // buttonMath
+            // 
+            buttonMath.BackColor = Color.Transparent;
+            buttonMath.FlatAppearance.BorderSize = 0;
+            buttonMath.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonMath.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonMath.FlatStyle = FlatStyle.Flat;
+            buttonMath.Font = new Font("Segoe UI", 48F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonMath.Location = new Point(1156, 615);
+            buttonMath.Name = "buttonMath";
+            buttonMath.Size = new Size(472, 358);
+            buttonMath.TabIndex = 6;
+            buttonMath.UseVisualStyleBackColor = false;
+            buttonMath.Click += buttonMath_Click;
+            // 
             // FormActiviteiten
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(buttonMath);
             Controls.Add(IdBox);
             Controls.Add(buttonTTT);
             Controls.Add(buttonPushUps);
@@ -114,5 +130,6 @@
         private Button buttonPushUps;
         private Button buttonTTT;
         private TextBox IdBox;
+        private Button buttonMath;
     }
 }

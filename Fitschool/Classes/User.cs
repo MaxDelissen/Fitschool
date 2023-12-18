@@ -7,6 +7,7 @@ namespace Fitschool
         public int Id { get; private set; } = -1;
         public string Name { get; private set; } = string.Empty;
         public int Points { get; private set; } = -1;
+        public int Grade { get; private set; } = -1;
         public string EmailParents { get; private set; } = string.Empty;
 
         // Constructor

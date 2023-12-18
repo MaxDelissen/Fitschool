@@ -46,7 +46,8 @@ namespace Fitschool.Forms
                         {
                             secondUser = new User(userId);
                             MessageBox.Show($"2e Speler toegevoegd! Welkom {secondUser.Name}");
-                        } else MessageBox.Show("Je kan niet tegen jezelf spelen!");
+                        }
+                        else MessageBox.Show("Je kan niet tegen jezelf spelen!");
                     }
                     else
                     {
@@ -92,6 +93,12 @@ namespace Fitschool.Forms
             Activity activity = new(ActivityType.TicTacToe, this);
             activity.StartActivity();
             IdBox.Focus();
+        }
+
+        private void buttonMath_Click(object sender, EventArgs e)
+        {
+            Activity mathGame = new(ActivityType.Math, this);
+            mathGame.StartActivity();
         }
     }
 }

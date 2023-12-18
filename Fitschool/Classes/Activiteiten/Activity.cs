@@ -31,7 +31,7 @@ namespace Fitschool.Classes.Activiteiten
                     TicTacToe();
                     break;
                 case ActivityType.Math:
-                    //Math();
+                    ActivityMath();
                     break;
                 case ActivityType.Language:
                     //Language();
@@ -64,8 +64,21 @@ namespace Fitschool.Classes.Activiteiten
             ActivityComplete(Winner);
         }
 
+        private void ActivityMath()
+        {
+            FormMathGame formMathGame = new(8); //TODO: Get user grade from user object, which in turn gets it from the database.
+            formMathGame.ShowDialog();
+
+            ActivityComplete(LoggedInUser, formMathGame.points);
+            formMathGame.Dispose();
+        }
 
         public void ActivityComplete(User? winner)
+        {
+            ActivityComplete(winner, null);
+        }
+
+        public void ActivityComplete(User? winner, int? amount)
         {
             int points;
 
@@ -78,7 +91,7 @@ namespace Fitschool.Classes.Activiteiten
                     points = 3; // 3 for a win, 1 for a draw
                     break;
                 case ActivityType.Math:
-                    points = 5; // to be assigned
+                    points = (int)Math.Ceiling((decimal)(amount ?? 0) / 2);
                     break;
                 case ActivityType.Language:
                     points = 5; // to be assigned
