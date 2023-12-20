@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMathGame));
             submitButton = new Button();
             answerBox = new TextBox();
             questionLabel = new Label();
@@ -36,39 +37,50 @@
             // 
             // submitButton
             // 
-            submitButton.Location = new Point(172, 154);
+            submitButton.BackColor = Color.Transparent;
+            submitButton.FlatAppearance.BorderSize = 0;
+            submitButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            submitButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            submitButton.FlatStyle = FlatStyle.Flat;
+            submitButton.Location = new Point(723, 299);
             submitButton.Name = "submitButton";
-            submitButton.Size = new Size(104, 27);
+            submitButton.Size = new Size(468, 159);
             submitButton.TabIndex = 0;
-            submitButton.Text = "Controleer";
-            submitButton.UseVisualStyleBackColor = true;
+            submitButton.UseVisualStyleBackColor = false;
             submitButton.Click += submitButton_Click;
             // 
             // answerBox
             // 
-            answerBox.Location = new Point(22, 154);
+            answerBox.BorderStyle = BorderStyle.None;
+            answerBox.Font = new Font("Segoe UI", 36F, FontStyle.Regular, GraphicsUnit.Point);
+            answerBox.Location = new Point(1333, 139);
             answerBox.Name = "answerBox";
-            answerBox.PlaceholderText = "Antwoord";
-            answerBox.Size = new Size(125, 27);
+            answerBox.PlaceholderText = "...";
+            answerBox.Size = new Size(335, 80);
             answerBox.TabIndex = 1;
+            answerBox.TextAlign = HorizontalAlignment.Center;
             // 
             // questionLabel
             // 
-            questionLabel.AutoSize = true;
-            questionLabel.Location = new Point(22, 92);
+            questionLabel.BackColor = Color.Transparent;
+            questionLabel.Font = new Font("Segoe UI", 36F, FontStyle.Regular, GraphicsUnit.Point);
+            questionLabel.Location = new Point(208, 139);
             questionLabel.Name = "questionLabel";
-            questionLabel.Size = new Size(89, 20);
+            questionLabel.Size = new Size(940, 90);
             questionLabel.TabIndex = 2;
             questionLabel.Text = "Hello World";
             // 
             // buttonClose
             // 
-            buttonClose.BackColor = Color.FromArgb(255, 192, 192);
-            buttonClose.Location = new Point(182, 12);
+            buttonClose.BackColor = Color.Transparent;
+            buttonClose.FlatAppearance.BorderSize = 0;
+            buttonClose.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonClose.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonClose.FlatStyle = FlatStyle.Flat;
+            buttonClose.Location = new Point(1782, 19);
             buttonClose.Name = "buttonClose";
-            buttonClose.Size = new Size(94, 29);
+            buttonClose.Size = new Size(115, 113);
             buttonClose.TabIndex = 3;
-            buttonClose.Text = "Stoppen";
             buttonClose.UseVisualStyleBackColor = false;
             buttonClose.Click += buttonClose_Click;
             // 
@@ -76,11 +88,13 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(288, 233);
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            ClientSize = new Size(1920, 1080);
             Controls.Add(buttonClose);
             Controls.Add(questionLabel);
             Controls.Add(answerBox);
             Controls.Add(submitButton);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Name = "FormMathGame";
             Text = "FormMathGame";

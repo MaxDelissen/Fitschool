@@ -18,6 +18,7 @@ namespace Fitschool.Forms
         {
             mathGame = new MathGame(userGrade);
             InitializeComponent();
+            answerBox.KeyDown += Key_Pressed;
         }
 
         private void FormMathGame_Load(object sender, EventArgs e)
@@ -25,10 +26,18 @@ namespace Fitschool.Forms
             questionLabel.Text = mathGame.AskQuestion();
         }
 
+        private void Key_Pressed(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                submitButton_Click(sender, e);
+            }
+        }   
+
         public int points = 0;
         private int retries = 0;
 
-        private void submitButton_Click(object sender, EventArgs e)
+        private void submitButton_Click(object? sender, EventArgs e)
         {
             float answer = float.Parse(answerBox.Text);
             if (mathGame.CheckAnswer(answer))
@@ -36,6 +45,7 @@ namespace Fitschool.Forms
                 points++;
                 MessageBox.Show("Goed gedaan!");
                 answerBox.Clear();
+                answerBox.Focus();
                 questionLabel.Text = mathGame.AskQuestion();
             }
             else

@@ -7,7 +7,7 @@ namespace Fitschool.Classes.Activiteiten
     {
         private Button[] gameButtons;
         private int[] bestButtons;
-        private int bestButtonsCount;
+        //private int bestButtonsCount;
         private int lastChosenButton;
         private Random random;
 
@@ -30,10 +30,10 @@ namespace Fitschool.Classes.Activiteiten
             random = new Random();
         }
 
+        #pragma warning disable CS8603 // Possible null reference return. If the AI can't find a move, it returns null, intended behaviour.
         public Button MakeMove(int playerLastChosenButton)
         {
             // Initialize variables for tracking best moves
-            bestButtonsCount = 0;
             lastChosenButton = playerLastChosenButton;
 
             // Check for winning moves or blocking opponent's winning moves
@@ -114,9 +114,7 @@ namespace Fitschool.Classes.Activiteiten
 
             return null; // Return null if no winning or blocking move is found in any combination
         }
-
-
-
+        #pragma warning restore CS8603 // Possible null reference return.
 
         private List<int> GetAdjacentSpots(int button)
         {

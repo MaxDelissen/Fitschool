@@ -66,7 +66,8 @@ namespace Fitschool.Classes.Activiteiten
 
         private void ActivityMath()
         {
-            FormMathGame formMathGame = new(8); //TODO: Get user grade from user object, which in turn gets it from the database.
+            FormMathGame formMathGame = new(LoggedInUser.Grade);
+
             formMathGame.ShowDialog();
 
             ActivityComplete(LoggedInUser, formMathGame.points);

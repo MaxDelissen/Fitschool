@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            label3 = new Label();
             selectStyle = new ComboBox();
             textBoxEmail = new TextBox();
             leeftijdLabel = new Label();
@@ -40,7 +41,6 @@
             panel2 = new Panel();
             label2 = new Label();
             IdToDelete = new NumericUpDown();
-            label3 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LeeftijdSelector).BeginInit();
             panel2.SuspendLayout();
@@ -64,6 +64,15 @@
             panel1.Size = new Size(402, 228);
             panel1.TabIndex = 6;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(223, 118);
+            label3.Name = "label3";
+            label3.Size = new Size(115, 20);
+            label3.TabIndex = 6;
+            label3.Text = "<= Kies een stijl";
+            // 
             // selectStyle
             // 
             selectStyle.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -86,29 +95,29 @@
             leeftijdLabel.AutoSize = true;
             leeftijdLabel.Location = new Point(13, 160);
             leeftijdLabel.Name = "leeftijdLabel";
-            leeftijdLabel.Size = new Size(109, 20);
+            leeftijdLabel.Size = new Size(87, 20);
             leeftijdLabel.TabIndex = 3;
-            leeftijdLabel.Text = "Voer leeftijd in:";
+            leeftijdLabel.Text = "Voer klas in:";
             // 
             // AddUserButton
             // 
-            AddUserButton.Location = new Point(254, 170);
+            AddUserButton.Location = new Point(223, 170);
             AddUserButton.Name = "AddUserButton";
-            AddUserButton.Size = new Size(130, 51);
+            AddUserButton.Size = new Size(161, 51);
             AddUserButton.TabIndex = 4;
-            AddUserButton.Text = "Add User";
+            AddUserButton.Text = "Toevoegen";
             AddUserButton.UseVisualStyleBackColor = true;
             AddUserButton.Click += AddUserButton_Click;
             // 
             // LeeftijdSelector
             // 
             LeeftijdSelector.Location = new Point(13, 183);
-            LeeftijdSelector.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
-            LeeftijdSelector.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
+            LeeftijdSelector.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
+            LeeftijdSelector.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             LeeftijdSelector.Name = "LeeftijdSelector";
-            LeeftijdSelector.Size = new Size(214, 27);
+            LeeftijdSelector.Size = new Size(187, 27);
             LeeftijdSelector.TabIndex = 3;
-            LeeftijdSelector.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            LeeftijdSelector.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // NameBox
             // 
@@ -131,11 +140,11 @@
             // 
             // RemoveUserButton
             // 
-            RemoveUserButton.Location = new Point(255, 13);
+            RemoveUserButton.Location = new Point(223, 13);
             RemoveUserButton.Name = "RemoveUserButton";
-            RemoveUserButton.Size = new Size(129, 53);
+            RemoveUserButton.Size = new Size(161, 53);
             RemoveUserButton.TabIndex = 6;
-            RemoveUserButton.Text = "Remove User";
+            RemoveUserButton.Text = "Verwijder Gebruiker";
             RemoveUserButton.UseVisualStyleBackColor = true;
             RemoveUserButton.Click += RemoveUserButton_Click;
             // 
@@ -156,25 +165,16 @@
             label2.AutoSize = true;
             label2.Location = new Point(14, 16);
             label2.Name = "label2";
-            label2.Size = new Size(74, 20);
+            label2.Size = new Size(198, 20);
             label2.TabIndex = 10;
-            label2.Text = "Voer ID in";
+            label2.Text = "Voer ID in om te verwijderen";
             // 
             // IdToDelete
             // 
             IdToDelete.Location = new Point(13, 39);
             IdToDelete.Name = "IdToDelete";
-            IdToDelete.Size = new Size(150, 27);
+            IdToDelete.Size = new Size(199, 27);
             IdToDelete.TabIndex = 5;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(223, 118);
-            label3.Name = "label3";
-            label3.Size = new Size(115, 20);
-            label3.TabIndex = 6;
-            label3.Text = "<= Kies een stijl";
             // 
             // FormUserManagement
             // 

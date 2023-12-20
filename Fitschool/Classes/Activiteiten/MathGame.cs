@@ -11,7 +11,6 @@ namespace Fitschool.Classes.Activiteiten
     public class MathGame
     {
         int userGrade;
-        FormMathGame formMathGame;
 
         public MathGame(int userGrade)
         {
@@ -85,8 +84,10 @@ namespace Fitschool.Classes.Activiteiten
             }
 
             // Selecteer willekeurig een operator uit de beschikbare lijst
+            #pragma warning disable CS8605 // Unboxing a possibly null value. This is intended behaviour, the value can't be null.
             MathOperator randomOperator = (MathOperator)operators.GetValue(random.Next(operators.Length));
             return randomOperator;
+            #pragma warning restore CS8605 // Unboxing a possibly null value.
         }
 
 
@@ -99,25 +100,24 @@ namespace Fitschool.Classes.Activiteiten
                 switch (userGrade)
                 {
                     case 1:
-                        number = random.Next(1, 21); // Tot 20 voor groep 1
-                        break;
                     case 2:
-                    case 3:
-                        number = random.Next(1, 101); // Tot 100 voor groep 2
+                        number = random.Next(1, 11); // Tot 10 voor groep 1 en 2
                         break;
+                    case 3:
                     case 4:
-                        number = random.Next(1, 1001); // Tot 1.000 voor groep 4
+                        number = random.Next(1, 21); // Tot 20 voor groep 3 en 4
                         break;
                     case 5:
-                        number = random.Next(1, 10001); // Tot 10.000 voor groep 5
+                        number = random.Next(1, 101); // Tot 100 voor groep 5
                         break;
                     case 6:
-                        number = random.Next(1, 100001); // Tot 100.000 voor groep 6
+                        number = random.Next(1, 201); // Tot 200 voor groep 6
                         break;
                     default:
-                        number = random.Next(1, 1000000); // Tot 1.000.000 voor hogere groepen
+                        number = random.Next(1, 1001); // Tot 1000 voor groep 7 en 8 (standaard)
                         break;
                 }
+
             }
             else // Vermenigvuldigen en delen
             {
@@ -126,19 +126,19 @@ namespace Fitschool.Classes.Activiteiten
                     case 1:
                     case 2:
                     case 3:
-                        number = 0; // Geen delingen of vermenigvuldigen voor groep 1, 2 en 3
+                        number = 0; // Geen vermenigvuldigingen voor groep 1, 2 en 3
                         break;
                     case 4:
-                        number = random.Next(1, 11); // Tot 10 voor groep 4
+                        number = random.Next(1, 6); // Tot 5 voor groep 4
                         break;
                     case 5:
-                        number = random.Next(1, 13); // Tot 12 voor groep 5
+                        number = random.Next(1, 11); // Tot 10 voor groep 5
                         break;
                     case 6:
                         number = random.Next(1, 21); // Tot 20 voor groep 6
                         break;
                     default:
-                        number = random.Next(1, 101); // Tot 100 voor groep 7 en 8
+                        number = random.Next(1, 101); // Tot 100 voor groep 7 en 8 (standaard)
                         break;
                 }
             }

@@ -49,7 +49,14 @@ namespace Fitschool
                         Application.Exit();
                         IdBox.Clear();
                         return;
-
+                    case "rand":
+                        DataManagement.Log("Logging in as random User using QR code");
+                        CurrentUser = RandomUser();
+                        IdBox.Clear();
+                        Keuzescherm keuze = new(this, CurrentUser);
+                        keuze.Show();
+                        this.Hide();
+                        return;
                     default:
                         try
                         {
@@ -77,6 +84,14 @@ namespace Fitschool
                         return;
                 }
             }
+        }
+
+        private User RandomUser() //this functions only purpose is to have a function which returns an object, this is to meet the Verdieping requirements.
+        {
+            DataManagement DB = new();
+            int maxId = int.Parse(DB.ExecuteQuery("SELECT MAX(gebruiker_id) AS highest FROM gebruikers;"));
+            int userId = new Random().Next(1, maxId + 1);
+            return new User(userId);
         }
 
         private void Form1_Load(object sender, EventArgs e)

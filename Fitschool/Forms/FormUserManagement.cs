@@ -11,6 +11,8 @@ namespace Fitschool
         {
             InitializeComponent();
             selectStyle.DataSource = Enum.GetValues(typeof(Card.CardDesigns));
+            string maxId = new DataManagement().ExecuteQuery("SELECT MAX(gebruiker_id) FROM gebruikers");
+            IdToDelete.Maximum = int.Parse(maxId);
         }
 
         static readonly string query = // Query uitvoeren om de gebruiker toe te voegen en de laatst ingevoegde ID ophalen
@@ -80,12 +82,12 @@ namespace Fitschool
 
                 // Generate a random index within the cardDesigns array length
                 int randomIndex = random.Next(cardDesigns.Length);
-
+                #pragma warning disable CS8605 // Unboxing a possibly null value. This is intended behaviour, the value can't be null.
                 // Get the enum value at the random index
                 Card.CardDesigns randomCardDesign = (Card.CardDesigns)cardDesigns.GetValue(randomIndex);
 
                 Bitmap card = designer.GenerateCard((Card.CardDesigns)cardDesigns.GetValue(randomIndex));
-
+                #pragma warning restore CS8605 // Unboxing a possibly null value.
                 string filePath = Path.Combine(folderPath, $"Card_{i}.png"); // Change file extension as needed
 
                 // Save the card Bitmap to the specified file path

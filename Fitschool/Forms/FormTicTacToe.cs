@@ -7,8 +7,8 @@ namespace Fitschool.Forms
         private Activity ActivityClass;
 
         private User loggedInPlayer;
-        private User secondPlayer;
-        private TicTacToeAI ai;
+        private User? secondPlayer;
+        private TicTacToeAI? ai;
 
         private string playerOName;
 
@@ -62,16 +62,18 @@ namespace Fitschool.Forms
             
             if (CheckForWinner())
             {
-                ActivityClass.SetWinner(WinningPlayer); this.Close();
+                ActivityClass.SetWinner(WinningPlayer ?? loggedInPlayer); this.Close();
             }
 
             labelPlayerTurn.Text = UpdateCurrentPlayer(); //Switches player
 
             if (secondPlayer == null && currentPlayer == Player.O) //If there is no second player, the AI will make a move
             {
+                #pragma warning disable CS8602 // Possible null reference argument. The AI will never be null if there is no second player.
                 Button? aiMove = ai.MakeMove(lastChosenButton);
                 if (aiMove == null) { return; }
                 aiMove.PerformClick();
+                #pragma warning restore CS8602 // Possible null reference argument.
             }
         }
 
