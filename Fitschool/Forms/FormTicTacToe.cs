@@ -4,18 +4,18 @@ namespace Fitschool.Forms
 {
     public partial class FormTicTacToe : Form
     {
-        private Activity ActivityClass;
+        private readonly Activity ActivityClass;
 
-        private User loggedInPlayer;
-        private User? secondPlayer;
-        private TicTacToeAI? ai;
+        private readonly User loggedInPlayer;
+        private readonly User? secondPlayer;
+        private readonly TicTacToeAI? ai;
 
-        private string playerOName;
+        private readonly string playerOName;
 
         private Player currentPlayer;
         public User? WinningPlayer { get; set; }
 
-        public FormTicTacToe(Activity ActivityClass ,User Player1, User Player2)
+        public FormTicTacToe(Activity ActivityClass, User Player1, User Player2)
         {
             InitializeComponent();
             loggedInPlayer = Player1;
@@ -59,21 +59,22 @@ namespace Fitschool.Forms
         {
             Button button = (Button)sender;
             SetButton(button);
-            
+
             if (CheckForWinner())
             {
-                ActivityClass.SetWinner(WinningPlayer ?? loggedInPlayer); this.Close();
+                this.Close();
+                return;
             }
 
             labelPlayerTurn.Text = UpdateCurrentPlayer(); //Switches player
 
             if (secondPlayer == null && currentPlayer == Player.O) //If there is no second player, the AI will make a move
             {
-                #pragma warning disable CS8602 // Possible null reference argument. The AI will never be null if there is no second player.
+#pragma warning disable CS8602 // Possible null reference argument. The AI will never be null if there is no second player.
                 Button? aiMove = ai.MakeMove(lastChosenButton);
                 if (aiMove == null) { return; }
                 aiMove.PerformClick();
-                #pragma warning restore CS8602 // Possible null reference argument.
+#pragma warning restore CS8602 // Possible null reference argument.
             }
         }
 
@@ -120,15 +121,9 @@ namespace Fitschool.Forms
 
                 if (text1 != "" && text1 == text2 && text2 == text3)
                 {
-                    WinningPlayer = text1 == "X" ? loggedInPlayer : secondPlayer;
-                    if (WinningPlayer == loggedInPlayer)
-                    {
-                        MessageBox.Show($"{ loggedInPlayer.Name} heeft gewonnen!");
-                    }
-                    else
-                    {
-                        MessageBox.Show($"{playerOName} heeft gewonnen!");
-                    }
+                    WinningPlayer = text1 == "X" ? loggedInPlayer : secondPlayer ?? new User();
+                    MessageBox.Show($"{WinningPlayer.Name} heeft gewonnen!");
+                    ActivityClass.SetWinner(WinningPlayer);
                     return true;
                 }
             }
@@ -176,6 +171,7 @@ namespace Fitschool.Forms
 
 
         //DEPRECATED, Improved Ai in TicTacToeAI.cs, this might still be useful for younger children, as it is a lot easier to beat.
+
         //private void AiPlay() //It's harder to lose from the AI than it is to win from it, let's say that's a feature
         //{
         //    Button[] gameButtons = { button1, button2, button3, button4, button5, button6, button7, button8, button9 };

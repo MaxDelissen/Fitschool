@@ -41,12 +41,18 @@ namespace Fitschool.Classes.Shop
             return false;
         }
 
-        public void Confirm()
+        public enum ConfirmStatus
         {
-            if (!IsValidEmail() || !EnoughPoints())
-            {
-                return;
-            }
+            Succes,
+            NotEnoughPoints,
+            InvalidEmail,
+            emailNotSent
+        }
+
+        public ConfirmStatus Confirm()
+        {
+            if (!IsValidEmail()) { return ConfirmStatus.InvalidEmail; }
+            if (!EnoughPoints()) { return ConfirmStatus.NotEnoughPoints; }
 
             foreach (Product product in Products) //remove products from stock
             {
@@ -73,40 +79,24 @@ namespace Fitschool.Classes.Shop
                 $"Met vriendelijke groet,\nCasper Wijngaarden\nSupport & Marketing Director Fitschool";
             #endregion
 
-            SendMail(onderwerp, bericht);
+            if (!SendMail(onderwerp, bericht)) { return ConfirmStatus.emailNotSent; }
 
-            MessageBox.Show("Je bestelling is geplaatst. Je ontvangt een email ter bevestiging.", "Bestelling geplaatst", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Products.Clear();
             TotalPrice = 0;
+            return ConfirmStatus.Succes;
         }
 
         public bool EnoughPoints()
         {
-            if (user.Points >= TotalPrice)
-            {
-                return true;
-            }
-            else
-            {
-                MessageBox.Show("Je hebt niet genoeg punten om deze bestelling te plaatsen.", "Niet genoeg punten", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return false;
-            }
+            return user.Points >= TotalPrice;
         }
 
         public bool IsValidEmail()
         {
-            if (!string.IsNullOrEmpty(user.EmailParents))
-            {
-                return true;
-            }
-            else
-            {
-                MessageBox.Show("Er is iets misgegaan met het ophalen van het email adres van je ouders. Vraag dit na aan je docent.", "Foutmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
+            return !string.IsNullOrEmpty(user.EmailParents) && user.EmailParents.Contains("@") && user.EmailParents.Contains(".");
         }
 
-        private void SendMail(string onderwerp, string bericht)
+        private bool SendMail(string onderwerp, string bericht)
         //Fitschool outlook account: fitschool@hotmail.com ==> Wachtwoord: LwKJT3b%@y4mRvq29F&4
         {
             SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com")
@@ -120,10 +110,11 @@ namespace Fitschool.Classes.Shop
             try
             {
                 smtpClient.Send(mail);
+                return true;
             }
             catch (Exception)
             {
-                MessageBox.Show("Er is iets fout gegaan met het verzenden van de email.\nWaarschijnlijk is het email adress niet correct.", "Mail niet verzonden", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
     }

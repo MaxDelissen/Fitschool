@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fitschool.Classes.Activiteiten
+﻿namespace Fitschool.Classes.Activiteiten
 {
     public enum ActivityType
     {
@@ -12,5 +6,12 @@ namespace Fitschool.Classes.Activiteiten
         TicTacToe,
         Math,
         Language
+    }
+
+    public enum LanguageGames
+    {
+        DDt,
+        //Werkwoord,
+        //Onderwerp
     }
 }

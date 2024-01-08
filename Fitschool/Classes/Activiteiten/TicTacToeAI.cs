@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Fitschool.Classes.Activiteiten
+﻿namespace Fitschool.Classes.Activiteiten
 {
     public class TicTacToeAI
     {
-        private Button[] gameButtons;
-        private int[] bestButtons;
+        private readonly Button[] gameButtons;
+        private readonly int[] bestButtons;
         //private int bestButtonsCount;
         private int lastChosenButton;
-        private Random random;
+        private readonly Random random;
 
-        private int[,] winCombinations = new int[,]
+        private readonly int[,] winCombinations = new int[,]
         {
             { 1, 2, 3 }, // Row 1
             { 4, 5, 6 }, // Row 2
             { 7, 8, 9 }, // Row 3
             { 1, 4, 7 }, // Column 1
+
             { 2, 5, 8 }, // Column 2
             { 3, 6, 9 }, // Column 3
             { 1, 5, 9 }, // Diagonal 1
@@ -30,7 +28,7 @@ namespace Fitschool.Classes.Activiteiten
             random = new Random();
         }
 
-        #pragma warning disable CS8603 // Possible null reference return. If the AI can't find a move, it returns null, intended behaviour.
+#pragma warning disable CS8603 // Possible null reference return. If the AI can't find a move, it returns null, intended behaviour.
         public Button MakeMove(int playerLastChosenButton)
         {
             // Initialize variables for tracking best moves
@@ -114,7 +112,7 @@ namespace Fitschool.Classes.Activiteiten
 
             return null; // Return null if no winning or blocking move is found in any combination
         }
-        #pragma warning restore CS8603 // Possible null reference return.
+#pragma warning restore CS8603 // Possible null reference return.
 
         private List<int> GetAdjacentSpots(int button)
         {

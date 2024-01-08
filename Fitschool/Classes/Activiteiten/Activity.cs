@@ -6,10 +6,10 @@ namespace Fitschool.Classes.Activiteiten
     //Class to handle starting, running and completing activities. Started from FormActiviteiten.cs
     public class Activity
     {
-        private FormActiviteiten form;
-        ActivityType chosenActivity;
+        private readonly FormActiviteiten form;
+        readonly ActivityType chosenActivity;
 
-        private User LoggedInUser;
+        private readonly User LoggedInUser;
         public User? SecondUser = null;
         public User? Winner { get; private set; }
 
@@ -34,7 +34,7 @@ namespace Fitschool.Classes.Activiteiten
                     ActivityMath();
                     break;
                 case ActivityType.Language:
-                    //Language();
+                    Language();
                     break;
             }
         }
@@ -61,7 +61,7 @@ namespace Fitschool.Classes.Activiteiten
                 : new FormTicTacToe(this, LoggedInUser, SecondUser); //if there is a second user, start a multiplayer game.
 
             formTicTacToe.ShowDialog();
-            ActivityComplete(Winner);
+            ActivityComplete(Winner); //Winner could be: null (draw), LoggedInUser (win), SecondUser (win), A user with the name "Computer" (Computer won, no points awarded)
         }
 
         private void ActivityMath()
@@ -73,6 +73,47 @@ namespace Fitschool.Classes.Activiteiten
             ActivityComplete(LoggedInUser, formMathGame.points);
             formMathGame.Dispose();
         }
+
+        private void Language()
+        {
+            FormChooseLanguageGame chooseGame = new();
+            chooseGame.ShowDialog();
+            LanguageGames game = chooseGame.SelectedGame;
+            chooseGame.Dispose();
+
+            switch (game)
+            {
+                case LanguageGames.DDt:
+                    DDt();
+                    break;
+                    //case LanguageGames.Werkwoord:
+                    //    Werkwoord();
+                    //    break;
+                    //case LanguageGames.Onderwerp:
+                    //    Onderwerp();
+                    //    break;
+            }
+        }
+
+        private void DDt()
+        {
+            FormDDT formDDT = new();
+            formDDT.ShowDialog();
+            int punten = formDDT.punten;
+            formDDT.Dispose();
+            ActivityComplete(LoggedInUser, punten);
+        }
+
+        private void Werkwoord()
+        {
+
+        }
+
+        private void Onderwerp()
+        {
+
+        }
+
 
         public void ActivityComplete(User? winner)
         {
@@ -92,39 +133,40 @@ namespace Fitschool.Classes.Activiteiten
                     points = 3; // 3 for a win, 1 for a draw
                     break;
                 case ActivityType.Math:
-                    points = (int)Math.Ceiling((decimal)(amount ?? 0) / 2);
+                    points = (int)Math.Floor((decimal)(amount ?? 0) / 2);
                     break;
                 case ActivityType.Language:
-                    points = 5; // to be assigned
+                    points = (int)Math.Floor((decimal)(amount ?? 0) * 1.5m);
                     break;
                 default:
                     points = 0;
                     break;
             }
 
-            if (winner == null) //if no winner, it's a draw, or a single player game where the user lost.
+            if (winner == null) //if no winner, it's a draw
             {
-                if (SecondUser != null) //if there is a second user, it's a draw
-                {
-                    HandleDraw(points);
-                    return;
-                }
-                else //if there is no second user, the user lost.
-                {
-                    MessageBox.Show($"Helaas {LoggedInUser.Name}, Je hebt geen punten verdiend");
-                    return;
-                }
+                HandleDraw(points);
+                return;
             }
-            MessageBox.Show($"Gefeliciteerd {winner.Name}, Je hebt voor het doen van deze activiteit {points}💰 verdiend"); // 1 winner
-            winner.UpdatePoints(points); //Update points in database and in the user object
+            else if (winner.Name == "Computer") //if the winner is the computer, no points are awarded.
+            {
+                MessageBox.Show("Helaas, je hebt verloren van de computer. Je hebt geen punten verdiend.");
+                return;
+            }
+            else
+            {
+                MessageBox.Show($"Gefeliciteerd {winner.Name}, Je hebt voor het doen van deze activiteit {points}💰 verdiend"); // 1 winner
+                winner.UpdatePoints(points); //Update points in database and in the user object
+
+            }
         }
 
         public void HandleDraw(int points)
         {
-            MessageBox.Show("Gelijkspel!\nJullie kunnen de activiteit opnieuw starten, én hebben allebei 1💰 verdiend!");
             int devidedPoints = (int)Math.Floor(points / 2.0); //devide points by 2, and round down.
             LoggedInUser.UpdatePoints(devidedPoints);          //update points for both users, both get a point for the effort.
             SecondUser?.UpdatePoints(devidedPoints);           //if second user is null, it will not update points, as there is no second user.
+            MessageBox.Show($"Gelijkspel!\nJullie kunnen de activiteit opnieuw starten, én hebben allebei {devidedPoints}💰 verdiend!");
             return;
         }
     }

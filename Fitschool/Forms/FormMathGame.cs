@@ -1,19 +1,10 @@
 ﻿using Fitschool.Classes.Activiteiten;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Fitschool.Forms
 {
     public partial class FormMathGame : Form
     {
-        MathGame mathGame;
+        readonly MathGame mathGame;
         public FormMathGame(int userGrade)
         {
             mathGame = new MathGame(userGrade);
@@ -32,15 +23,21 @@ namespace Fitschool.Forms
             {
                 submitButton_Click(sender, e);
             }
-        }   
+
+            if (!char.IsDigit((char)e.KeyCode) && e.KeyCode != Keys.Back && e.KeyCode != Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
 
         public int points = 0;
         private int retries = 0;
 
         private void submitButton_Click(object? sender, EventArgs e)
         {
-            float answer = float.Parse(answerBox.Text);
-            if (mathGame.CheckAnswer(answer))
+            float? answer = ConvertInput(answerBox.Text);
+            if (answer == null) { return;}
+            if (mathGame.CheckAnswer(answer ?? 0))
             {
                 points++;
                 MessageBox.Show("Goed gedaan!");
@@ -58,6 +55,26 @@ namespace Fitschool.Forms
                     questionLabel.Text = mathGame.AskQuestion();
                 }
                 else MessageBox.Show("Helaas, probeer het nog eens!");
+            }
+        }
+
+        private float? ConvertInput(string input)
+        {
+            if (float.TryParse(input, out float result))
+            {
+                return result;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(input))
+                {
+                    return null;
+                }
+                else
+                {
+                    MessageBox.Show("Je hebt geen geldig antwoord ingevuld!");
+                    return null;
+                }
             }
         }
 

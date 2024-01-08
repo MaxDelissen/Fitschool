@@ -34,6 +34,7 @@
             buttonTTT = new Button();
             IdBox = new TextBox();
             buttonMath = new Button();
+            buttonLanguage = new Button();
             SuspendLayout();
             // 
             // buttonBackActiviteiten
@@ -104,12 +105,28 @@
             buttonMath.UseVisualStyleBackColor = false;
             buttonMath.Click += buttonMath_Click;
             // 
+            // buttonLanguage
+            // 
+            buttonLanguage.BackColor = Color.Transparent;
+            buttonLanguage.FlatAppearance.BorderSize = 0;
+            buttonLanguage.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonLanguage.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonLanguage.FlatStyle = FlatStyle.Flat;
+            buttonLanguage.Font = new Font("Segoe UI", 48F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonLanguage.Location = new Point(333, 615);
+            buttonLanguage.Name = "buttonLanguage";
+            buttonLanguage.Size = new Size(472, 358);
+            buttonLanguage.TabIndex = 7;
+            buttonLanguage.UseVisualStyleBackColor = false;
+            buttonLanguage.Click += buttonLanguage_Click;
+            // 
             // FormActiviteiten
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(buttonLanguage);
             Controls.Add(buttonMath);
             Controls.Add(IdBox);
             Controls.Add(buttonTTT);
@@ -131,5 +148,6 @@
         private Button buttonTTT;
         private TextBox IdBox;
         private Button buttonMath;
+        private Button buttonLanguage;
     }
 }

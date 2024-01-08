@@ -33,6 +33,7 @@
             answerBox = new TextBox();
             questionLabel = new Label();
             buttonClose = new Button();
+            textBox1 = new TextBox();
             SuspendLayout();
             // 
             // submitButton
@@ -54,6 +55,7 @@
             answerBox.BorderStyle = BorderStyle.None;
             answerBox.Font = new Font("Segoe UI", 36F, FontStyle.Regular, GraphicsUnit.Point);
             answerBox.Location = new Point(1333, 139);
+            answerBox.MaxLength = 20;
             answerBox.Name = "answerBox";
             answerBox.PlaceholderText = "...";
             answerBox.Size = new Size(335, 80);
@@ -84,12 +86,23 @@
             buttonClose.UseVisualStyleBackColor = false;
             buttonClose.Click += buttonClose_Click;
             // 
+            // textBox1
+            // 
+            textBox1.BorderStyle = BorderStyle.None;
+            textBox1.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            textBox1.Location = new Point(327, 599);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(1271, 401);
+            textBox1.TabIndex = 4;
+            // 
             // FormMathGame
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1920, 1080);
+            Controls.Add(textBox1);
             Controls.Add(buttonClose);
             Controls.Add(questionLabel);
             Controls.Add(answerBox);
@@ -109,5 +122,6 @@
         private TextBox answerBox;
         private Label questionLabel;
         private Button buttonClose;
+        private TextBox textBox1;
     }
 }

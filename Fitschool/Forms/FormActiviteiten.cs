@@ -86,6 +86,7 @@ namespace Fitschool.Forms
         {
             Activity activity = new(ActivityType.PushUps, this);
             activity.StartActivity();
+            IdBox.Focus();
         }
 
         private void buttonTTT_Click(object sender, EventArgs e)
@@ -99,6 +100,14 @@ namespace Fitschool.Forms
         {
             Activity mathGame = new(ActivityType.Math, this);
             mathGame.StartActivity();
+            IdBox.Focus();
+        }
+
+        private void buttonLanguage_Click(object sender, EventArgs e)
+        {
+            Activity languageGame = new(ActivityType.Language, this);
+            languageGame.StartActivity();
+            IdBox.Focus();
         }
     }
 }

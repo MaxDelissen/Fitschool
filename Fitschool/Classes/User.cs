@@ -26,6 +26,14 @@ namespace Fitschool
             //MessageBox.Show($"{loggedInName}, met ID nummer {loggedInId} heeft {loggedInPoints} punten.");
         }
 
+        public User() //Computer User, mainly for the TicTacToe game
+        {
+            Name = "Computer";
+            Points = 0;
+            Grade = 0;
+            EmailParents = "NVT";
+        }
+
         public void LogoutUser()
         {
             Id = -1;

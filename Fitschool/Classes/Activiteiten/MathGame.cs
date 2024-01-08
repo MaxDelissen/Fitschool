@@ -1,16 +1,8 @@
-﻿using Fitschool.Forms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Fitschool.Classes.Activiteiten.MathGame;
-
-namespace Fitschool.Classes.Activiteiten
+﻿namespace Fitschool.Classes.Activiteiten
 {
     public class MathGame
     {
-        int userGrade;
+        readonly int userGrade;
 
         public MathGame(int userGrade)
         {
@@ -36,6 +28,13 @@ namespace Fitschool.Classes.Activiteiten
             lastNumber1 = GetRandomNumber(lastOperator);
             lastNumber2 = GetRandomNumber(lastOperator);
 
+            FixQuestion();
+
+            return $"{lastNumber1} {(char)lastOperator} {lastNumber2}";
+        }
+
+        private void FixQuestion()
+        {
             if (lastOperator == MathOperator.Subtraction && lastNumber1 < lastNumber2)
             { //If the subtraction result is negative, change the numbers to make it positive.
                 int temp = lastNumber1;
@@ -43,14 +42,21 @@ namespace Fitschool.Classes.Activiteiten
                 lastNumber2 = temp;
             }
 
-            if (lastOperator == MathOperator.Division && lastNumber1 % lastNumber2 != 0) 
+            while (!DevisionCheck())
             {
-                //If the division result is not a whole number, change the numbers to make it a whole number.
-                //Problem: The result can be too big for the user to calculate, this still needs work.
-                lastNumber1 = lastNumber2 * lastNumber1;
+                // Keep generating new numbers until the division is a whole number
             }
+        }
 
-            return $"{lastNumber1} {(char)lastOperator} {lastNumber2}";
+        private bool DevisionCheck()
+        {
+            if (lastOperator == MathOperator.Division && lastNumber1 % lastNumber2 != 0)
+            {
+                lastNumber1 = GetRandomNumber(lastOperator);
+                lastNumber2 = GetRandomNumber(lastOperator);
+                return false;
+            }
+            return true;
         }
 
         public int Awnser
@@ -84,10 +90,10 @@ namespace Fitschool.Classes.Activiteiten
             }
 
             // Selecteer willekeurig een operator uit de beschikbare lijst
-            #pragma warning disable CS8605 // Unboxing a possibly null value. This is intended behaviour, the value can't be null.
+#pragma warning disable CS8605 // Unboxing a possibly null value. This is intended behaviour, the value can't be null.
             MathOperator randomOperator = (MathOperator)operators.GetValue(random.Next(operators.Length));
             return randomOperator;
-            #pragma warning restore CS8605 // Unboxing a possibly null value.
+#pragma warning restore CS8605 // Unboxing a possibly null value.
         }
 
 
@@ -117,7 +123,6 @@ namespace Fitschool.Classes.Activiteiten
                         number = random.Next(1, 1001); // Tot 1000 voor groep 7 en 8 (standaard)
                         break;
                 }
-
             }
             else // Vermenigvuldigen en delen
             {
@@ -142,7 +147,6 @@ namespace Fitschool.Classes.Activiteiten
                         break;
                 }
             }
-
             return number;
         }
 

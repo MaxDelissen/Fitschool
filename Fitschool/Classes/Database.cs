@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Common;
 using System.Diagnostics;
 using System.Text;
 
@@ -36,7 +35,7 @@ namespace Fitschool
 
         private readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
 
-        #pragma warning disable CS8600, CS8603 // Converting null literal or possible null value to non-nullable type, intended behaviour, its fine trust me bro :)
+#pragma warning disable CS8600, CS8603 // Converting null literal or possible null value to non-nullable type, intended behaviour, its fine trust me bro :)
         public string ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
             string result = "";
@@ -124,7 +123,7 @@ namespace Fitschool
             }
             return result;
         }
-        #pragma warning restore CS8600, CS8603 // Converting null literal or possible null value to non-nullable type.
+#pragma warning restore CS8600, CS8603 // Converting null literal or possible null value to non-nullable type.
 
         public void RemoveUser(int id) //TODO: move to FormUserManagement, DataManagement only responsible for direct database interaction
         {

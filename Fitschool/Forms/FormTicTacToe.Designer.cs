@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTicTacToe));
             Panel = new Panel();
             button3 = new Button();
             button2 = new Button();
@@ -207,13 +208,15 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(512, 589);
+            ControlBox = false;
             Controls.Add(labelPlayerTurn);
             Controls.Add(labelPlayerO);
             Controls.Add(labelPlayerX);
             Controls.Add(Panel);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormTicTacToe";
-            Text = "FormTicTacToe";
+            Text = "TicTacToe";
             Load += FormTicTacToe_Load;
             Panel.ResumeLayout(false);
             ResumeLayout(false);

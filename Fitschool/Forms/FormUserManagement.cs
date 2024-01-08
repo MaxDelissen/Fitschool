@@ -1,5 +1,4 @@
 ﻿using Fitschool.Classes;
-using Fitschool.Forms;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 
@@ -82,12 +81,12 @@ namespace Fitschool
 
                 // Generate a random index within the cardDesigns array length
                 int randomIndex = random.Next(cardDesigns.Length);
-                #pragma warning disable CS8605 // Unboxing a possibly null value. This is intended behaviour, the value can't be null.
+#pragma warning disable CS8605 // Unboxing a possibly null value. This is intended behaviour, the value can't be null.
                 // Get the enum value at the random index
                 Card.CardDesigns randomCardDesign = (Card.CardDesigns)cardDesigns.GetValue(randomIndex);
 
                 Bitmap card = designer.GenerateCard((Card.CardDesigns)cardDesigns.GetValue(randomIndex));
-                #pragma warning restore CS8605 // Unboxing a possibly null value.
+#pragma warning restore CS8605 // Unboxing a possibly null value.
                 string filePath = Path.Combine(folderPath, $"Card_{i}.png"); // Change file extension as needed
 
                 // Save the card Bitmap to the specified file path
@@ -153,14 +152,14 @@ namespace Fitschool
 
         private bool ContainsSQLInjection(string input)
         {
-            
+
             if (input.Contains(";"))
             {
                 DataManagement.Log($"------------------SQL Injection detected!------------------\nExiting...");
                 MessageBox.Show("SQL injection detected, this will be reported and the application will now close.", "SQL Injection", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return true;
             }
-            
+
             return false;
         }
     }

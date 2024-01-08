@@ -24,7 +24,25 @@ namespace Fitschool
             if (order.Products.Count > 0)
             {
                 DialogResult confirmOrder = MessageBox.Show("Wil je deze aankoop bevestigen?", "Bevestiging", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (confirmOrder == DialogResult.Yes) order.Confirm();
+                if (confirmOrder == DialogResult.Yes)
+                {
+                    Order.ConfirmStatus status = order.Confirm();
+                    switch (status)
+                    {
+                        case Order.ConfirmStatus.Succes:
+                            MessageBox.Show("Bedankt voor je aankoop!", "Aankoop bevestigd", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+                        case Order.ConfirmStatus.NotEnoughPoints:
+                            MessageBox.Show("Je hebt niet genoeg punten om deze aankoop te doen.", "Niet genoeg punten", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                        case Order.ConfirmStatus.InvalidEmail:
+                            MessageBox.Show("Je hebt geen geldig emailadres ingevuld.", "Ongeldig emailadres", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                        case Order.ConfirmStatus.emailNotSent:
+                            MessageBox.Show("Er is een fout opgetreden bij het versturen van de email.", "Email niet verzonden", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                    }
+                }
             }
 
             keuzeScherm.UpdatePoints();
@@ -56,7 +74,7 @@ namespace Fitschool
                             Debug.WriteLine($"Error loading image for product {i}: {ex.Message}");
                         }
                     }
-                }              
+                }
             }
         }
 
@@ -65,7 +83,7 @@ namespace Fitschool
             Button clickedButton = sender as Button ?? buttonBackShop;
 
             Product product = (Product)clickedButton.Tag;
-            if(!order.Add(product))
+            if (!order.Add(product))
             {
                 MessageBox.Show("Dit product is niet op voorraad.", "Niet op voorraad", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
