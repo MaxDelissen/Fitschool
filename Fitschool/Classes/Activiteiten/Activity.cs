@@ -76,7 +76,9 @@ namespace Fitschool.Classes.Activiteiten
 
         private void Language()
         {
-            FormChooseLanguageGame chooseGame = new();
+            DDt();
+            //TODO: Add language games, probably none will be added before the deadline.
+            /*FormChooseLanguageGame chooseGame = new();
             chooseGame.ShowDialog();
             LanguageGames game = chooseGame.SelectedGame;
             chooseGame.Dispose();
@@ -86,13 +88,7 @@ namespace Fitschool.Classes.Activiteiten
                 case LanguageGames.DDt:
                     DDt();
                     break;
-                    //case LanguageGames.Werkwoord:
-                    //    Werkwoord();
-                    //    break;
-                    //case LanguageGames.Onderwerp:
-                    //    Onderwerp();
-                    //    break;
-            }
+            }*/
         }
 
         private void DDt()

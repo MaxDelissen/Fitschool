@@ -58,6 +58,7 @@ namespace Fitschool
             ExitButton.TabIndex = 3;
             ExitButton.Text = "Exit";
             ExitButton.UseVisualStyleBackColor = false;
+            ExitButton.Visible = false;
             ExitButton.Click += ExitButton_Click;
             // 
             // IdBox

@@ -121,6 +121,7 @@ namespace Fitschool.Forms
 
                 if (text1 != "" && text1 == text2 && text2 == text3)
                 {
+
                     WinningPlayer = text1 == "X" ? loggedInPlayer : secondPlayer ?? new User();
                     MessageBox.Show($"{WinningPlayer.Name} heeft gewonnen!");
                     ActivityClass.SetWinner(WinningPlayer);

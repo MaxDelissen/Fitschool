@@ -39,14 +39,13 @@
             // 
             // labelQuestion
             // 
-            labelQuestion.AutoSize = true;
             labelQuestion.BackColor = Color.Transparent;
-            labelQuestion.Font = new Font("Segoe UI", 36F, FontStyle.Regular, GraphicsUnit.Point);
-            labelQuestion.Location = new Point(59, 348);
+            labelQuestion.Font = new Font("Segoe UI", 25.8000011F, FontStyle.Regular, GraphicsUnit.Point);
+            labelQuestion.Location = new Point(70, 361);
             labelQuestion.Name = "labelQuestion";
-            labelQuestion.Size = new Size(1172, 81);
+            labelQuestion.Size = new Size(1823, 77);
             labelQuestion.TabIndex = 0;
-            labelQuestion.Text = "(Beantwoorden) in ieder geval mijn vragen!";
+            labelQuestion.Text = "Ik heb voor het maken van dit programma het uitlezen van data uit een bestand in c# (leren)";
             // 
             // buttonOption1
             // 
