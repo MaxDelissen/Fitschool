@@ -5,7 +5,7 @@ namespace Fitschool.Classes.Activiteiten
     public class DorDt
     {
         static readonly string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        static readonly string templateFilePath = Path.Combine(appDirectory, "oefeningen", "D of DT.txt");
+        static readonly string templateFilePath = Path.Combine(appDirectory, "D of DT.txt");
 
         public List<Question> Questions { get; set; }
         private int amountOfQuestions = 20;

@@ -41,7 +41,7 @@ namespace Fitschool.Forms
             currentPlayer = Player.O; //Player X always starts, The next function switches the player to X, so we start with O.
             labelPlayerTurn.Text = UpdateCurrentPlayer();
 
-            foreach (var button in Panel.Controls.OfType<Button>())
+            foreach (var button in this.Controls.OfType<Button>())
             {
                 button.Text = "";
             }
@@ -123,7 +123,7 @@ namespace Fitschool.Forms
                 {
 
                     WinningPlayer = text1 == "X" ? loggedInPlayer : secondPlayer ?? new User();
-                    MessageBox.Show($"{WinningPlayer.Name} heeft gewonnen!");
+                    new FormMessageBox($"{WinningPlayer.Name} heeft gewonnen!", $"{WinningPlayer.Name}!", "👍", true);
                     ActivityClass.SetWinner(WinningPlayer);
                     return true;
                 }

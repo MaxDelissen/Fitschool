@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Fitschool.Forms;
+using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using System.Text;
 
@@ -6,6 +7,9 @@ namespace Fitschool
 {
     public class DataManagement
     {
+        private static string connectionAddress = "Server=192.168.154.75;Database=fitschool;Uid=Max;Pwd=Password01;";
+
+
         public static string LogFilePath;
         public static string LogDirectory = "Logs";
         static DataManagement()
@@ -14,6 +18,8 @@ namespace Fitschool
 
             // Create the log file path within the directory
             LogFilePath = Path.Combine(LogDirectory, $"log_{DateTime.Now:yyyy-MM-dd}.txt");
+
+            CheckConnection();
         }
 
         public static void Log(string message)
@@ -33,7 +39,32 @@ namespace Fitschool
             }
         }
 
-        private readonly string connectionAddress = "server=192.168.154.75;database=fitschool;uid=Max;password=Password01;";
+        private static void CheckConnection()
+        {
+            MySqlConnection connection = new(connectionAddress);
+            try
+            {
+                connection.Open();
+            }
+            catch (Exception)
+            {
+                Log("Connection failed");
+                DialogResult option = MessageBox.Show("Er is geen verbinding met de database. Wat wilt u doen?", "Fout", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
+                switch (option)
+                {
+                    case DialogResult.Abort:
+                        Log("Application closed due to connection error");
+                        Environment.Exit(0);
+                        break;
+                    case DialogResult.Retry:
+                        CheckConnection();
+                        break;
+                    case DialogResult.Ignore:
+                        break;
+                }
+            }
+        }
+
 
 #pragma warning disable CS8600, CS8603 // Converting null literal or possible null value to non-nullable type, intended behaviour, its fine trust me bro :)
         public string ExecuteQuery(string query, params MySqlParameter[] parameters)
@@ -133,12 +164,12 @@ namespace Fitschool
 
             if (rowsAffected > 0)
             {
-                MessageBox.Show($"Gebruiker succesvol verwijderd. ID: {id}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                new FormMessageBox($"Gebruiker succesvol verwijderd. ID: {id}", "Succes");
                 Log($"User with ID {id} removed");
             }
             else
             {
-                MessageBox.Show("Er is een fout opgetreden bij het verwijderen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new FormMessageBox("Er is een fout opgetreden bij het verwijderen van de gebruiker.", "Fout");
                 Log($"Failed to remove loggedInUser with ID {id}");
             }
         }

@@ -49,6 +49,8 @@
             pictureShop4 = new PictureBox();
             shoppingCart = new ListBox();
             labelTotalPrice = new Label();
+            ButtonConfirm = new Button();
+            buttonRemove = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureShop0).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureShop2).BeginInit();
@@ -77,7 +79,7 @@
             buttonShop0.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop0.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop0.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop0.Location = new Point(232, 477);
+            buttonShop0.Location = new Point(232, 474);
             buttonShop0.Name = "buttonShop0";
             buttonShop0.Size = new Size(159, 61);
             buttonShop0.TabIndex = 2;
@@ -107,9 +109,9 @@
             buttonShop1.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop1.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop1.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop1.Location = new Point(664, 477);
+            buttonShop1.Location = new Point(590, 474);
             buttonShop1.Name = "buttonShop1";
-            buttonShop1.Size = new Size(159, 61);
+            buttonShop1.Size = new Size(153, 61);
             buttonShop1.TabIndex = 4;
             buttonShop1.Text = "100 Punten";
             buttonShop1.UseVisualStyleBackColor = false;
@@ -122,7 +124,7 @@
             buttonShop2.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop2.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop2.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop2.Location = new Point(1098, 477);
+            buttonShop2.Location = new Point(937, 477);
             buttonShop2.Name = "buttonShop2";
             buttonShop2.Size = new Size(159, 61);
             buttonShop2.TabIndex = 5;
@@ -137,7 +139,7 @@
             buttonShop6.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop6.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop6.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop6.Location = new Point(1098, 869);
+            buttonShop6.Location = new Point(937, 866);
             buttonShop6.Name = "buttonShop6";
             buttonShop6.Size = new Size(159, 61);
             buttonShop6.TabIndex = 8;
@@ -152,9 +154,9 @@
             buttonShop5.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop5.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop5.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop5.Location = new Point(664, 869);
+            buttonShop5.Location = new Point(590, 866);
             buttonShop5.Name = "buttonShop5";
-            buttonShop5.Size = new Size(159, 61);
+            buttonShop5.Size = new Size(153, 61);
             buttonShop5.TabIndex = 7;
             buttonShop5.Text = "100 Punten";
             buttonShop5.UseVisualStyleBackColor = false;
@@ -167,7 +169,7 @@
             buttonShop4.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop4.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop4.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop4.Location = new Point(232, 869);
+            buttonShop4.Location = new Point(232, 866);
             buttonShop4.Name = "buttonShop4";
             buttonShop4.Size = new Size(159, 61);
             buttonShop4.TabIndex = 6;
@@ -182,7 +184,7 @@
             buttonShop7.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop7.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop7.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop7.Location = new Point(1529, 869);
+            buttonShop7.Location = new Point(1286, 866);
             buttonShop7.Name = "buttonShop7";
             buttonShop7.Size = new Size(159, 61);
             buttonShop7.TabIndex = 10;
@@ -197,7 +199,7 @@
             buttonShop3.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop3.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop3.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop3.Location = new Point(1529, 477);
+            buttonShop3.Location = new Point(1286, 474);
             buttonShop3.Name = "buttonShop3";
             buttonShop3.Size = new Size(159, 61);
             buttonShop3.TabIndex = 9;
@@ -208,7 +210,7 @@
             // pictureShop0
             // 
             pictureShop0.Image = (Image)resources.GetObject("pictureShop0.Image");
-            pictureShop0.Location = new Point(213, 260);
+            pictureShop0.Location = new Point(213, 257);
             pictureShop0.Name = "pictureShop0";
             pictureShop0.Size = new Size(200, 200);
             pictureShop0.TabIndex = 11;
@@ -217,16 +219,16 @@
             // pictureShop1
             // 
             pictureShop1.Image = (Image)resources.GetObject("pictureShop1.Image");
-            pictureShop1.Location = new Point(637, 260);
+            pictureShop1.Location = new Point(563, 257);
             pictureShop1.Name = "pictureShop1";
-            pictureShop1.Size = new Size(200, 200);
+            pictureShop1.Size = new Size(194, 200);
             pictureShop1.TabIndex = 12;
             pictureShop1.TabStop = false;
             // 
             // pictureShop2
             // 
             pictureShop2.Image = (Image)resources.GetObject("pictureShop2.Image");
-            pictureShop2.Location = new Point(1082, 260);
+            pictureShop2.Location = new Point(921, 257);
             pictureShop2.Name = "pictureShop2";
             pictureShop2.Size = new Size(200, 200);
             pictureShop2.TabIndex = 13;
@@ -235,7 +237,7 @@
             // pictureShop3
             // 
             pictureShop3.Image = (Image)resources.GetObject("pictureShop3.Image");
-            pictureShop3.Location = new Point(1508, 260);
+            pictureShop3.Location = new Point(1265, 257);
             pictureShop3.Name = "pictureShop3";
             pictureShop3.Size = new Size(200, 200);
             pictureShop3.TabIndex = 14;
@@ -244,7 +246,7 @@
             // pictureShop7
             // 
             pictureShop7.Image = (Image)resources.GetObject("pictureShop7.Image");
-            pictureShop7.Location = new Point(1508, 648);
+            pictureShop7.Location = new Point(1265, 645);
             pictureShop7.Name = "pictureShop7";
             pictureShop7.Size = new Size(200, 200);
             pictureShop7.TabIndex = 18;
@@ -253,7 +255,7 @@
             // pictureShop6
             // 
             pictureShop6.Image = (Image)resources.GetObject("pictureShop6.Image");
-            pictureShop6.Location = new Point(1082, 648);
+            pictureShop6.Location = new Point(921, 645);
             pictureShop6.Name = "pictureShop6";
             pictureShop6.Size = new Size(200, 200);
             pictureShop6.TabIndex = 17;
@@ -262,16 +264,16 @@
             // pictureShop5
             // 
             pictureShop5.Image = (Image)resources.GetObject("pictureShop5.Image");
-            pictureShop5.Location = new Point(637, 648);
+            pictureShop5.Location = new Point(563, 645);
             pictureShop5.Name = "pictureShop5";
-            pictureShop5.Size = new Size(200, 200);
+            pictureShop5.Size = new Size(194, 200);
             pictureShop5.TabIndex = 16;
             pictureShop5.TabStop = false;
             // 
             // pictureShop4
             // 
             pictureShop4.Image = (Image)resources.GetObject("pictureShop4.Image");
-            pictureShop4.Location = new Point(213, 648);
+            pictureShop4.Location = new Point(213, 645);
             pictureShop4.Name = "pictureShop4";
             pictureShop4.Size = new Size(200, 200);
             pictureShop4.TabIndex = 15;
@@ -279,23 +281,52 @@
             // 
             // shoppingCart
             // 
+            shoppingCart.BackColor = Color.FromArgb(249, 249, 249);
+            shoppingCart.BorderStyle = BorderStyle.None;
             shoppingCart.FormattingEnabled = true;
             shoppingCart.ItemHeight = 20;
-            shoppingCart.Location = new Point(449, 3);
+            shoppingCart.Location = new Point(1569, 243);
             shoppingCart.Name = "shoppingCart";
-            shoppingCart.SelectionMode = SelectionMode.None;
-            shoppingCart.Size = new Size(301, 144);
+            shoppingCart.Size = new Size(190, 380);
             shoppingCart.TabIndex = 19;
             // 
             // labelTotalPrice
             // 
-            labelTotalPrice.AutoSize = true;
-            labelTotalPrice.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            labelTotalPrice.Location = new Point(764, 9);
+            labelTotalPrice.BackColor = Color.Transparent;
+            labelTotalPrice.Font = new Font("Segoe UI Semibold", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
+            labelTotalPrice.Location = new Point(1564, 664);
             labelTotalPrice.Name = "labelTotalPrice";
-            labelTotalPrice.Size = new Size(73, 28);
+            labelTotalPrice.Size = new Size(207, 62);
             labelTotalPrice.TabIndex = 20;
-            labelTotalPrice.Text = "Totaal: ";
+            labelTotalPrice.Text = "0";
+            // 
+            // ButtonConfirm
+            // 
+            ButtonConfirm.BackColor = Color.Transparent;
+            ButtonConfirm.FlatAppearance.BorderSize = 0;
+            ButtonConfirm.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            ButtonConfirm.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            ButtonConfirm.FlatStyle = FlatStyle.Flat;
+            ButtonConfirm.Location = new Point(1542, 836);
+            ButtonConfirm.Name = "ButtonConfirm";
+            ButtonConfirm.Size = new Size(261, 101);
+            ButtonConfirm.TabIndex = 21;
+            ButtonConfirm.UseVisualStyleBackColor = false;
+            ButtonConfirm.Click += ConfirmOrder;
+            // 
+            // buttonRemove
+            // 
+            buttonRemove.BackColor = Color.Transparent;
+            buttonRemove.FlatAppearance.BorderSize = 0;
+            buttonRemove.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            buttonRemove.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            buttonRemove.FlatStyle = FlatStyle.Flat;
+            buttonRemove.Location = new Point(1791, 594);
+            buttonRemove.Name = "buttonRemove";
+            buttonRemove.Size = new Size(117, 132);
+            buttonRemove.TabIndex = 22;
+            buttonRemove.UseVisualStyleBackColor = false;
+            buttonRemove.Click += RemoveProductButton;
             // 
             // FormShop
             // 
@@ -303,6 +334,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1902, 1033);
+            Controls.Add(buttonRemove);
+            Controls.Add(ButtonConfirm);
             Controls.Add(labelTotalPrice);
             Controls.Add(shoppingCart);
             Controls.Add(pictureShop7);
@@ -362,5 +395,7 @@
         private PictureBox pictureShop4;
         private ListBox shoppingCart;
         private Label labelTotalPrice;
+        private Button ButtonConfirm;
+        private Button buttonRemove;
     }
 }

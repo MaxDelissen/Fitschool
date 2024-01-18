@@ -45,9 +45,9 @@ namespace Fitschool.Forms
                         if (userId != loggedInUser.Id)
                         {
                             secondUser = new User(userId);
-                            MessageBox.Show($"2e Speler toegevoegd! Welkom {secondUser.Name}");
+                            new FormMessageBox($"2e Speler toegevoegd! Welkom {secondUser.Name}","2e speler toegevoegd","Verder!");
                         }
-                        else MessageBox.Show("Je kan niet tegen jezelf spelen!");
+                        else new FormMessageBox("Je kan niet tegen jezelf spelen!");
                     }
                     else
                     {
@@ -74,7 +74,7 @@ namespace Fitschool.Forms
             }
             else
             {
-                MessageBox.Show("Scan de QR-code van een 2e speler om deze activiteit te starten.", "Scan QR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                new FormMessageBox("Scan de QR-code van een 2e speler om deze activiteit te starten.", "Scan QR", "Scannen");
                 IdBox.Focus();
                 return false;
             }

@@ -5,7 +5,8 @@ namespace Fitschool.Classes.Activiteiten
     public partial class FormDDT : Form
     {
         private readonly DorDt Domain;
-        public int punten { get; private set; } = 0;
+        private double punten = 0;
+        public int Punten { get; private set; } = 0;
 
         public FormDDT()
         {
@@ -40,29 +41,48 @@ namespace Fitschool.Classes.Activiteiten
         {
             if (sender == correctButton)
             {
-                MessageBox.Show("Goed gedaan!");
-                PuntVerdient();
+                correct();
             }
             else
             {
-                MessageBox.Show($"Helaas, dit antwoord is niet correct, het juiste antwoord was {(correctButton ?? new Button()).Text}.");
+                incorrect();
             }
+        }
+
+        private void correct()
+        {
+            new FormMessageBox("Goed gedaan!", "Fitschool", "???", true);
+            ChangePoints(1);
             SetQuestion();
         }
 
-        private void PuntVerdient()
+        private void incorrect()
         {
-            punten++;
-            labelPoints.Text = $"Punten: {punten}";
+            new FormMessageBox($"Helaas, dit antwoord is niet correct, het juiste antwoord was {(correctButton ?? new Button()).Text}.", "Incorrect", "???", true);
+            ChangePoints(-0.25);
+            SetQuestion();
+        }
+
+        private void ChangePoints(double amount)
+        {
+            if (amount < 0 && punten + amount < 0) //punten can't be negative, as this would discourage the user from playing the game. (as they lose points for playing)
+            {
+                punten = 0;
+                labelPoints.Text = $"Punten: {DoubleToInt(punten)}";
+                return;
+            }
+            punten += amount;
+            labelPoints.Text = $"Punten: {DoubleToInt(punten)}";
+        }
+
+        private int DoubleToInt(double d)
+        {
+            return (int)Math.Round(d);
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
         {
-            this.forceclose();
-
-        }
-        private void forceclose()
-        {
+            Punten = DoubleToInt(punten);
             this.Close();
         }
     }

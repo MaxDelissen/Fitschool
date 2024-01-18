@@ -1,4 +1,6 @@
-﻿namespace Fitschool.Classes.Activiteiten
+﻿using MySql.Data.MySqlClient;
+
+namespace Fitschool.Classes.Activiteiten
 {
     public class MathGame
     {
@@ -96,9 +98,34 @@
 #pragma warning restore CS8605 // Unboxing a possibly null value.
         }
 
+        
+        //Did not get this to work with the way I setup the Database class, I will continue to use the hardcoded values for now, which are fine for now.
+        //This does however mean that the maximum numbers can not be changed after release.
+
+        //int[]? maximumNumbers = null;
+
+        //private int[] GetMaximumNumbers()
+        //{
+        //    DataManagement dataManagement = new DataManagement();
+        //    string query = "SELECT MaxNumberAddition, MaxNumberMultiplication FROM MaximumNumbers ORDER BY Grade";
+        //    string maximumNumbersString = dataManagement.ExecuteQuery(query);
+        //    string[] maximumNumbersStringSplit = maximumNumbersString.Split(',');
+        //    maximumNumbers = new int[maximumNumbersStringSplit.Length];
+        //    for (int i = 0; i < maximumNumbersStringSplit.Length; i++)
+        //    {
+        //        maximumNumbers[i] = Convert.ToInt32(maximumNumbersStringSplit[i]);
+        //    }
+        //    return maximumNumbers;
+        //}
+
 
         private int GetRandomNumber(MathOperator mathOperator)
         {
+            //if (maximumNumbers == null)
+            //{
+            //    maximumNumbers = GetMaximumNumbers();
+            //}
+
             int number;
             Random random = new Random();
             if (mathOperator == MathOperator.Addition || mathOperator == MathOperator.Subtraction) // Optellen en aftrekken

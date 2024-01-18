@@ -1,0 +1,12 @@
+{
+  "DatabaseSettings": {
+    "IpAddresses": [
+      "IP1",
+      "IP2",
+      "IP3"
+    ],
+    "Username": "your_username",
+    "Password": "your_password",
+    "DatabaseName": "your_database_name"
+  }
+}

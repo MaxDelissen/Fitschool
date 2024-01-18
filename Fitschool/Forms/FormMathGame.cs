@@ -40,7 +40,7 @@ namespace Fitschool.Forms
             if (mathGame.CheckAnswer(answer ?? 0))
             {
                 points++;
-                MessageBox.Show("Goed gedaan!");
+                new FormMessageBox("Goed gedaan!", "Fitschool", "???", true);
                 answerBox.Clear();
                 answerBox.Focus();
                 questionLabel.Text = mathGame.AskQuestion();
@@ -51,10 +51,10 @@ namespace Fitschool.Forms
                 retries++;
                 if (retries >= 3)
                 {
-                    MessageBox.Show("Helaas, je hebt het 3 keer fout, het goede antwoord was: " + mathGame.Awnser);
+                    new FormMessageBox("Helaas, je hebt het 3 keer fout, het goede antwoord was: " + mathGame.Awnser);
                     questionLabel.Text = mathGame.AskQuestion();
                 }
-                else MessageBox.Show("Helaas, probeer het nog eens!");
+                else new FormMessageBox("Helaas, probeer het nog eens!", "Helaas", "???", true);
             }
         }
 
@@ -72,7 +72,7 @@ namespace Fitschool.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Je hebt geen geldig antwoord ingevuld!");
+                    new FormMessageBox("Je hebt geen geldig antwoord ingevuld!", "Niet geldig", "Opnieuw");
                     return null;
                 }
             }

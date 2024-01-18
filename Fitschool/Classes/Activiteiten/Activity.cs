@@ -47,8 +47,10 @@ namespace Fitschool.Classes.Activiteiten
         private void PushUps()
         {
             PushUps pushUps = new();
-            pushUps.Start();
-            ActivityComplete(LoggedInUser);
+            if (pushUps.Start())
+            {
+                ActivityComplete(LoggedInUser);
+            }
         }
 
         private void TicTacToe()
@@ -77,7 +79,8 @@ namespace Fitschool.Classes.Activiteiten
         private void Language()
         {
             DDt();
-            //TODO: Add language games, probably none will be added before the deadline.
+
+            //Orgineel idee om meerdere games te maken, echter uiteindelijk niet genoeg tijd, dus deze op simpele manier gecombineerd.
             /*FormChooseLanguageGame chooseGame = new();
             chooseGame.ShowDialog();
             LanguageGames game = chooseGame.SelectedGame;
@@ -95,21 +98,10 @@ namespace Fitschool.Classes.Activiteiten
         {
             FormDDT formDDT = new();
             formDDT.ShowDialog();
-            int punten = formDDT.punten;
+            int punten = formDDT.Punten;
             formDDT.Dispose();
             ActivityComplete(LoggedInUser, punten);
         }
-
-        private void Werkwoord()
-        {
-
-        }
-
-        private void Onderwerp()
-        {
-
-        }
-
 
         public void ActivityComplete(User? winner)
         {
@@ -146,12 +138,12 @@ namespace Fitschool.Classes.Activiteiten
             }
             else if (winner.Name == "Computer") //if the winner is the computer, no points are awarded.
             {
-                MessageBox.Show("Helaas, je hebt verloren van de computer. Je hebt geen punten verdiend.");
+                new FormMessageBox("Helaas, je hebt verloren van de computer. Je hebt geen punten verdiend.");
                 return;
             }
             else
             {
-                MessageBox.Show($"Gefeliciteerd {winner.Name}, Je hebt voor het doen van deze activiteit {points}💰 verdiend"); // 1 winner
+                new FormMessageBox($"Gefeliciteerd {winner.Name}, Je hebt voor het doen van deze activiteit {points}💰 verdiend", "Activiteit voltooid!"); // 1 winner
                 winner.UpdatePoints(points); //Update points in database and in the user object
 
             }
@@ -162,7 +154,7 @@ namespace Fitschool.Classes.Activiteiten
             int devidedPoints = (int)Math.Floor(points / 2.0); //devide points by 2, and round down.
             LoggedInUser.UpdatePoints(devidedPoints);          //update points for both users, both get a point for the effort.
             SecondUser?.UpdatePoints(devidedPoints);           //if second user is null, it will not update points, as there is no second user.
-            MessageBox.Show($"Gelijkspel!\nJullie kunnen de activiteit opnieuw starten, én hebben allebei {devidedPoints}💰 verdiend!");
+            new FormMessageBox($"Gelijkspel!\nJullie kunnen de activiteit opnieuw starten, én hebben allebei {devidedPoints}💰 verdiend!", "Gelijkspel");
             return;
         }
     }

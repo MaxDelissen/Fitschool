@@ -21,7 +21,7 @@
             }
             else
             {
-                MessageBox.Show("Wachtwoord is onjuist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new FormMessageBox("Wachtwoord is onjuist.", "Error", "Terug");
             }
         }
 

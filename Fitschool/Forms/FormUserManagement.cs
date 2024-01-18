@@ -1,4 +1,5 @@
 ﻿using Fitschool.Classes;
+using Fitschool.Forms;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 
@@ -39,14 +40,14 @@ namespace Fitschool
             int lastInsertID = Convert.ToInt32(new DataManagement().ExecuteQuery(query, new MySqlParameter("@naam", naam), new MySqlParameter("@leeftijd", leeftijd), new MySqlParameter("@email", email)));
             if (lastInsertID <= 0)
             {
-                MessageBox.Show("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new FormMessageBox("Er is een fout opgetreden bij het toevoegen van de gebruiker.", "Fout");
                 DataManagement.Log("Failed to add loggedInUser, last insertedID <= 0");
                 return;
             }
 
             User newUser = new(lastInsertID);
 
-            MessageBox.Show($"De gebruiker is toegevoegd met id nummer {lastInsertID}", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            new FormMessageBox($"De gebruiker is toegevoegd met id nummer {lastInsertID}", "Succes");
             DataManagement.Log($"User added with ID {lastInsertID}, name {naam}");
 
             Card designer = new(newUser);
@@ -101,14 +102,14 @@ namespace Fitschool
             string naam = NameBox.Text;
             if (naam.Length > 50)
             {
-                MessageBox.Show("De naam mag niet langer zijn dan 50 karakters.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new FormMessageBox("De naam mag niet langer zijn dan 50 karakters.", "Fout");
                 DataManagement.Log("Name too long: " + naam);
                 return false;
             }
 
             if (!int.TryParse(LeeftijdSelector.Value.ToString(), out int _))
             {
-                MessageBox.Show("De leeftijd moet een getal zijn.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new FormMessageBox("De leeftijd moet een getal zijn.", "Fout");
                 DataManagement.Log("Invalid age entered: " + LeeftijdSelector.Value);
                 return false;
             }
@@ -116,7 +117,7 @@ namespace Fitschool
             string email = textBoxEmail.Text;
             if (!IsValidEmail(email))
             {
-                MessageBox.Show("Please enter a valid email address.", "Invalid Email", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                new FormMessageBox("Please enter a valid email address.", "Invalid Email");
                 DataManagement.Log("Invalid email entered");
                 return false;
             }
@@ -156,7 +157,7 @@ namespace Fitschool
             if (input.Contains(";"))
             {
                 DataManagement.Log($"------------------SQL Injection detected!------------------\nExiting...");
-                MessageBox.Show("SQL injection detected, this will be reported and the application will now close.", "SQL Injection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new FormMessageBox("SQL injectie gedetecteerd, Dit wordt onthouden, en de applicatie sluit nu af!.", "SQL Injection", "!!", true);
                 return true;
             }
 

@@ -1,4 +1,5 @@
-﻿using QRCoder;
+﻿using Fitschool.Forms;
+using QRCoder;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
@@ -78,7 +79,7 @@ namespace Fitschool.Classes
             catch (Exception ex)
             {
                 DataManagement.Log($"Error generating card: {ex.Message}");
-                MessageBox.Show("Er ging iets mis met het maken van de pas.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new FormMessageBox("Er ging iets mis met het maken van de pas. Er is geen pas gemaakt", "Fout");
             }
             finally
             {
@@ -143,7 +144,7 @@ namespace Fitschool.Classes
                     catch (Exception ex)
                     {
                         DataManagement.Log($"Error saving card: {ex.Message}");
-                        MessageBox.Show("Er is een fout opgetreden tijdens het opslaan van de pas.", "Fout", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        new FormMessageBox("Er is een fout opgetreden tijdens het opslaan van de pas.", "Fout");
                     }
                 }
             }
