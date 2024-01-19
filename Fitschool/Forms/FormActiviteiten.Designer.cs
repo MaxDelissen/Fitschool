@@ -40,6 +40,7 @@
             // buttonBackActiviteiten
             // 
             buttonBackActiviteiten.BackColor = Color.Transparent;
+            buttonBackActiviteiten.Cursor = Cursors.Hand;
             buttonBackActiviteiten.FlatAppearance.BorderSize = 0;
             buttonBackActiviteiten.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonBackActiviteiten.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -54,6 +55,7 @@
             // buttonPushUps
             // 
             buttonPushUps.BackColor = Color.Transparent;
+            buttonPushUps.Cursor = Cursors.Hand;
             buttonPushUps.FlatAppearance.BorderSize = 0;
             buttonPushUps.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonPushUps.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -68,6 +70,7 @@
             // buttonTTT
             // 
             buttonTTT.BackColor = Color.Transparent;
+            buttonTTT.Cursor = Cursors.Hand;
             buttonTTT.FlatAppearance.BorderSize = 0;
             buttonTTT.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonTTT.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -93,6 +96,7 @@
             // buttonMath
             // 
             buttonMath.BackColor = Color.Transparent;
+            buttonMath.Cursor = Cursors.Hand;
             buttonMath.FlatAppearance.BorderSize = 0;
             buttonMath.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonMath.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -108,6 +112,7 @@
             // buttonLanguage
             // 
             buttonLanguage.BackColor = Color.Transparent;
+            buttonLanguage.Cursor = Cursors.Hand;
             buttonLanguage.FlatAppearance.BorderSize = 0;
             buttonLanguage.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonLanguage.FlatAppearance.MouseOverBackColor = Color.Transparent;

@@ -33,12 +33,13 @@
             answerBox = new TextBox();
             questionLabel = new Label();
             buttonClose = new Button();
-            textBox1 = new TextBox();
+            textBoxNotes = new TextBox();
             SuspendLayout();
             // 
             // submitButton
             // 
             submitButton.BackColor = Color.Transparent;
+            submitButton.Cursor = Cursors.Hand;
             submitButton.FlatAppearance.BorderSize = 0;
             submitButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
             submitButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -75,6 +76,7 @@
             // buttonClose
             // 
             buttonClose.BackColor = Color.Transparent;
+            buttonClose.Cursor = Cursors.Hand;
             buttonClose.FlatAppearance.BorderSize = 0;
             buttonClose.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonClose.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -86,15 +88,15 @@
             buttonClose.UseVisualStyleBackColor = false;
             buttonClose.Click += buttonClose_Click;
             // 
-            // textBox1
+            // textBoxNotes
             // 
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            textBox1.Location = new Point(327, 599);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(1271, 401);
-            textBox1.TabIndex = 4;
+            textBoxNotes.BorderStyle = BorderStyle.None;
+            textBoxNotes.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            textBoxNotes.Location = new Point(327, 599);
+            textBoxNotes.Multiline = true;
+            textBoxNotes.Name = "textBoxNotes";
+            textBoxNotes.Size = new Size(1271, 401);
+            textBoxNotes.TabIndex = 4;
             // 
             // FormMathGame
             // 
@@ -102,7 +104,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1920, 1080);
-            Controls.Add(textBox1);
+            Controls.Add(textBoxNotes);
             Controls.Add(buttonClose);
             Controls.Add(questionLabel);
             Controls.Add(answerBox);
@@ -122,6 +124,6 @@
         private TextBox answerBox;
         private Label questionLabel;
         private Button buttonClose;
-        private TextBox textBox1;
+        private TextBox textBoxNotes;
     }
 }

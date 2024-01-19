@@ -39,6 +39,7 @@
             // buttonToActivity
             // 
             buttonToActivity.BackColor = Color.Transparent;
+            buttonToActivity.Cursor = Cursors.Hand;
             buttonToActivity.FlatAppearance.BorderSize = 0;
             buttonToActivity.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonToActivity.FlatAppearance.MouseOverBackColor = Color.Transparent;
@@ -53,6 +54,7 @@
             // buttonToShop
             // 
             buttonToShop.BackColor = Color.Transparent;
+            buttonToShop.Cursor = Cursors.Hand;
             buttonToShop.FlatAppearance.BorderColor = SystemColors.ControlLightLight;
             buttonToShop.FlatAppearance.BorderSize = 0;
             buttonToShop.FlatAppearance.MouseDownBackColor = Color.Transparent;

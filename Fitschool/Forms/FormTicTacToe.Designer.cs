@@ -45,6 +45,7 @@
             // 
             // button3
             // 
+            button3.Cursor = Cursors.Hand;
             button3.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button3.Location = new Point(1006, 390);
             button3.Margin = new Padding(20);
@@ -57,6 +58,7 @@
             // 
             // button2
             // 
+            button2.Cursor = Cursors.Hand;
             button2.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button2.Location = new Point(844, 390);
             button2.Margin = new Padding(20);
@@ -69,6 +71,7 @@
             // 
             // button1
             // 
+            button1.Cursor = Cursors.Hand;
             button1.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button1.Location = new Point(685, 390);
             button1.Margin = new Padding(20);
@@ -81,6 +84,7 @@
             // 
             // button6
             // 
+            button6.Cursor = Cursors.Hand;
             button6.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button6.Location = new Point(1006, 543);
             button6.Margin = new Padding(20);
@@ -93,6 +97,7 @@
             // 
             // button5
             // 
+            button5.Cursor = Cursors.Hand;
             button5.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button5.Location = new Point(844, 543);
             button5.Margin = new Padding(20);
@@ -105,6 +110,7 @@
             // 
             // button4
             // 
+            button4.Cursor = Cursors.Hand;
             button4.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button4.Location = new Point(685, 543);
             button4.Margin = new Padding(20);
@@ -129,6 +135,7 @@
             // 
             // button8
             // 
+            button8.Cursor = Cursors.Hand;
             button8.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button8.Location = new Point(844, 705);
             button8.Margin = new Padding(20);
@@ -141,6 +148,7 @@
             // 
             // button7
             // 
+            button7.Cursor = Cursors.Hand;
             button7.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point);
             button7.Location = new Point(685, 705);
             button7.Margin = new Padding(20);
@@ -204,6 +212,7 @@
             Controls.Add(labelPlayerTurn);
             Controls.Add(labelPlayerO);
             Controls.Add(labelPlayerX);
+            Cursor = Cursors.Hand;
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");

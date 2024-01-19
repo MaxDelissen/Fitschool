@@ -24,11 +24,15 @@ namespace Fitschool.Forms
                 submitButton_Click(sender, e);
             }
 
-            if (!char.IsDigit((char)e.KeyCode) && e.KeyCode != Keys.Back && e.KeyCode != Keys.Enter)
+            // Check for both main keyboard numbers and numpad numbers
+            if (!((e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9) ||   // Main keyboard numbers
+                  (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9) ||   // Numpad numbers
+                  e.KeyCode == Keys.Back || e.KeyCode == Keys.Enter))
             {
                 e.SuppressKeyPress = true;
             }
         }
+
 
         public int points = 0;
         private int retries = 0;
@@ -39,23 +43,36 @@ namespace Fitschool.Forms
             if (answer == null) { return;}
             if (mathGame.CheckAnswer(answer ?? 0))
             {
-                points++;
-                new FormMessageBox("Goed gedaan!", "Fitschool", "???", true);
-                answerBox.Clear();
-                answerBox.Focus();
-                questionLabel.Text = mathGame.AskQuestion();
+                correct();
             }
             else
             {
-                answerBox.Clear();
-                retries++;
-                if (retries >= 3)
-                {
-                    new FormMessageBox("Helaas, je hebt het 3 keer fout, het goede antwoord was: " + mathGame.Awnser);
-                    questionLabel.Text = mathGame.AskQuestion();
-                }
-                else new FormMessageBox("Helaas, probeer het nog eens!", "Helaas", "???", true);
+                incorrect();
             }
+        }
+
+        private void correct()
+        {
+            retries = 0;
+            points++;
+            new FormMessageBox("Goed gedaan!", "Fitschool", "???", true);
+            answerBox.Clear();
+            answerBox.Focus();
+            questionLabel.Text = mathGame.AskQuestion();
+            textBoxNotes.Text = string.Empty;
+        }
+
+        private void incorrect()
+        {
+            answerBox.Clear();
+            retries++;
+            if (retries >= 3)
+            {
+                new FormMessageBox("Helaas, je hebt het 3 keer fout, het goede antwoord was: " + mathGame.Awnser);
+                questionLabel.Text = mathGame.AskQuestion();
+                retries = 0;
+            }
+            else new FormMessageBox("Helaas, probeer het nog eens!", "Helaas", "???", true);
         }
 
         private float? ConvertInput(string input)

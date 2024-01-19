@@ -121,10 +121,10 @@ namespace Fitschool.Classes.Activiteiten
                     points = 3; // 3 for a win, 1 for a draw
                     break;
                 case ActivityType.Math:
-                    points = (int)Math.Floor((decimal)(amount ?? 0) / 2);
+                    points = (int)Math.Floor((amount ?? 0) / 1.5m);
                     break;
                 case ActivityType.Language:
-                    points = (int)Math.Floor((decimal)(amount ?? 0) * 1.5m);
+                    points = (int)Math.Floor((amount ?? 0) * 1.5m);
                     break;
                 default:
                     points = 0;

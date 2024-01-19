@@ -50,6 +50,7 @@
             // buttonOption1
             // 
             buttonOption1.BackColor = Color.Transparent;
+            buttonOption1.Cursor = Cursors.Hand;
             buttonOption1.FlatAppearance.BorderSize = 0;
             buttonOption1.FlatAppearance.CheckedBackColor = Color.Transparent;
             buttonOption1.FlatAppearance.MouseDownBackColor = Color.Transparent;
@@ -67,6 +68,7 @@
             // buttonOption2
             // 
             buttonOption2.BackColor = Color.Transparent;
+            buttonOption2.Cursor = Cursors.Hand;
             buttonOption2.FlatAppearance.BorderSize = 0;
             buttonOption2.FlatAppearance.CheckedBackColor = Color.Transparent;
             buttonOption2.FlatAppearance.MouseDownBackColor = Color.Transparent;
@@ -84,6 +86,7 @@
             // buttonOption3
             // 
             buttonOption3.BackColor = Color.Transparent;
+            buttonOption3.Cursor = Cursors.Hand;
             buttonOption3.FlatAppearance.BorderSize = 0;
             buttonOption3.FlatAppearance.CheckedBackColor = Color.Transparent;
             buttonOption3.FlatAppearance.MouseDownBackColor = Color.Transparent;
@@ -114,6 +117,7 @@
             // buttonExit
             // 
             buttonExit.BackColor = Color.Transparent;
+            buttonExit.Cursor = Cursors.Hand;
             buttonExit.FlatAppearance.BorderSize = 0;
             buttonExit.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonExit.FlatAppearance.MouseOverBackColor = Color.Transparent;

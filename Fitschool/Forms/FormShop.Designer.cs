@@ -79,11 +79,12 @@
             buttonShop0.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop0.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop0.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop0.Location = new Point(232, 474);
+            buttonShop0.Location = new Point(178, 240);
             buttonShop0.Name = "buttonShop0";
-            buttonShop0.Size = new Size(159, 61);
+            buttonShop0.Size = new Size(261, 288);
             buttonShop0.TabIndex = 2;
             buttonShop0.Text = "100 Punten";
+            buttonShop0.TextAlign = ContentAlignment.BottomCenter;
             buttonShop0.UseVisualStyleBackColor = false;
             buttonShop0.Click += ButtonShop_Click;
             // 
@@ -109,11 +110,12 @@
             buttonShop1.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop1.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop1.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop1.Location = new Point(590, 474);
+            buttonShop1.Location = new Point(530, 240);
             buttonShop1.Name = "buttonShop1";
-            buttonShop1.Size = new Size(153, 61);
+            buttonShop1.Size = new Size(261, 288);
             buttonShop1.TabIndex = 4;
             buttonShop1.Text = "100 Punten";
+            buttonShop1.TextAlign = ContentAlignment.BottomCenter;
             buttonShop1.UseVisualStyleBackColor = false;
             buttonShop1.Click += ButtonShop_Click;
             // 
@@ -124,11 +126,12 @@
             buttonShop2.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop2.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop2.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop2.Location = new Point(937, 477);
+            buttonShop2.Location = new Point(883, 243);
             buttonShop2.Name = "buttonShop2";
-            buttonShop2.Size = new Size(159, 61);
+            buttonShop2.Size = new Size(261, 288);
             buttonShop2.TabIndex = 5;
             buttonShop2.Text = "100 Punten";
+            buttonShop2.TextAlign = ContentAlignment.BottomCenter;
             buttonShop2.UseVisualStyleBackColor = false;
             buttonShop2.Click += ButtonShop_Click;
             // 
@@ -139,11 +142,12 @@
             buttonShop6.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop6.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop6.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop6.Location = new Point(937, 866);
+            buttonShop6.Location = new Point(883, 632);
             buttonShop6.Name = "buttonShop6";
-            buttonShop6.Size = new Size(159, 61);
+            buttonShop6.Size = new Size(261, 288);
             buttonShop6.TabIndex = 8;
             buttonShop6.Text = "100 Punten";
+            buttonShop6.TextAlign = ContentAlignment.BottomCenter;
             buttonShop6.UseVisualStyleBackColor = false;
             buttonShop6.Click += ButtonShop_Click;
             // 
@@ -154,11 +158,12 @@
             buttonShop5.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop5.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop5.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop5.Location = new Point(590, 866);
+            buttonShop5.Location = new Point(530, 632);
             buttonShop5.Name = "buttonShop5";
-            buttonShop5.Size = new Size(153, 61);
+            buttonShop5.Size = new Size(261, 288);
             buttonShop5.TabIndex = 7;
             buttonShop5.Text = "100 Punten";
+            buttonShop5.TextAlign = ContentAlignment.BottomCenter;
             buttonShop5.UseVisualStyleBackColor = false;
             buttonShop5.Click += ButtonShop_Click;
             // 
@@ -169,11 +174,12 @@
             buttonShop4.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop4.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop4.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop4.Location = new Point(232, 866);
+            buttonShop4.Location = new Point(178, 632);
             buttonShop4.Name = "buttonShop4";
-            buttonShop4.Size = new Size(159, 61);
+            buttonShop4.Size = new Size(261, 288);
             buttonShop4.TabIndex = 6;
             buttonShop4.Text = "100 Punten";
+            buttonShop4.TextAlign = ContentAlignment.BottomCenter;
             buttonShop4.UseVisualStyleBackColor = false;
             buttonShop4.Click += ButtonShop_Click;
             // 
@@ -184,11 +190,12 @@
             buttonShop7.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop7.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop7.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop7.Location = new Point(1286, 866);
+            buttonShop7.Location = new Point(1232, 632);
             buttonShop7.Name = "buttonShop7";
-            buttonShop7.Size = new Size(159, 61);
+            buttonShop7.Size = new Size(261, 288);
             buttonShop7.TabIndex = 10;
             buttonShop7.Text = "100 Punten";
+            buttonShop7.TextAlign = ContentAlignment.BottomCenter;
             buttonShop7.UseVisualStyleBackColor = false;
             buttonShop7.Click += ButtonShop_Click;
             // 
@@ -199,11 +206,12 @@
             buttonShop3.FlatAppearance.MouseDownBackColor = Color.Transparent;
             buttonShop3.FlatAppearance.MouseOverBackColor = Color.Transparent;
             buttonShop3.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonShop3.Location = new Point(1286, 474);
+            buttonShop3.Location = new Point(1232, 240);
             buttonShop3.Name = "buttonShop3";
-            buttonShop3.Size = new Size(159, 61);
+            buttonShop3.Size = new Size(261, 288);
             buttonShop3.TabIndex = 9;
             buttonShop3.Text = "100 Punten";
+            buttonShop3.TextAlign = ContentAlignment.BottomCenter;
             buttonShop3.UseVisualStyleBackColor = false;
             buttonShop3.Click += ButtonShop_Click;
             // 
@@ -346,6 +354,8 @@
             Controls.Add(pictureShop2);
             Controls.Add(pictureShop1);
             Controls.Add(pictureShop0);
+            Controls.Add(buttonBackShop);
+            Controls.Add(labelTotalPoints);
             Controls.Add(buttonShop7);
             Controls.Add(buttonShop3);
             Controls.Add(buttonShop6);
@@ -353,9 +363,7 @@
             Controls.Add(buttonShop4);
             Controls.Add(buttonShop2);
             Controls.Add(buttonShop1);
-            Controls.Add(buttonBackShop);
             Controls.Add(buttonShop0);
-            Controls.Add(labelTotalPoints);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormShop";

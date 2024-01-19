@@ -76,7 +76,7 @@ namespace Fitschool.Classes.Shop
 
             bericht += $"\nHet totaal aantal verdiende punten voor deze aankoop bedraagt: {TotalPrice}🪙\n\n" +
                 $"Mocht u nog vragen hebben, aarzel dan niet om contact op te nemen met de school of een e-mail te sturen naar 'fitschool@hotmail.com'.\n\n" +
-                $"Met vriendelijke groet,\nCasper Wijngaarden\nSupport & Marketing Director Fitschool";
+                $"Met vriendelijke groet,\nTeam Fitschool\nfit-school.nl";
             #endregion
 
             if (!SendMail(onderwerp, bericht)) { return ConfirmStatus.emailNotSent; }
